@@ -31,7 +31,13 @@ class Lsx_Restrict_Access {
 	 */
 	private function __construct() {
 		//Register our logged out menu location, make sure this is done at the very end so it doesnt mess with any currently set up menus. 
-		add_action( 'after_setup_theme', array($this,'gts_setup') , 100);
+		add_action( 'after_setup_theme', array($this,'register_menus') , 100);
+		
+		//Call the logged out template
+		add_action( 'template_include', array($this,'template_include'), -1 );
+		
+		//Redirect the user on succeful logout	
+		add_filter( 'logout_url', array($this,'logout_redirect'), 10, 2 );
 	}
 	
 	/**
@@ -47,27 +53,53 @@ class Lsx_Restrict_Access {
 		return self::$instance;
 	}	
 	
-	
-	//Redirect the template
-	
-	//Redirect the user on login to the same page
-	
-	//Redirect the user to the page they were on / home.
-	
-	//Need to make sure the validation redirects back to the form when it fails.
-	
 	/**
 	 * Register a new primary menu for the logged out view
-	 */	
-	function register_menus() {
-		
+	 */
+	public function register_menus() {
+	
 		//TODO - Call all current menu locations and register a logged out version for them
 		register_nav_menus( array(
-			'primary_logged_out' => __( 'Primary Menu (logged out)', 'lsx-restrict-access' )
-			)
+		'primary_logged_out' => __( 'Primary Menu (logged out)', 'lsx-restrict-access' )
+		)
 		);
+	}	
+	
+	
+	/**
+	 * Redirect the template
+	 */	
+	public function template_include($template) {
+		if ( !is_user_logged_in() ) {
+			
+			//Check if there is a tempalte in the theme
+			$template = locate_template( array( 'template-login.php' ));
+			
+			//if there isnt, then display our template.
+			if('' == locate_template( array( 'template-login.php' )) && file_exists( plugin_dir_path( __FILE__ ) . "template-login.php" )) {
+				$template = plugin_dir_path( __FILE__ ) ."template-login.php";
+			}
+			
+			//die(print_r($template));
+		}
+		return $template;		
 	}
 	
-	//Overwrite the LSX Nav function to call our logged out menu. 
+	//Add in a filter so the title is forced to a prompt.
+		
+	//Redirect the user on login to the same page
+	//Redirect the user to the page they were on / home.
 	
+	//Need to make sure the validation redirects back to the form when it fails
+	
+	/**	
+	 * Redirect a user to the homepage on logout.
+	 * 
+	 * @param string $logout_url URL to redirect to.
+	 * @param string $redirect URL the user is going.	
+	 */
+	public function logout_redirect( $logout_url, $redirect ) {
+	    return home_url( $logout_url.'?redirect_to=' . home_url() );
+	}
 }
+$lst_restrict_access = Lsx_Restrict_Access::get_instance();
