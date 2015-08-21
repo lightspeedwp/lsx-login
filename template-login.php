@@ -13,12 +13,19 @@ get_header(); ?>
 
 			<?php lsx_content_top(); ?>
 
-			<?php 
+			<div class="row">
+			
+				<div class="col-sm-6">
+					<?php lsx_login_form();	?>
+				</div>
+				
+				<div class="col-sm-6">
+					<?php lsx_password_reset_form();	?>
+				</div>				
+			
+			</div>
 			
 			
-			wp_login_form();
-			
-			?>
 
 			<?php lsx_content_bottom(); ?>
 
@@ -27,15 +34,5 @@ get_header(); ?>
 		<?php lsx_content_after(); ?>
 		
 	</div><!-- #primary -->
-
-	<section id="home-widgets">
-	
-		<?php if ( ! dynamic_sidebar( 'sidebar-home' ) ) : ?>
-		
-		
-		<?php endif; // end sidebar widget area ?>
-		
-	</section>	
-
 
 <?php get_footer(); ?>

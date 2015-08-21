@@ -1,14 +1,16 @@
 <?php
 /*
-Plugin Name: LSX Restrict Access
+Plugin Name: LSX Login
 Plugin URI: {add_in}
-Description: Force users to login to view your site. Primarily built for the LSX and TwentyFifteen theme
+Description: Force users to login to view your site. Primarily built for the LSX theme
 Author: Warwick
 Author URI: http://wordpress.org/
 Version: 1.0
-Text Domain: lsx-restrict-access
+Text Domain: lsx-login
 License: GPL version 2 or later - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
 */
+
+require 'inc/template-tags.php';
 
 /**
  * Main plugin class.
@@ -17,7 +19,7 @@ License: GPL version 2 or later - http://www.gnu.org/licenses/old-licenses/gpl-2
  * @author  Warwick
  */
 
-class Lsx_Restrict_Access {
+class Lsx_Login {
 	
 	/**
 	 * Holds class instance
@@ -38,6 +40,9 @@ class Lsx_Restrict_Access {
 		
 		//Redirect the user on succeful logout	
 		add_filter( 'logout_url', array($this,'logout_redirect'), 10, 2 );
+		
+		//Force a 1 column layout
+		add_filter( 'lsx_layout', array($this,'logout_layout_filter') , 1 , 100 );
 	}
 	
 	/**
@@ -57,11 +62,10 @@ class Lsx_Restrict_Access {
 	 * Register a new primary menu for the logged out view
 	 */
 	public function register_menus() {
-	
 		//TODO - Call all current menu locations and register a logged out version for them
 		register_nav_menus( array(
-		'primary_logged_out' => __( 'Primary Menu (logged out)', 'lsx-restrict-access' )
-		)
+			'primary_logged_out' => __( 'Primary Menu (logged out)', 'lsx-login' )
+			)
 		);
 	}	
 	
@@ -101,5 +105,69 @@ class Lsx_Restrict_Access {
 	public function logout_redirect( $logout_url, $redirect ) {
 	    return home_url( $logout_url.'?redirect_to=' . home_url() );
 	}
+	
+	
+	
+	/**
+	 * generate the login form
+	 *
+	 */
+	public function login_form() {
+		wp_login_form();
+	}
+
+	/**
+	 * generate the login form
+	 *
+	 */
+	public function password_reset_form() {
+	
+	}
+	
+	/**
+	 * Forces the Logged out page to be 1 Column
+	 *
+	 */
+	function logout_layout_filter($layout) {
+	
+		if(!is_user_logged_in()){
+			$layout = '1c';
+		}
+		return $layout;
+	}	
 }
-$lst_restrict_access = Lsx_Restrict_Access::get_instance();
+$lst_login = Lsx_Login::get_instance();
+
+/*
+function lsx_nav_menu(){
+	$nav_menu = get_theme_mod('nav_menu_locations',false);
+
+    if(false != $nav_menu && 0 != $nav_menu['primary'] && 0 != $nav_menu['primary_logged_out']){ ?>
+		<nav class="navmenu navmenu-fixed-right offcanvas" role="navigation">
+	    	<?php
+	    	if(is_user_logged_in()){
+				wp_nav_menu( array(
+					'menu' => $nav_menu['primary'],
+					'depth' => 2,
+					'container' => false,
+					'menu_class' => 'nav navbar-nav',
+					'walker' => new lsx_bootstrap_navwalker())
+				);
+			}else{
+					wp_nav_menu( array(
+					'menu' => $nav_menu['primary_logged_out'],
+					'depth' => 2,
+					'container' => false,
+					'menu_class' => 'nav navbar-nav',
+					'walker' => new lsx_bootstrap_navwalker())
+					);
+			}
+			?>
+	   	</nav>
+    <?php } elseif(is_customize_preview()) { ?>
+    		<nav class="primary-navbar collapse navbar-collapse" role="navigation">
+    			<div class="alert alert-info" role="alert"><?php _e('Create a menu and assign it here via the "Navigation" panel.','lsx');?></div>
+    		</nav>
+    </div>
+  	<?php }
+}*/
