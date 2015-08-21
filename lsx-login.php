@@ -43,6 +43,9 @@ class Lsx_Login {
 		
 		//Force a 1 column layout
 		add_filter( 'lsx_layout', array($this,'logout_layout_filter') , 1 , 100 );
+		
+		//Enqueue the scrips
+		add_action( 'wp_enqueue_scripts', array($this,'scripts') );
 	}
 	
 	/**
@@ -56,6 +59,20 @@ class Lsx_Login {
 			self::$instance = new self;
 		}
 		return self::$instance;
+	}	
+	
+	
+	/**
+	 * Enqueue scripts and styles.
+	 *
+	 */
+	function scripts() {
+		
+		wp_enqueue_script('lsx_login_script', plugin_dir_url(__FILE__) . 'assets/js/lsx-login.js', array('masonry'), null, false);
+		$param_array = array(
+				'ajax_url' => admin_url('admin-ajax.php')
+		);
+		wp_localize_script( 'lsx_login_script', 'lsx_login_params', $param_array );		
 	}	
 	
 	/**
@@ -80,8 +97,8 @@ class Lsx_Login {
 			$template = locate_template( array( 'template-login.php' ));
 			
 			//if there isnt, then display our template.
-			if('' == locate_template( array( 'template-login.php' )) && file_exists( plugin_dir_path( __FILE__ ) . "template-login.php" )) {
-				$template = plugin_dir_path( __FILE__ ) ."template-login.php";
+			if('' == locate_template( array( 'template-login.php' )) && file_exists( plugin_dir_path( __FILE__ ) . "templates/template-login.php" )) {
+				$template = plugin_dir_path( __FILE__ ) ."templates/template-login.php";
 			}
 			
 			//die(print_r($template));
@@ -113,7 +130,14 @@ class Lsx_Login {
 	 *
 	 */
 	public function login_form() {
-		wp_login_form();
+			
+		//if there isnt, then display our template.
+		if('' == locate_template( array( 'content-login.php' )) && file_exists( plugin_dir_path( __FILE__ ) . "templates/content-login.php" )) {
+			include plugin_dir_path( __FILE__ ) ."templates/content-login.php";
+		}else{
+			get_template_part( 'content', 'login' );
+		}
+			
 	}
 
 	/**
@@ -121,7 +145,12 @@ class Lsx_Login {
 	 *
 	 */
 	public function password_reset_form() {
-	
+		//if there isnt, then display our template.
+		if('' == locate_template( array( 'content-password-reset.php' )) && file_exists( plugin_dir_path( __FILE__ ) . "templates/content-password-reset.php" )) {
+			include plugin_dir_path( __FILE__ ) ."templates/content-password-reset.php";
+		}else{
+			get_template_part( 'content', 'password-reset' );
+		}	
 	}
 	
 	/**
