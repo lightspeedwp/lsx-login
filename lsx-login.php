@@ -46,6 +46,11 @@ class Lsx_Login {
 		
 		//Enqueue the scrips
 		add_action( 'wp_enqueue_scripts', array($this,'scripts') );
+		
+		//ajax handlers
+		add_action( 'wp_ajax_lsx_login', array( $this, 'do_ajax_login' ) );
+		add_action( 'wp_ajax_nopriv_lsx_login', array( $this, 'do_ajax_login' ) );		
+		
 	}
 	
 	/**
@@ -67,12 +72,15 @@ class Lsx_Login {
 	 *
 	 */
 	function scripts() {
-		
-		wp_enqueue_script('lsx_login_script', plugin_dir_url(__FILE__) . 'assets/js/lsx-login.js', array('masonry'), null, false);
-		$param_array = array(
-				'ajax_url' => admin_url('admin-ajax.php')
-		);
-		wp_localize_script( 'lsx_login_script', 'lsx_login_params', $param_array );		
+		if(!is_user_logged_in()){
+			wp_enqueue_script('lsx_login_script', plugin_dir_url(__FILE__) . 'assets/js/lsx-login.js', array('masonry'), null, false);
+			$param_array = array(
+					'ajax_url' 			=> admin_url('admin-ajax.php'),
+					'empty_username'	=> __('The username field is empty.','lsx-login'),
+					'empty_password'	=> __('The password field is empty.','lsx-login')
+			);
+			wp_localize_script( 'lsx_login_script', 'lsx_login_params', $param_array );
+		}		
 	}	
 	
 	/**
@@ -163,7 +171,23 @@ class Lsx_Login {
 			$layout = '1c';
 		}
 		return $layout;
-	}	
+	}
+
+	
+	/**
+	 * Either logs the user in, or prompts an error.
+	 *
+	 */
+	public function do_ajax_login() {
+		
+		if(isset($_POST['method']) && 'login' == $_POST['method']){
+			
+		}
+		
+		die('hello');
+	}
+	
+	
 }
 $lst_login = Lsx_Login::get_instance();
 
