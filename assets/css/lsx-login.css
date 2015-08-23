@@ -1,12 +1,19 @@
 /*
- *  Login Form Basic Styling
+ *  Login Form + Reset Password Form Basic Styling
  */
  
-.loginform {
+.loginform, .lostpasswordform {
 	padding:15px;
 } 
 
-.loginform p label,.loginform p span, .loginform p input[type="text"], .loginform p input[type="password"] {
+.loginform h3 .genericon{
+	font-size: larger;
+    padding-bottom: 1px;
+    vertical-align: text-bottom;
+}
+
+.loginform p label, .loginform p span, .loginform p input[type="text"], .loginform p input[type="password"],
+.lostpasswordform p label, .lostpasswordform p span, .lostpasswordform p input[type="text"] {
 	width:100%;
 }
 
@@ -23,11 +30,13 @@
 /*
  * Form Loading
  */ 
-.loginform.loading p {
+.loginform.loading p,
+.lostpasswordform.loading p {
 	background-color: #ccc;
 	opacity: 0.3;
 }
 
-.loginform .spinner {
+.loginform .spinner,
+.lostpasswordform .spinner {
 	position:absolute;
 }

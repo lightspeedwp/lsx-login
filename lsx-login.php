@@ -45,7 +45,7 @@ class Lsx_Login {
 		add_filter( 'lsx_layout', array($this,'logout_layout_filter') , 1 , 100 );
 		
 		//Enqueue the scrips
-		add_action( 'wp_enqueue_scripts', array($this,'scripts') );
+		add_action( 'wp_enqueue_scripts', array($this,'scripts') ,100 );
 		
 		//ajax handlers
 		add_action( 'wp_ajax_lsx_login', array( $this, 'do_ajax_login' ) );
