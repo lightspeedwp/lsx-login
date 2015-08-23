@@ -5,6 +5,10 @@
 .loginform {
 	padding:15px;
 } 
+
+.loginform p label,.loginform p span, .loginform p input[type="text"], .loginform p input[type="password"] {
+	width:100%;
+}
  
 .loginform.loading p {
 	background-color: #ccc;

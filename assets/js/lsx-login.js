@@ -13,13 +13,13 @@ jQuery(document).ready(function($) {
 		
 		var username = $(this).find('input#user_login').val();
 		if('' == username){
-			$(this).find('input#user_login').parent('p').append('<span class="error">'+lsx_login_params.empty_username+'</span>');
+			$(this).find('input#user_login').parent('p').append('<div class="error">'+lsx_login_params.empty_username+'</div>');
 			return false;
 		}
 		
 		var password = $(this).find('input#user_pass').val();
 		if('' == password){
-			$(this).find('input#user_pass').parent('p').append('<span class="error">'+lsx_login_params.empty_password+'</span>');
+			$(this).find('input#user_pass').parent('p').append('<div class="error">'+lsx_login_params.empty_password+'</div>');
 			return false;
 		}		
 			
@@ -61,9 +61,9 @@ jQuery(document).ready(function($) {
 					$('.loginform.loading').removeClass('loading');
 					
 					if(result.success == '3'){
-						formObj.find('.login-password').append('<span class="error">'+result.message+'</span>');
+						formObj.find('.login-password').append('<div class="error">'+result.message+'</div>');
 					}else if(result.success == '2'){
-						formObj.find('.login-username').append('<span class="error">'+result.message+'</span>');
+						formObj.find('.login-username').append('<div class="error">'+result.message+'</div>');
 					}else{
 						window.location.href = redirect; 
 					}
