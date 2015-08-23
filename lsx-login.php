@@ -180,11 +180,31 @@ class Lsx_Login {
 	 */
 	public function do_ajax_login() {
 		
+		
 		if(isset($_POST['method']) && 'login' == $_POST['method']){
 			
+			$result = array();
+			if(isset($_POST['log']) && username_exists($_POST['log'])){
+				$user = wp_signon();
+				
+				if ( ! is_wp_error( $user ) ) {
+					$result['success']  = 1;
+				}else{
+					$result['success']  = 3;
+					//TODO Fix this encapsulation
+					$result['message']  = __('The password you entered for the username '.$_POST['log'].' is incorrect.','lsx-login');					
+				}				
+				
+			}else{
+				$result['success']  = 2;
+				$result['message']  = __('Invalid Username','lsx-login');
+			}
+			
+			echo json_encode( $result );
+		}else{
+			echo false;
 		}
-		
-		die('hello');
+		die();
 	}
 	
 	
