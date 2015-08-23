@@ -9,7 +9,20 @@
 .loginform p label,.loginform p span, .loginform p input[type="text"], .loginform p input[type="password"] {
 	width:100%;
 }
+
+.loginform p.login-remember input{
+    display: inline;
+    height: auto;
+    margin-top: -3px;
+    width: auto;
+}
+.loginform p.login-remember label{
+	display: inline;
+}
  
+/*
+ * Form Loading
+ */ 
 .loginform.loading p {
 	background-color: #ccc;
 	opacity: 0.3;

@@ -21,7 +21,8 @@
 	</p>
 	
 	<p class="login-remember input-group input-group-lg">
-		<label><input class="form-control" type="checkbox" value="forever" id="rememberme" name="rememberme"> <?php _e('Remember Me','lsx-login'); ?></label>
+		<input class="form-control rememberme" type="checkbox" value="forever" name="rememberme">
+		<label for="rememberme"><?php _e('Remember Me','lsx-login'); ?></label>
 	</p>
 	
 	<p class="login-submit input-group input-group-lg">
