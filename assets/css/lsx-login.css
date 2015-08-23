@@ -1,0 +1,16 @@
+/*
+ *  Login Form Basic Styling
+ */
+ 
+.loginform {
+	padding:15px;
+} 
+ 
+.loginform.loading p {
+	background-color: #ccc;
+	opacity: 0.3;
+}
+
+.loginform .spinner {
+	position:absolute;
+}

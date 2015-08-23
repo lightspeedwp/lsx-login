@@ -16,7 +16,6 @@ jQuery(document).ready(function($) {
 			return false;
 		}
 		
-		
 		var password = $(this).find('input#user_pass').val();
 		if('' == password){
 			$(this).find('input#user_pass').parent('p').append('<span class="error">'+lsx_login_params.empty_password+'</span>');
@@ -35,7 +34,19 @@ jQuery(document).ready(function($) {
 			pwd:		 	password,
 			rememberme: 	remember,
 			method:			'login'
-		};	    
+		};	 
+	    
+	    
+	    //Gery out the form field
+	    $(this).addClass('loading');
+	    
+	    //Load the spinner
+		$(this).prepend('<img style="display:none;" src="'+lsx_login_params.ajax_spinner+'" class="spinner" />');
+		var adjustHeight = $(this).height()/2 - 64;
+		var adjustWidth = $(this).height()/2 - 64;
+		$(this).find('.spinner').css('margin-top',adjustHeight+'px');
+		$(this).find('.spinner').css('margin-left',adjustWidth+'px');
+		$(this).find('.spinner').show();
 		
 		$.ajax({
 			url: lsx_login_params.ajax_url,
@@ -45,11 +56,13 @@ jQuery(document).ready(function($) {
 				
 				if(false != response){
 					var result = $.parseJSON( response );
+					$('.login-submit .spinner').remove();
+					$('.loginform.loading').removeClass('loading');
 					
 					if(result.success == '3'){
-						$('.login-password').append('<span class="error">'+result.message+'</span>')
+						$('.login-password').append('<span class="error">'+result.message+'</span>');
 					}else if(result.success == '2'){
-						$('.login-username').append('<span class="error">'+result.message+'</span>')
+						$('.login-username').append('<span class="error">'+result.message+'</span>');
 					}else{
 						window.location.href = redirect; 
 					}

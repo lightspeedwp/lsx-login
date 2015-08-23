@@ -5,9 +5,12 @@
  * @package lsx-login
  */
 ?>
-<h3><span class="genericon genericon-refresh"></span><?php _e('Reset Password','lsx-login'); ?></h3>
+
 
 <form method="post" action="<?php home_url('/wp-login.php?action=lostpassword'); ?>" id="lostpasswordform" name="lostpasswordform">
+
+	<h3><span class="genericon genericon-refresh"></span><?php _e('Reset Password','lsx-login'); ?></h3>
+
 	<p class="input-group input-group-lg">
 		<label for="user_login"><?php _e('Username or E-mail:','lsx-login'); ?><br>
 		<input type="text" size="20" value="" class="input form-control" id="user_login" name="user_login"></label>

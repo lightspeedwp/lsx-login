@@ -5,8 +5,11 @@
  * @package lsx-login
  */
 ?>
-<h3><span class="genericon genericon-home"></span><?php _e('Login','lsx-login'); ?></h3>
-<form method="post" action="<?php home_url('/wp-login.php'); ?>" class="loginform" name="loginform">		
+
+<form method="post" action="<?php home_url('/wp-login.php'); ?>" class="loginform" name="loginform">
+
+	<h3><span class="genericon genericon-home"></span><?php _e('Login','lsx-login'); ?></h3>
+
 	<p class="login-username input-group input-group-lg">
 		<label for="user_login"><?php _e('Username','lsx-login'); ?></label>
 		<input type="text" size="20" value="" class="input form-control" id="user_login" name="log">
