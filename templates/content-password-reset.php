@@ -11,14 +11,14 @@
 
 	<h3><span class="genericon genericon-refresh"></span><?php _e('Reset Password','lsx-login'); ?></h3>
 
-	<p class="input-group input-group-lg">
-		<label for="user_login"><?php _e('Username or E-mail:','lsx-login'); ?><br>
-		<input type="text" size="20" value="" class="input form-control" class="user_login" name="user_login"></label>
+	<p class="login-username input-group input-group-lg">
+		<label for="user_login"><?php _e('Username or E-mail:','lsx-login'); ?></label>
+		<input type="text" size="20" value="" class="input form-control" class="user_login" name="user_login">
 	</p>
 	
 	<input type="hidden" value="/" name="redirect_to">
 	
 	<p class="submit input-group input-group-lg">
-		<input type="submit" value="<?php _e('Get New Password','lsx-login'); ?>" class="button button-primary button-large form-control" class="wp-submit" name="wp-submit">
+		<input type="button" value="<?php _e('Get New Password','lsx-login'); ?>" class="btn btn-default" class="wp-submit" name="wp-submit">
 	</p>
 </form>

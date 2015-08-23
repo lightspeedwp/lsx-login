@@ -6,15 +6,26 @@
 	padding:15px;
 } 
 
-.loginform h3 .genericon{
+.loginform h3 .genericon,
+.lostpasswordform h3 .genericon{
 	font-size: larger;
     padding-bottom: 1px;
     vertical-align: text-bottom;
 }
 
+.loginform p,
+.lostpasswordform p  {
+	width:80%;
+}
+
 .loginform p label, .loginform p span, .loginform p input[type="text"], .loginform p input[type="password"],
 .lostpasswordform p label, .lostpasswordform p span, .lostpasswordform p input[type="text"] {
 	width:100%;
+}
+
+.loginform p input[type="text"],
+.lostpasswordform p input[type="text"] {
+	width:auto;
 }
 
 .loginform p.login-remember input{
