@@ -128,7 +128,7 @@ class Lsx_Login {
 	 * @param string $redirect URL the user is going.	
 	 */
 	public function logout_redirect( $logout_url, $redirect ) {
-	    return home_url( $logout_url.'?redirect_to=' . home_url() );
+	    return $logout_url.'&redirect_to=' . home_url();
 	}
 	
 	
