@@ -3,6 +3,7 @@ jQuery(document).ready(function($) {
 	jQuery('.loginform').submit(function(event){
 		
 		event.preventDefault();
+		var formObj = $(this);
 		
 		//remove all error and validation fields
 		$(this).find('.error').each(function(event){
@@ -56,13 +57,13 @@ jQuery(document).ready(function($) {
 				
 				if(false != response){
 					var result = $.parseJSON( response );
-					$('.login-submit .spinner').remove();
+					$('.spinner').remove();
 					$('.loginform.loading').removeClass('loading');
 					
 					if(result.success == '3'){
-						$('.login-password').append('<span class="error">'+result.message+'</span>');
+						formObj.find('.login-password').append('<span class="error">'+result.message+'</span>');
 					}else if(result.success == '2'){
-						$('.login-username').append('<span class="error">'+result.message+'</span>');
+						formObj.find('.login-username').append('<span class="error">'+result.message+'</span>');
 					}else{
 						window.location.href = redirect; 
 					}
