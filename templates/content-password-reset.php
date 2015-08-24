@@ -9,8 +9,6 @@
 
 $is_key_confirmed = lsx_is_password_confirmed();
 
-print_r($is_key_confirmed);
-
 if(isset($_GET['action']) && 'rp' === $_GET['action'] && !is_wp_error($is_key_confirmed)){ ?>
 	<form autocomplete="off" method="post" action="<?php home_url('/'); ?>" class="lostpasswordform" name="resetpassform">
 		<input type="hidden" autocomplete="off" value="<?php echo $_GET['login'];?>" class="user_login" name="user_login">

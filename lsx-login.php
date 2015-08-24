@@ -313,8 +313,10 @@ class Lsx_Login {
 			
 			//Check the details
 			$user = check_password_reset_key( $_GET['key'], $_GET['login'] );
-			
-			if(username_exists($_GET['login']) && !is_wp_error($user)){
+			print_r($_GET['key']);print_r('<br />');
+			print_r($_GET['login']);print_r('<br />');
+			print_r($user);print_r('<br />');
+			if(!is_wp_error($user)){
 				return $user;
 			}else{
 				return $user;
