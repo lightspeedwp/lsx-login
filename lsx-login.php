@@ -55,7 +55,10 @@ class Lsx_Login {
 		add_action( 'wp_ajax_nopriv_lsx_reset', array( $this, 'do_ajax_reset' ) );		
 		
 		add_action( 'wp_ajax_lsx_reset_confirmed', array( $this, 'do_ajax_reset_confirmed' ) );
-		add_action( 'wp_ajax_nopriv_lsx_reset_confirmed', array( $this, 'do_ajax_reset_confirmed' ) );		
+		add_action( 'wp_ajax_nopriv_lsx_reset_confirmed', array( $this, 'do_ajax_reset_confirmed' ) );
+
+		
+		add_filter( 'password_reset_expiration', array( $this, 'force_expiration_time' ) ,1 ,100 );
 	}
 	
 	/**
@@ -69,7 +72,11 @@ class Lsx_Login {
 			self::$instance = new self;
 		}
 		return self::$instance;
-	}	
+	}
+
+	public function force_expiration_time($date){
+		return strtotime(date('+7 days'));
+	}
 	
 	
 	/**
@@ -262,8 +269,7 @@ class Lsx_Login {
 							$wp_hasher = new PasswordHash( 8, true );
 						}
 						$hashed = $wp_hasher->HashPassword( $key );
-						print_r($hashed);print_r('-');
-						print_r($wpdb->update( $wpdb->users, array( 'user_activation_key' => $hashed ), array( 'ID' => $user_data->ID ) ));
+						$wpdb->update( $wpdb->users, array( 'user_activation_key' => $hashed ), array( 'ID' => $user_data->ID ) );
 						
 						$message = __('Someone requested that the password be reset for the following account:') . "\r\n\r\n";
 						$message .= network_home_url( '/' ) . "\r\n\r\n";
@@ -331,7 +337,6 @@ class Lsx_Login {
 		
 		if(isset($_POST['key']) && isset($_POST['login']) && isset($_POST['pass1']) && isset($_POST['pass2']) ){	 	
 			$result = array();
-			
 			
 			$user = check_password_reset_key( $_POST['key'], $_POST['login'] );
 			if(!is_wp_error($user)){
