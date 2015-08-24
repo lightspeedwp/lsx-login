@@ -54,6 +54,8 @@ class Lsx_Login {
 		add_action( 'wp_ajax_lsx_reset', array( $this, 'do_ajax_reset' ) );
 		add_action( 'wp_ajax_nopriv_lsx_reset', array( $this, 'do_ajax_reset' ) );		
 		
+		add_action( 'wp_ajax_lsx_reset_confirmed', array( $this, 'do_ajax_reset_confirmed' ) );
+		add_action( 'wp_ajax_nopriv_lsx_reset_confirmed', array( $this, 'do_ajax_reset_confirmed' ) );		
 	}
 	
 	/**
@@ -83,6 +85,7 @@ class Lsx_Login {
 					'empty_username'	=> __('The username field is empty.','lsx-login'),
 					'empty_password'	=> __('The password field is empty.','lsx-login'),
 					'empty_reset'		=> __('Enter a username or e-mail address.','lsx-login'),
+					'no_match'		=> __('Passwords do not match','lsx-login'),
 					'ajax_spinner'		=> plugin_dir_url( __FILE__ ) . "assets/images/ajax-spinner.gif"
 			);
 			wp_localize_script( 'lsx_login_script', 'lsx_login_params', $param_array );
@@ -278,12 +281,15 @@ class Lsx_Login {
 						$title = apply_filters( 'retrieve_password_title', $title );
 						$message = apply_filters( 'retrieve_password_message', $message, $key, $user_login, $user_data );
 						
+						print_r($message);
+						
 						if ( $message && !mail( $user_email, wp_specialchars_decode( $title ), $message ) ){
 							$result['success']  = 3;
 							$result['message']  = __('The e-mail could not be sent.','lsx-login') . "<br />\n" . __('Possible reason: your host may have disabled the mail() function.','lsx-login');							
 						}else{	
 							$result['success']  = 1;
 							$result['message']  = __('Check your e-mail for the confirmation link.','lsx-login');
+							$result['email'] = $message;
 						}
 						
 					}
@@ -302,12 +308,61 @@ class Lsx_Login {
 	}
 
 	
-	public function is_password_confirmation(){
-		if(isset($_GET['action']) && isset($_GET['key']) && isset($_GET['login'])){
-			return true;
-		}else{
-			return false;
+	public function is_password_confirmed(){
+		$show_confirmation = false;
+		if(isset($_GET['action']) && 'rp' == $_GET['action'] && isset($_GET['key']) && isset($_GET['login'])){
+			
+			//Check the details
+			$user = check_password_reset_key( $_GET['key'], $_GET['login'] );
+			
+			if(username_exists($_GET['login']) && !is_wp_error($user)){
+				return $user;
+			}else{
+				return $user;
+			}
+
 		}
+	}
+	
+	
+	function do_ajax_reset_confirmed(){
+		
+		if(isset($_POST['key']) && isset($_POST['login']) && isset($_POST['pass1']) && isset($_POST['pass2']) ){	 	
+			$result = array();
+			
+			
+			$user = check_password_reset_key( $_POST['key'], $_POST['login'] );
+			if(!is_wp_error($user)){
+				$result['success']  = 1;
+				$result['message']  = __('Password has been reset!','lsx-login');	
+				$this->reset_password($user,$_POST['pass1']);
+			}else{
+				$result['success']  = 2;
+				$result['message']  = __('An error has occured please contact the site administrator!','lsx-login');				
+			}
+			echo json_encode( $result );
+			
+		}else{
+			echo false;
+		}	
+		
+		die();		
+	}
+	
+	
+	/**
+	 * Handles resetting the user's password.
+	 *
+	 * @param object $user The user
+	 * @param string $new_pass New password for the user in plaintext
+	 */
+	function reset_password( $user, $new_pass ) {
+		do_action( 'password_reset', $user, $new_pass );
+	
+		wp_set_password( $new_pass, $user->ID );
+		update_user_option( $user->ID, 'default_password_nag', false, true );
+	
+		wp_password_change_notification( $user );
 	}
 	
 	
