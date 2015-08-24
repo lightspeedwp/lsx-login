@@ -123,11 +123,13 @@ jQuery(document).ready(function($) {
 					$('.spinner').remove();
 					$('.lostpasswordform.loading').removeClass('loading');
 					
-					if(result.success == '2'){
+					if(result.success == '3'){
+						formObj.append('<p class="error">'+result.message+'</p>');
+					}else if(result.success == '2'){
 						formObj.find('.login-username').append('<div class="error">'+result.message+'</div>');
 					}else if(result.success == '1'){
 						formObj.find('p').each(function(event){
-							formObj.remove();
+							$(this).remove();
 						}); 
 						formObj.append('<p class="success">'+result.message+'</p>');
 					}
