@@ -234,7 +234,7 @@ class Lsx_Login {
 				//Reset the password
 
 				
-				if ( strpos( $_POST['user_login'], '@' ) ) {
+				if ( strpos( $_POST['log'], '@' ) ) {
 					$user_data = get_user_by( 'email', trim( $_POST['log'] ) );
 				}else{
 					$user_data = get_user_by( 'login', trim( $_POST['log'] ) );
@@ -280,8 +280,7 @@ class Lsx_Login {
 						$title = sprintf( __('[%s] Password Reset'), $blogname );
 						$title = apply_filters( 'retrieve_password_title', $title );
 						$message = apply_filters( 'retrieve_password_message', $message, $key, $user_login, $user_data );
-						
-						print_r($message);
+						$message = str_replace('wp-login.php','',$message);
 						
 						if ( $message && !mail( $user_email, wp_specialchars_decode( $title ), $message ) ){
 							$result['success']  = 3;
