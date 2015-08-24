@@ -262,7 +262,8 @@ class Lsx_Login {
 							$wp_hasher = new PasswordHash( 8, true );
 						}
 						$hashed = $wp_hasher->HashPassword( $key );
-						$wpdb->update( $wpdb->users, array( 'user_activation_key' => $hashed ), array( 'user_login' => $user_login ) );
+						print_r($hashed);print_r('-');
+						print_r($wpdb->update( $wpdb->users, array( 'user_activation_key' => $hashed ), array( 'user_login' => $user_login ) ));
 						
 						$message = __('Someone requested that the password be reset for the following account:') . "\r\n\r\n";
 						$message .= network_home_url( '/' ) . "\r\n\r\n";
