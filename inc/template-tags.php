@@ -29,7 +29,7 @@ function lsx_password_reset_form(){
 /**
  * checks if the password reset confirmation form should be shown
  */
-function lsx_password_reset_form(){
+function lsx_is_password_confirmation(){
 	global $lst_login;
 	
 	return $lst_login->is_password_confirmation();
