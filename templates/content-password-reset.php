@@ -9,6 +9,8 @@
 
 $is_key_confirmed = lsx_is_password_confirmed();
 
+print_r($is_key_confirmed);
+
 if(isset($_GET['action']) && 'rp' === $_GET['action'] && !is_wp_error($is_key_confirmed)){ ?>
 	<form autocomplete="off" method="post" action="<?php home_url('/'); ?>" class="lostpasswordform" name="resetpassform">
 		<input type="hidden" autocomplete="off" value="<?php echo $_GET['login'];?>" class="user_login" name="user_login">
@@ -24,8 +26,7 @@ if(isset($_GET['action']) && 'rp' === $_GET['action'] && !is_wp_error($is_key_co
 			<label for="pass2"><?php _e('Confirm new password','lsx-login'); ?></label>
 			<input type="password" autocomplete="off" value="" size="20" class="input form-control pass2" name="pass2">
 		</p>
-	
-		<div class="hide-if-no-js" id="pass-strength-result" style="display: block;"><?php _e('Strength indicator','lsx-login'); ?></div>
+		
 		<p class="description indicator-hint">
 			<?php _e('Hint: The password should be at least seven characters long. To make it stronger, use upper and lower case letters, numbers, and symbols like ! " ? $ % ^ &amp; ).','lsx-login'); ?>
 		</p>
