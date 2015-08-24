@@ -304,7 +304,9 @@ class Lsx_Login {
 	
 	public function is_password_confirmation(){
 		if(isset($_GET['action']) && isset($_GET['key']) && isset($_GET['login'])){
-			
+			return true;
+		}else{
+			return false;
 		}
 	}
 	
