@@ -278,7 +278,7 @@ class Lsx_Login {
 						$title = apply_filters( 'retrieve_password_title', $title );
 						$message = apply_filters( 'retrieve_password_message', $message, $key, $user_login, $user_data );
 						
-						if ( $message && !mail( $user_email, wp_specialchars_decode( $title ), $message ) ){
+						if ( $message && !wp_mail( $user_email, wp_specialchars_decode( $title ), $message ) ){
 							$result['success']  = 3;
 							$result['message']  = __('The e-mail could not be sent.','lsx-login') . "<br />\n" . __('Possible reason: your host may have disabled the mail() function.','lsx-login');							
 						}else{	
