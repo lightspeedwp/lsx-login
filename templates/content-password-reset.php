@@ -21,4 +21,6 @@
 	<p class="submit input-group input-group-lg">
 		<input type="submit" value="<?php _e('Get New Password','lsx-login'); ?>" class="btn btn-default" class="wp-submit" name="wp-submit">
 	</p>
+
 </form>
+

@@ -51,8 +51,8 @@ class Lsx_Login {
 		add_action( 'wp_ajax_lsx_login', array( $this, 'do_ajax_login' ) );
 		add_action( 'wp_ajax_nopriv_lsx_login', array( $this, 'do_ajax_login' ) );	
 
-		add_action( 'wp_ajax_lsx_login', array( $this, 'do_ajax_reset' ) );
-		add_action( 'wp_ajax_nopriv_lsx_login', array( $this, 'do_ajax_reset' ) );		
+		add_action( 'wp_ajax_lsx_reset', array( $this, 'do_ajax_reset' ) );
+		add_action( 'wp_ajax_nopriv_lsx_reset', array( $this, 'do_ajax_reset' ) );		
 		
 	}
 	
@@ -82,6 +82,7 @@ class Lsx_Login {
 					'ajax_url' 			=> admin_url('admin-ajax.php'),
 					'empty_username'	=> __('The username field is empty.','lsx-login'),
 					'empty_password'	=> __('The password field is empty.','lsx-login'),
+					'empty_reset'		=> __('Enter a username or e-mail address.','lsx-login'),
 					'ajax_spinner'		=> plugin_dir_url( __FILE__ ) . "assets/images/ajax-spinner.gif"
 			);
 			wp_localize_script( 'lsx_login_script', 'lsx_login_params', $param_array );

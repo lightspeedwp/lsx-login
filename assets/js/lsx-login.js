@@ -90,13 +90,12 @@ jQuery(document).ready(function($) {
 		
 		var username = $(this).find('input.user_login').val();
 		if('' == username){
-			$(this).find('input.user_login').parent('p').append('<div class="error">'+lsx_login_params.empty_username+'</div>');
+			$(this).find('input.user_login').parent('p').append('<div class="error">'+lsx_login_params.empty_reset+'</div>');
 			return false;
 		}
-	    
-	    var redirect = $(this).find('input[name="redirect_to"]' ).val();
+
 	    var params = {
-			action: 		'lsx_login',
+			action: 		'lsx_reset',
 			log:		 	username,
 			method:			'reset'
 		};	 
@@ -126,8 +125,11 @@ jQuery(document).ready(function($) {
 					
 					if(result.success == '2'){
 						formObj.find('.login-username').append('<div class="error">'+result.message+'</div>');
-					}else{
-						alert('password reset'); 
+					}else if(result.success == '1'){
+						formObj.find('p').each(function(event){
+							formObj.remove();
+						}); 
+						formObj.append('<p class="success">'+result.message+'</p>');
 					}
 				}
 			}
