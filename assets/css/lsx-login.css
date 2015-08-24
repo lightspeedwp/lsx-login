@@ -20,7 +20,7 @@
 
 .loginform p label, .loginform p span, .loginform p input[type="text"], .loginform p input[type="password"],
 .lostpasswordform p label, .lostpasswordform p span, .lostpasswordform p input[type="text"] {
-	width:100%;
+	width:100% !important;
 }
 
 .loginform p input[type="text"],

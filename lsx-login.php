@@ -49,7 +49,10 @@ class Lsx_Login {
 		
 		//ajax handlers
 		add_action( 'wp_ajax_lsx_login', array( $this, 'do_ajax_login' ) );
-		add_action( 'wp_ajax_nopriv_lsx_login', array( $this, 'do_ajax_login' ) );		
+		add_action( 'wp_ajax_nopriv_lsx_login', array( $this, 'do_ajax_login' ) );	
+
+		add_action( 'wp_ajax_lsx_login', array( $this, 'do_ajax_reset' ) );
+		add_action( 'wp_ajax_nopriv_lsx_login', array( $this, 'do_ajax_reset' ) );		
 		
 	}
 	
@@ -207,6 +210,97 @@ class Lsx_Login {
 			echo false;
 		}
 		die();
+	}
+	
+	/**
+	 * Resets the Users Password
+	 *
+	 */
+	public function do_ajax_reset() {
+		global $wpdb;
+	
+		if(isset($_POST['method']) && 'reset' == $_POST['method']){
+				
+			$result = array();
+			if(isset($_POST['log']) && (username_exists($_POST['log']) || email_exists($_POST['log']))){
+				//Reset the password
+
+				
+				if ( strpos( $_POST['user_login'], '@' ) ) {
+					$user_data = get_user_by( 'email', trim( $_POST['log'] ) );
+				}else{
+					$user_data = get_user_by( 'login', trim( $_POST['log'] ) );
+				}
+				
+				if(false != $user_data){
+					$allow = apply_filters( 'allow_password_reset', true, $user_data->ID );
+					
+					//If the user is nto allowed to reset their password because they are spam users
+					if ( ! $allow || is_wp_error( $allow ) ) {
+						$result['success']  = 2;
+						$result['message']  = __('Password reset is not allowed for this user','lsx-login');
+					}else{
+						
+						
+						$user_login = $user_data->user_login;
+						$user_email = $user_data->user_email;
+												
+						// Generate something random for a password reset key.
+						$key = wp_generate_password( 20, false );
+						
+						// Now insert the key, hashed, into the DB.
+						if ( empty( $wp_hasher ) ) {
+							require_once ABSPATH . WPINC . '/class-phpass.php';
+							$wp_hasher = new PasswordHash( 8, true );
+						}
+						$hashed = $wp_hasher->HashPassword( $key );
+						$wpdb->update( $wpdb->users, array( 'user_activation_key' => $hashed ), array( 'user_login' => $user_login ) );
+						
+						$message = __('Someone requested that the password be reset for the following account:') . "\r\n\r\n";
+						$message .= network_home_url( '/' ) . "\r\n\r\n";
+						$message .= sprintf(__('Username: %s'), $user_login) . "\r\n\r\n";
+						$message .= __('If this was a mistake, just ignore this email and nothing will happen.') . "\r\n\r\n";
+						$message .= __('To reset your password, visit the following address:') . "\r\n\r\n";
+						$message .= '<' . network_site_url("wp-login.php?action=rp&key=$key&login=" . rawurlencode($user_login), 'login') . ">\r\n";
+						
+						if ( is_multisite() ) {
+							$blogname = $GLOBALS['current_site']->site_name;
+						}else{
+							$blogname = wp_specialchars_decode(get_option('blogname'), ENT_QUOTES);
+						}
+						
+						$title = sprintf( __('[%s] Password Reset'), $blogname );
+						$title = apply_filters( 'retrieve_password_title', $title );
+						$message = apply_filters( 'retrieve_password_message', $message, $key, $user_login, $user_data );
+						
+						if ( $message && !wp_mail( $user_email, wp_specialchars_decode( $title ), $message ) )
+							wp_die( __('The e-mail could not be sent.') . "<br />\n" . __('Possible reason: your host may have disabled the mail() function.') );	
+
+						$result['success']  = 1;
+						$result['message']  = __('Check your e-mail for the confirmation link.','lsx-login');
+						
+					}
+				}
+				
+			}else{
+				$result['success']  = 2;
+				$result['message']  = __('Invalid username or e-mail.','lsx-login');
+			}
+				
+			echo json_encode( $result );
+		}else{
+			echo false;
+		}
+		die();
+	}
+
+	
+	/**
+	 * Resets the Users Password
+	 *
+	 */
+	protected function password_reset() {
+		
 	}
 	
 	
