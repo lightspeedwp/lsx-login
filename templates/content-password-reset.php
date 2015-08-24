@@ -4,8 +4,12 @@
  *
  * @package lsx-login
  */
-?>
 
+//http://lh-gtsblog.feedmybeta.com/wp-login.php?action=rp&key=tSteZL7WPlWg9I7HdJSH&login=warwick
+if(lsx_is_password_confirmation()){
+	
+}else{
+?>
 
 <form method="post" action="<?php home_url('/wp-login.php?action=lostpassword'); ?>" class="lostpasswordform" name="lostpasswordform">
 
@@ -23,4 +27,4 @@
 	</p>
 
 </form>
-
+<?php }
