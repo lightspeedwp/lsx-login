@@ -268,8 +268,11 @@ class Lsx_Login {
 							require_once ABSPATH . WPINC . '/class-phpass.php';
 							$wp_hasher = new PasswordHash( 8, true );
 						}
+						
 						$hashed = $wp_hasher->HashPassword( $key );
-						$wpdb->update( $wpdb->users, array( 'user_activation_key' => $hashed ), array( 'ID' => $user_data->ID ) );
+						$expire = apply_filters( 'post_password_expires', time() + 10 * DAY_IN_SECONDS );
+						
+						$wpdb->update( $wpdb->users, array( 'user_activation_key' => $expire.':'.$hashed ), array( 'ID' => $user_data->ID ) );
 						
 						$message = __('Someone requested that the password be reset for the following account:') . "\r\n\r\n";
 						$message .= network_home_url( '/' ) . "\r\n\r\n";
@@ -320,9 +323,9 @@ class Lsx_Login {
 			
 			//Check the details
 			$user = check_password_reset_key( $_GET['key'], $_GET['login'] );
-			print_r($_GET['key']);print_r('<br />');
+			/*print_r($_GET['key']);print_r('<br />');
 			print_r($_GET['login']);print_r('<br />');
-			print_r($user);print_r('<br />');
+			print_r($user);print_r('<br />');*/
 			if(!is_wp_error($user)){
 				return $user;
 			}else{
