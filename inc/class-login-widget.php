@@ -24,20 +24,15 @@ class LSX_Login_Widget extends WP_Widget {
      *
      */
     public function get_title( ) {
-    	
-    	$current_user = get_currentuserinfo();
-    	
+    	global $current_user;
     	$title = __('Welcome','lsx-login');
     	
-    	if(class_exists('BuddyPress')){
-    		
-    		
-    		
-    	}else{
-    		if($current_user->first_name){
-    			
+    		if('' !== $current_user->data->display_name){
+    			$name = $current_user->data->display_name;
+    		}else{
+    			$name = $current_user->data->user_login;
     		}
-    	}
+    		$title .= ' '.$name;
     	
     	return $title;
     } 
@@ -48,10 +43,8 @@ class LSX_Login_Widget extends WP_Widget {
      */
     public function get_links( ) {
     	 
-    	$current_user = get_currentuserinfo();
 
     	echo '<ul class="lsx-login-links">';
-    	  	
     	$links = array();
     	if(class_exists('BuddyPress')){
     		$links[] = '<li class="profile"><a href="'.bp_loggedin_user_domain().'">'.__('Profile','lsx-login').'</a></li>';
