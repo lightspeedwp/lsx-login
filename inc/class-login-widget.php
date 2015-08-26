@@ -49,18 +49,21 @@ class LSX_Login_Widget extends WP_Widget {
     public function get_links( ) {
     	 
     	$current_user = get_currentuserinfo();
-    	 
+
+    	echo '<ul class="lsx-login-links">';
+    	  	
+    	$links = array();
     	if(class_exists('BuddyPress')){
-    
-    
-    
+    		$links[] = '<li class="profile"><a href="'.bp_loggedin_user_domain().'">'.__('Profile','lsx-login').'</a></li>';
+    		$links[] = '<li class="password"><a href="'.bp_loggedin_user_domain().'settings/">'.__('Change Password','lsx-login').'</a></li>';
     	}else{
-    		if($current_user->first_name){
-    			 
-    		}
+			$links[] = '<li class="dashboard"><a href="'.admin_url().'">'.__('Dashboard','lsx-login').'</a></li>';
+			$links[] = '<li class="profile"><a href="'.admin_url('/profile.php').'">'.__('Profile','lsx-login').'</a></li>';
     	}
-    	 
-    	return $title;
+    	$links[] = '<li class="logout"><a href="'.wp_logout_url().'">'.__('Logout','lsx-login').'</a></li>';
+    	echo implode('',$links);
+    	
+    	echo '</ul>';
     }    
 
     /**
@@ -72,8 +75,6 @@ class LSX_Login_Widget extends WP_Widget {
     public function widget( $args, $instance ) {
 		extract( $args );
 
-		
-		
 		echo $before_widget;
 
 		// Logged in user
@@ -81,15 +82,9 @@ class LSX_Login_Widget extends WP_Widget {
 
 			$title = $this->get_title();
 			
-			echo $before_title . $instance['title'] . $after_title;
+			echo $before_title . $title . $after_title;
 
-			/*
-			<ul class="pagenav sidebar_login_links">
-			<li class="dashboard-link"><a href="http://lh-gtsblog.feedmybeta.com/wp-admin">Dashboard</a></li>
-			<li class="profile-link"><a href="http://lh-gtsblog.feedmybeta.com/wp-admin/profile.php">Profile</a></li>
-			<li class="logout-link"><a href="http://lh-gtsblog.feedmybeta.com/wp-login.php?action=logout&amp;redirect_to=%2F&amp;_wpnonce=2414b2d2d9&amp;redirect_to=http://lh-gtsblog.feedmybeta.com">Logout</a></li>
-			</ul>
-			*/
+			$this->get_links();
 
 		// Logged out user
 		} else {
