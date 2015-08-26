@@ -143,8 +143,8 @@ class Lsx_Login {
 	 * Redirect the template
 	 */
 	public function the_title_filter($title, $id) {
-	
-		if(!is_user_logged_in()){
+		
+		if(!is_user_logged_in() && is_main_query() && get_the_ID() == $id){
 			$title = __('Please login to view this page!','lsx-login');
 			$title = apply_filters('lsx_login_page_title',$title);
 		}
