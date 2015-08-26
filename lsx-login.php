@@ -11,11 +11,12 @@ License: GPL version 2 or later - http://www.gnu.org/licenses/old-licenses/gpl-2
 */
 
 require 'inc/template-tags.php';
+require 'inc/class-login-widget.php';
 
 /**
  * Main plugin class.
  *
- * @package Lsx_Restrict_Access
+ * @package Lsx_Login
  * @author  Warwick
  */
 
@@ -24,7 +25,7 @@ class Lsx_Login {
 	/**
 	 * Holds class instance
 	 *
-	 * @var      object|Lsx_Restrict_Access
+	 * @var      object|Lsx_Login
 	 */
 	protected static $instance = null;	
 	
@@ -37,6 +38,9 @@ class Lsx_Login {
 		
 		//Call the logged out template
 		add_action( 'template_include', array($this,'template_include'), -1 );
+		
+		//Overwrite the title of the pages
+		add_filter( 'the_title', array($this,'the_title_filter') , 2 , 20 );
 		
 		//Redirect the user on succeful logout	
 		add_filter( 'logout_url', array($this,'logout_redirect'), 10, 2 );
@@ -135,6 +139,18 @@ class Lsx_Login {
 	}
 	
 	//Add in a filter so the title is forced to a prompt.
+	/**
+	 * Redirect the template
+	 */
+	public function the_title_filter($title, $id) {
+	
+		if(!is_user_logged_in()){
+			$title = __('Please login to view this page!','lsx-login');
+			$title = apply_filters('lsx_login_page_title',$title);
+		}
+		return $title;
+	}
+
 		
 	//Redirect the user on login to the same page
 	//Redirect the user to the page they were on / home.

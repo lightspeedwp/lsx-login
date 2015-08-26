@@ -2,7 +2,7 @@
 /**
  * Template Tags
  *
- * @package Lsx_Restrict_Access
+ * @package Lsx_Login
  * @author  Warwick
  */
 
