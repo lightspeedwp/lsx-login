@@ -1,10 +1,11 @@
 <?php
 /*
 Plugin Name: LSX Login
-Plugin URI: {add_in}
-Description: Force users to login to view your site. Primarily built for the LSX theme
-Author: Warwick
-Author URI: http://wordpress.org/
+Plugin URI: https://github.com/lightspeeddevelopment/lsx-login/
+Description: Activate the plugin to display a login form and reser your password form, in a 2 column display. Users will need to log in to view your site. The forms are based directly on the WordPress forms.
+Author: LightSpeed
+Author URI: https://www.lsdev.biz/
+Contributors: <a href="https://github.com/krugazul">Warwick</a>
 Version: 1.0
 Text Domain: lsx-login
 License: GPL version 2 or later - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
