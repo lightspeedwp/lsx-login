@@ -40,7 +40,7 @@ class Lsx_Login {
 		add_action( 'template_include', array($this,'template_include'), -1 );
 		
 		//Overwrite the title of the pages
-		add_filter( 'the_title', array($this,'the_title_filter') , 2 , 20 );
+		//add_filter( 'the_title', array($this,'the_title_filter') , 2 , 20 );
 		
 		//Redirect the user on succeful logout	
 		add_filter( 'logout_url', array($this,'logout_redirect'), 10, 2 );
@@ -63,6 +63,10 @@ class Lsx_Login {
 
 		
 		add_filter( 'password_reset_expiration', array( $this, 'force_expiration_time' ) ,1 ,100 );
+		
+		
+		add_action( 'rss_tag_pre', array($this,'remove_title_from_rss'),100);
+		
 	}
 	
 	/**
@@ -144,12 +148,20 @@ class Lsx_Login {
 	 */
 	public function the_title_filter($title, $id) {
 		
+		global $wp_query;
 		if(!is_user_logged_in() && is_main_query() && get_the_ID() == $id){
 			$title = __('Please login to view this page!','lsx-login');
 			$title = apply_filters('lsx_login_page_title',$title);
 		}
 		return $title;
 	}
+	
+	/**
+	 * Redirect the template
+	 */
+	public function remove_title_from_rss() {
+		remove_filter( 'the_title', array($this,'the_title_filter' ));
+	}	
 
 		
 	//Redirect the user on login to the same page
