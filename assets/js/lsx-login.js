@@ -60,9 +60,6 @@ jQuery(document).ready(function($) {
 					
 					if(result.success == '1'){ window.location.href = redirect;  }
 					
-					$('.spinner').remove();
-					$('.loginform.loading').removeClass('loading');
-					
 					if(result.success == '3'){
 						formObj.find('.login-password').append('<div class="error">'+result.message+'</div>');
 					}else if(result.success == '2'){
