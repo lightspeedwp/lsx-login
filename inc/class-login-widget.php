@@ -47,13 +47,16 @@ class LSX_Login_Widget extends WP_Widget {
     	echo '<ul class="lsx-login-links">';
     	$links = array();
     	if(class_exists('BuddyPress')){
-    		$links[] = '<li class="profile"><a href="'.bp_loggedin_user_domain().'">'.__('Profile','lsx-login').'</a></li>';
-    		$links[] = '<li class="password"><a href="'.bp_loggedin_user_domain().'settings/">'.__('Change Password','lsx-login').'</a></li>';
+    		$links['bp-profile'] = '<li class="profile"><a href="'.bp_loggedin_user_domain().'">'.__('Profile','lsx-login').'</a></li>';
+    		$links['bp-change-password'] = '<li class="password"><a href="'.bp_loggedin_user_domain().'settings/">'.__('Change Password','lsx-login').'</a></li>';
     	}else{
-			$links[] = '<li class="dashboard"><a href="'.admin_url().'">'.__('Dashboard','lsx-login').'</a></li>';
-			$links[] = '<li class="profile"><a href="'.admin_url('/profile.php').'">'.__('Profile','lsx-login').'</a></li>';
+			$links['wp-dashboard'] = '<li class="dashboard"><a href="'.admin_url().'">'.__('Dashboard','lsx-login').'</a></li>';
+			$links['wp-profile'] = '<li class="profile"><a href="'.admin_url('/profile.php').'">'.__('Profile','lsx-login').'</a></li>';
     	}
-    	$links[] = '<li class="logout"><a href="'.wp_logout_url().'">'.__('Logout','lsx-login').'</a></li>';
+    	$links['logout'] = '<li class="logout"><a href="'.wp_logout_url().'">'.__('Logout','lsx-login').'</a></li>';
+
+    	$links = apply_filters('lsx_logged_in_links',$links);
+
     	echo implode('',$links);
     	
     	echo '</ul>';
