@@ -22,6 +22,25 @@ Activate the plugin to display a login form and reser your password form, in a 2
 * Upload the plugin to the /wp-content/plugins/  folder.
 * Activate via the WP Dashboard
 
+## Filters
+
+Add aditional links to the login widget, the links are sent via an indexed array $links;
+```apply_filters('lsx_logged_in_links',$links);```
+
+Disable the frontend login template, if you just want to use the login widget.
+```add_filter('lsx_login_disable_template', function( $bool ) { return true; });```
+
+Or disble the tempalte for specific pages,  below is an example you would use to disable the tempalte on the home page.
+```
+function disable_homepage_login_template($disable=false){
+	if(is_home() || is_front_page()){
+		$disable = true;
+	}
+	return $disable;
+}
+add_filter('lsx_login_disable_template','disable_homepage_login_template');
+```
+
 ## Changlog
 
 ### 1.0

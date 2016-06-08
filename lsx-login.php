@@ -128,7 +128,7 @@ class Lsx_Login {
 	 * Redirect the template
 	 */	
 	public function template_include($template) {
-		if ( !is_user_logged_in() ) {
+		if ( !is_user_logged_in() && !apply_filters('lsx_login_disable_template',false) ) {
 			
 			//Check if there is a tempalte in the theme
 			$template = locate_template( array( 'template-login.php' ));
