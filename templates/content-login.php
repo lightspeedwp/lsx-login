@@ -27,6 +27,6 @@
 	
 	<p class="login-submit input-group input-group-lg">
 		<input type="submit" value="<?php _e('Log In','lsx-login'); ?>" class="btn btn-default" class="wp-submit" name="wp-submit">
-		<input type="hidden" value="/" name="redirect_to">
+		<input type="hidden" value="<?php echo apply_filters('lsx_login_redirect','/'); ?>" name="redirect_to">
 	</p>
 </form>
