@@ -42,6 +42,7 @@ add_filter('lsx_api_manager_options_pages','lsx_login_options_pages_filter',10,1
 
 function lsx_login_api_admin_init(){
 	global $lsx_login_api_manager;
+	
 	if(class_exists('Tour_Operator')) {
 		$options = get_option('_to_settings', false);
 	}else{
@@ -77,7 +78,7 @@ function lsx_login_api_admin_init(){
 	);
 	$lsx_login_api_manager = new LSX_API_Manager($api_array);
 }
-add_action('admin_init','lsx_banners_api_admin_init');
+add_action('admin_init','lsx_login_api_admin_init');
 
 /**
  * Main plugin class.
