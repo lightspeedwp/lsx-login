@@ -95,16 +95,21 @@ class Lsx_Login {
 	function scripts() {
 		if(!is_user_logged_in()){
 			wp_enqueue_style('lsx_login_style', plugin_dir_url(__FILE__) . 'assets/css/lsx-login.css');
-			wp_enqueue_script('lsx_login_script', plugin_dir_url(__FILE__) . 'assets/js/lsx-login.js', array('jquery'), null, false);
-			$param_array = array(
-					'ajax_url' 			=> admin_url('admin-ajax.php'),
-					'empty_username'	=> __('The username field is empty.','lsx-login'),
-					'empty_password'	=> __('The password field is empty.','lsx-login'),
-					'empty_reset'		=> __('Enter a username or e-mail address.','lsx-login'),
-					'no_match'		=> __('Passwords do not match','lsx-login'),
-					'ajax_spinner'		=> plugin_dir_url( __FILE__ ) . "assets/images/ajax-spinner.gif"
-			);
-			wp_localize_script( 'lsx_login_script', 'lsx_login_params', $param_array );
+
+			$enqueue_scripts = apply_filters('lsx_login_js_enqueue',true);
+
+			if(true === $enqueue_scripts){
+				wp_enqueue_script('lsx_login_script', plugin_dir_url(__FILE__) . 'assets/js/lsx-login.js', array('jquery'), null, false);
+				$param_array = array(
+						'ajax_url' 			=> admin_url('admin-ajax.php'),
+						'empty_username'	=> __('The username field is empty.','lsx-login'),
+						'empty_password'	=> __('The password field is empty.','lsx-login'),
+						'empty_reset'		=> __('Enter a username or e-mail address.','lsx-login'),
+						'no_match'		=> __('Passwords do not match','lsx-login'),
+						'ajax_spinner'		=> plugin_dir_url( __FILE__ ) . "assets/images/ajax-spinner.gif"
+				);
+				wp_localize_script( 'lsx_login_script', 'lsx_login_params', $param_array );
+			}
 		}		
 	}	
 	
