@@ -80,6 +80,7 @@ function lsx_login_api_admin_init(){
 }
 add_action('admin_init','lsx_login_api_admin_init');
 
+
 /**
  * Main plugin class.
  *
