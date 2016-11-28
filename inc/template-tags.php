@@ -2,8 +2,11 @@
 /**
  * Template Tags
  *
- * @package Lsx_Login
- * @author  Warwick
+ * @package   LSX Login
+ * @author    LightSpeed
+ * @license   GPL3
+ * @link      
+ * @copyright 2016 LightSpeed
  */
 
 /**

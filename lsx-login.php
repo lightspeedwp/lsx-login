@@ -1,20 +1,27 @@
 <?php
 /*
-Plugin Name: LSX Login
-Plugin URI: https://github.com/lightspeeddevelopment/lsx-login/
-Description: Activate the plugin to display a login form and reser your password form, in a 2 column display. Users will need to log in to view your site. The forms are based directly on the WordPress forms.
-Author: LightSpeed
-Author URI: https://www.lsdev.biz/
-Contributors: <a href="https://github.com/krugazul">Warwick</a>
-Version: 1.0
-Text Domain: lsx-login
-License: GPL version 2 or later - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
-*/
+ * Plugin Name: LSX Login
+ * Plugin URI:  https://www.lsdev.biz/product/lsx-login/
+ * Description:	The LSX Login extension allows users to log into a dashboard and then see configurable content based on which users can access which content.
+ * Version:     1.0.0
+ * Author:      LightSpeed WordPress Development
+ * Author URI:  https://www.lsdev.biz/
+ * License:     GPL3
+ * License URI: https://www.gnu.org/licenses/gpl-3.0.html
+ * Text Domain: lsx-login
+ * Domain Path: /languages
+ */
+
+// If this file is called directly, abort.
+if ( ! defined( 'WPINC' ) ) {
+	die;
+}
 
 require 'inc/template-tags.php';
 require 'inc/class-login-widget.php';
 
 /* ======================= The API Classes ========================= */
+
 if(!class_exists('LSX_API_Manager')){
 	require_once('classes/class-lsx-api-manager.php');
 }
