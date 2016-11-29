@@ -4,7 +4,7 @@
  * Plugin URI:  https://www.lsdev.biz/product/lsx-login/
  * Description:	The LSX Login extension allows users to log into a dashboard and then see configurable content based on which users can access which content.
  * Version:     1.0.0
- * Author:      LightSpeed WordPress Development
+ * Author:      LightSpeed
  * Author URI:  https://www.lsdev.biz/
  * License:     GPL3
  * License URI: https://www.gnu.org/licenses/gpl-3.0.html
