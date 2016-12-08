@@ -23,5 +23,9 @@ Activate the plugin to display a login form and reser your password form, in a 2
 
 == Changlog ==
 
+= 1.0.1 =
+* Fix - Reduced the access to server (check API key status) using transients
+* Fix - Made the API URLs dev/live dynamic using a prefix "dev-" in the API KEY
+
 = 1.0 =
 * First Version
