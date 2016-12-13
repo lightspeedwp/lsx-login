@@ -105,6 +105,7 @@ function lsx_my_account_tabs($before="",$after="",$echo=true){
 	<?php
 }
 
+
 /**
  * Outputs the content for the My Account tab
  *
