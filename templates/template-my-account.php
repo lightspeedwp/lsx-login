@@ -1,5 +1,5 @@
 <?php
-/* Template Name: Login */
+/* Template Name: My Account */
 
 get_header(); ?>
 	<header class="page-header col-sm-12">
@@ -13,17 +13,7 @@ get_header(); ?>
 
 			<?php //lsx_content_top(); ?>
 
-			<div class="row">
-			
-				<div class="col-sm-6">
-					<?php lsx_login_form();	?>
-				</div>
-				
-				<div class="col-sm-6">
-					<?php lsx_password_reset_form();	?>
-				</div>				
-			
-			</div>
+			<?php lsx_my_account_tabs(); ?>
 
 			<?php //lsx_content_bottom(); ?>
 

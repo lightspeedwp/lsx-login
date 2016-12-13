@@ -5,7 +5,8 @@ The LSX Login extension allows users to log into a dashboard and then see config
 ## Changelog
 
 ### 1.2 - 
-* 
+* Added in a My Account template with filters to extend.
+* Added in a "Theme Options" page under the "Appearance" menu.
 
 ### 1.0.1 - 08/12/16
 * Fix - Reduced the access to server (check API key status) using transients
@@ -32,3 +33,16 @@ function disable_homepage_login_template($disable=false){
 }
 add_filter('lsx_login_disable_template','disable_homepage_login_template');
 ```
+
+Allow Plugins to add their own widgets to the dashboard.
+```do_action('lsx_my_account_dashboard_widgets');```
+
+Allow plugins to add in their own tabs
+```
+$tabs = array(
+    'dashboard' => array(
+        'label' => esc_html__('Dashboard','lsx-login'),
+        'callback' => 'lsx_my_account_dashboard_tab',
+    )
+);
+add_filter('lsx_my_account_tabs', $tabs);

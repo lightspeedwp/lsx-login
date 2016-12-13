@@ -235,10 +235,19 @@ class Lsx_Login {
 			if('' == locate_template( array( 'template-login.php' )) && file_exists( plugin_dir_path( __FILE__ ) . "templates/template-login.php" )) {
 				$template = plugin_dir_path( __FILE__ ) ."templates/template-login.php";
 			}
-			
-			//die(print_r($template));
+		}else{
+
+			if(isset($this->options['login']['my_account_id']) && get_the_ID() === $this->options['login']['my_account_id']){
+				//Check if there is a tempalte in the theme
+				$template = locate_template( array( 'template-my-account.php' ));
+
+				//if there isnt, then display our template.
+				if('' == locate_template( array( 'template-my-account.php' )) && file_exists( plugin_dir_path( __FILE__ ) . "templates/template-my-account.php" )) {
+					$template = plugin_dir_path(__FILE__) . "templates/template-my-account.php";
+				}
+			}
 		}
-		return $template;		
+		return $template;
 	}
 	
 	//Add in a filter so the title is forced to a prompt.
