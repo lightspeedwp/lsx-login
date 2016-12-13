@@ -113,6 +113,17 @@ class Lsx_Login {
 	 * Initialize the plugin by setting localization, filters, and administration functions.
 	 */
 	private function __construct() {
+
+		if(class_exists('Tour_Operator')) {
+			$options = get_option('_to_settings', false);
+		}else{
+			$options = get_option('_lsx_settings', false);
+			if (false === $options) {
+				$options = get_option('_lsx_lsx-settings', false);
+			}
+		}
+		$this->options = $options;
+
 		//Include the Settings Class
 		add_action( 'init', array( $this, 'create_settings_page' ), 200 );
 		add_filter( 'lsx_framework_settings_tabs', array( $this, 'register_tabs' ), 200, 1 );
@@ -592,7 +603,7 @@ class Lsx_Login {
 			$tabs['login'] = array(
 				'page_title'        => '',
 				'page_description'  => '',
-				'menu_title'        => esc_html__( 'User Restrictions', 'lsx-login' ),
+				'menu_title'        => esc_html__( 'Login', 'lsx-login' ),
 				'template'          => LSX_LOGIN_PATH . 'inc/settings/login.php',
 				'default'           => $default
 			);
@@ -615,6 +626,7 @@ class Lsx_Login {
 	}
 	
 }
+global $lst_login;
 $lst_login = Lsx_Login::get_instance();
 
 /*
