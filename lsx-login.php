@@ -3,7 +3,7 @@
  * Plugin Name: LSX Login
  * Plugin URI:  https://www.lsdev.biz/product/lsx-login/
  * Description:	The LSX Login extension allows users to log into a dashboard and then see configurable content based on which users can access which content.
- * Version:     1.0.1
+ * Version:     1.2
  * Author:      LightSpeed
  * Author URI:  https://www.lsdev.biz/
  * License:     GPL3
@@ -16,6 +16,11 @@
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
+
+define('LSX_LOGIN_PATH',  plugin_dir_path( __FILE__ ) );
+define('LSX_LOGIN_CORE',  __FILE__ );
+define('LSX_LOGIN_URL',  plugin_dir_url( __FILE__ ) );
+define('LSX_LOGIN_VER',  '1.0.0' );
 
 require 'inc/template-tags.php';
 require 'inc/class-login-widget.php';
@@ -108,6 +113,10 @@ class Lsx_Login {
 	 * Initialize the plugin by setting localization, filters, and administration functions.
 	 */
 	private function __construct() {
+		//Include the Settings Class
+		add_action( 'init', array( $this, 'create_settings_page' ), 200 );
+		add_filter( 'lsx_framework_settings_tabs', array( $this, 'register_tabs' ), 200, 1 );
+
 		//Register our logged out menu location, make sure this is done at the very end so it doesnt mess with any currently set up menus. 
 		add_action( 'after_setup_theme', array($this,'register_menus') , 100);
 		
@@ -138,7 +147,6 @@ class Lsx_Login {
 
 		
 		add_filter( 'password_reset_expiration', array( $this, 'force_expiration_time' ) ,1 ,100 );
-		
 		
 		add_action( 'rss_tag_pre', array($this,'remove_title_from_rss'),100);
 		
@@ -533,7 +541,78 @@ class Lsx_Login {
 	
 		wp_password_change_notification( $user );
 	}
-	
+
+
+	/**
+	 * Returns the array of settings to the UIX Class
+	 */
+	public function create_settings_page() {
+		if ( is_admin() ) {
+
+			if ( ! class_exists( '\lsx\ui\uix' ) && ! class_exists( 'Tour_Operator' ) ) {
+				include_once LSX_LOGIN_PATH . 'vendor/uix/uix.php';
+				$pages = $this->settings_page_array();
+				$uix = \lsx\ui\uix::get_instance( 'lsx' );
+				$uix->register_pages( $pages );
+
+			}
+		}
+	}
+
+	/**
+	 * Returns the array of settings to the UIX Class
+	 */
+	public function settings_page_array() {
+		$tabs = apply_filters( 'lsx_framework_settings_tabs', array() );
+
+		return array(
+			'settings'  => array(
+				'page_title'  =>  esc_html__( 'Theme Options', 'lsx-login' ),
+				'menu_title'  =>  esc_html__( 'Theme Options', 'lsx-login' ),
+				'capability'  =>  'manage_options',
+				'icon'        =>  'dashicons-book-alt',
+				'parent'      =>  'themes.php',
+				'save_button' =>  esc_html__( 'Save Changes', 'lsx-login' ),
+				'tabs'        =>  $tabs,
+			),
+		);
+	}
+
+	/**
+	 * Register tabs
+	 */
+	public function register_tabs( $tabs ) {
+		$default = true;
+
+		if ( false !== $tabs && is_array( $tabs ) && count( $tabs ) > 0 ) {
+			$default = false;
+		}
+
+		if ( ! array_key_exists( 'display', $tabs ) ) {
+			$tabs['login'] = array(
+				'page_title'        => '',
+				'page_description'  => '',
+				'menu_title'        => esc_html__( 'User Restrictions', 'lsx-login' ),
+				'template'          => LSX_LOGIN_PATH . 'inc/settings/login.php',
+				'default'           => $default
+			);
+			$default = false;
+		}
+
+		if ( ! array_key_exists( 'api', $tabs ) ) {
+			$tabs['api'] = array(
+				'page_title'        => '',
+				'page_description'  => '',
+				'menu_title'        => esc_html__( 'API', 'lsx-login' ),
+				'template'          => LSX_LOGIN_PATH . 'inc/settings/api.php',
+				'default'           => $default
+			);
+
+			$default = false;
+		}
+
+		return $tabs;
+	}
 	
 }
 $lst_login = Lsx_Login::get_instance();
