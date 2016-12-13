@@ -88,7 +88,15 @@ function lsx_my_account_tabs($before="",$after="",$echo=true){
 			<?php }	?>
 		</div>
 
-		<?php foreach($tabs as $tab_key => $tab){ ?>
+		<?php
+		$query_tab = get_query_var('tab');
+		if(false === $query_tab || '' === $query_tab) {
+			$query_tab = 'dashboard';
+		}
+
+		foreach($tabs as $tab_key => $tab){
+			if($tab_key !== $query_tab){ continue; }
+			?>
 			<div class="col-sm-12 tab-content tab-<?php echo $tab_key; ?>">
 				<?php call_user_func($tab['callback']); ?>
 			</div>
@@ -108,7 +116,10 @@ function lsx_my_account_tabs($before="",$after="",$echo=true){
  */
 function lsx_my_account_dashboard_tab(){
 	global $lsx_login,$post;
+
+	echo '<div class="my-account-welcome">';
 	echo wp_kses_post(apply_filters('the_content',$post->post_content));
+	echo '</div>';
 
 	do_action('lsx_my_account_dashboard_widgets');
 }

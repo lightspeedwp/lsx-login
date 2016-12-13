@@ -126,6 +126,8 @@ class Lsx_Login {
 
 		//Include the Settings Class
 		add_action( 'init', array( $this, 'create_settings_page' ), 200 );
+		add_action( 'init', array( $this, 'add_rewrite_rule' ) );
+
 		add_filter( 'lsx_framework_settings_tabs', array( $this, 'register_tabs' ), 200, 1 );
 
 		//Register our logged out menu location, make sure this is done at the very end so it doesnt mess with any currently set up menus. 
@@ -633,7 +635,32 @@ class Lsx_Login {
 
 		return $tabs;
 	}
-	
+
+	/**
+	 * Add endpoints for my-account pages.
+	 */
+	public function add_rewrite_rule() {
+		$my_account_id = false;
+		if(isset($this->options['login']['my_account_id'])) {
+			$my_account_id = $this->options['login']['my_account_id'];
+		}
+
+		if(false !== $my_account_id){
+			$my_account_page = get_post($my_account_id);
+			$account_slug = $my_account_page->post_name;
+		}else{
+			$account_slug = 'my-account';
+		}
+
+		$endpoints = false;
+		$endpoints = apply_filters('lsx_my_account_endpoints',$endpoints);
+		add_rewrite_tag('%tab%', '([^&]+)');
+		if(false !== $endpoints) {
+			foreach ($endpoints as $endpoint) {
+				add_rewrite_rule( $account_slug.'/'.$endpoint.'/?$', 'index.php?pagename='.$account_slug.'&tab='.$endpoint, 'top' );
+			}
+		}
+	}
 }
 global $lst_login;
 $lst_login = Lsx_Login::get_instance();
