@@ -6,7 +6,7 @@
  */
 ?>
 
-<form method="post" action="<?php home_url('/wp-login.php'); ?>" class="loginform" name="loginform">
+<form method="post" action="<?php echo esc_url( site_url( 'wp-login.php', 'login_post' ) ); ?>" class="loginform" name="loginform">
 
 	<h3><span class="genericon genericon-home"></span><?php _e('Login','lsx-login'); ?></h3>
 
@@ -27,6 +27,7 @@
 	
 	<p class="login-submit input-group input-group-lg">
 		<input type="submit" value="<?php _e('Log In','lsx-login'); ?>" class="btn btn-default" class="wp-submit" name="wp-submit">
-		<input type="hidden" value="<?php echo apply_filters('lsx_login_redirect','/'); ?>" name="redirect_to">
+		<input type="hidden" value="<?php echo apply_filters('lsx_login_redirect',home_url()); ?>" name="redirect_to">
+		<input type="hidden" value="1" name="testcookie">
 	</p>
 </form>
