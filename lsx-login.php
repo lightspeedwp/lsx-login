@@ -3,7 +3,7 @@
  * Plugin Name: LSX Login
  * Plugin URI:  https://www.lsdev.biz/product/lsx-login/
  * Description:	The LSX Login extension allows users to log into a dashboard and then see configurable content based on which users can access which content.
- * Version:     1.2
+ * Version:     1.0.2
  * Author:      LightSpeed
  * Author URI:  https://www.lsdev.biz/
  * License:     GPL3
@@ -20,7 +20,7 @@ if ( ! defined( 'WPINC' ) ) {
 define('LSX_LOGIN_PATH',  plugin_dir_path( __FILE__ ) );
 define('LSX_LOGIN_CORE',  __FILE__ );
 define('LSX_LOGIN_URL',  plugin_dir_url( __FILE__ ) );
-define('LSX_LOGIN_VER',  '1.0.0' );
+define('LSX_LOGIN_VER',  '1.0.2' );
 
 require 'inc/template-tags.php';
 require 'inc/class-login-widget.php';
@@ -47,7 +47,7 @@ register_activation_hook( __FILE__, 'lsx_login_activate_plugin' );
  */
 function lsx_login_options_pages_filter($pages){
 	$pages[] = 'lsx-settings';
-	$pages[] = 'to-settings';
+	$pages[] = 'lsx-to-settings';
 	return $pages;
 }
 add_filter('lsx_api_manager_options_pages','lsx_login_options_pages_filter',10,1);
@@ -56,7 +56,7 @@ function lsx_login_api_admin_init(){
 	global $lsx_login_api_manager;
 	
 	if(class_exists('Tour_Operator')) {
-		$options = get_option('_to_settings', false);
+		$options = get_option('_lsx-to_settings', false);
 	}else{
 		$options = get_option('_lsx_settings', false);
 		if (false === $options) {
@@ -82,7 +82,7 @@ function lsx_login_api_admin_init(){
 
 	$api_array = array(
 		'product_id'	=>		'LSX Login',
-		'version'		=>		'1.0.1',
+		'version'		=>		'1.0.2',
 		'instance'		=>		$instance,
 		'email'			=>		$data['email'],
 		'api_key'		=>		$data['api_key'],
@@ -115,7 +115,7 @@ class Lsx_Login {
 	private function __construct() {
 
 		if(class_exists('Tour_Operator')) {
-			$options = get_option('_to_settings', false);
+			$options = get_option('_lsx-to_settings', false);
 		}else{
 			$options = get_option('_lsx_settings', false);
 			if (false === $options) {

@@ -4,9 +4,10 @@ The LSX Login extension allows users to log into a dashboard and then see config
  
 ## Changelog
 
-### 1.2 - 
+### 1.0.2
 * Added in a My Account template with filters to extend.
 * Added in a "Theme Options" page under the "Appearance" menu.
+* Fix - Fixed all prefixes replaces (to_ > lsx_to_, TO_ > LSX_TO_)
 
 ### 1.0.1 - 08/12/16
 * Fix - Reduced the access to server (check API key status) using transients
