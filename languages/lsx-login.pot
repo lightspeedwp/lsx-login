@@ -124,24 +124,44 @@ msgstr ""
 msgid "API"
 msgstr ""
 
-#: includes/settings/login.php:12
-msgid "Disable site lockout"
+#: includes/settings/api.php:3
+msgid "Settings"
 msgstr ""
 
-#: includes/settings/login.php:16
-msgid "This will make your site more \"Public\". You will need to choose which pages you want to hide via the "
+#: includes/settings/api.php:4
+msgid "License Keys"
 msgstr ""
 
-#: includes/settings/login.php:22
+#: includes/settings/api.php:25
+msgid "Enter the license keys for your add-ons in the boxes below."
+msgstr ""
+
+#: includes/settings/api.php:30
+msgid "You have not installed any add-ons yet. View our list of add-ons"
+msgstr ""
+
+#: includes/settings/api.php:30
+msgid "here"
+msgstr ""
+
+#: includes/settings/login.php:10
+msgid "Enable site lockout"
+msgstr ""
+
+#: includes/settings/login.php:15
+msgid "This will make your entire website private."
+msgstr ""
+
+#: includes/settings/login.php:21
 msgid "My Account Page"
 msgstr ""
 
 #: includes/settings/login.php:46
-msgid "Select a form"
+msgid "Select a page"
 msgstr ""
 
-#: includes/settings/login.php:53
-msgid "You have no form available"
+#: includes/settings/login.php:52
+msgid "You have no page available"
 msgstr ""
 
 #: templates/content-login.php:14, templates/content-password-reset.php:53

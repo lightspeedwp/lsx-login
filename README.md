@@ -10,6 +10,7 @@ The LSX Login extension allows users to log into a dashboard and then see config
 * Dev - Added GulpJS to generate CSS and JS files
 * Dev - Removed global variable $lst_login (started to use get_instance method instead)
 * Dev - Allow email address login
+* Dev - Allow user choose which pages are blocked or not
 
 ### 1.0.2
 * Added in a My Account template with filters to extend.

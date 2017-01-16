@@ -1,7 +1,7 @@
 <div class="uix-field-wrapper">
 	<ul class="ui-tab-nav">
-		<li><a href="#ui-settings" class="active"><?php esc_html_e( 'Settings', 'lsx-banners' ); ?></a></li>
-		<li><a href="#ui-keys"><?php esc_html_e( 'License Keys', 'lsx-banners' ); ?></a></li>
+		<li><a href="#ui-settings" class="active"><?php esc_html_e( 'Settings', 'lsx-login' ); ?></a></li>
+		<li><a href="#ui-keys"><?php esc_html_e( 'License Keys', 'lsx-login' ); ?></a></li>
 	</ul>
 
 	<div id="ui-settings" class="ui-tab active">
@@ -22,12 +22,12 @@
 				$api_keys_content = ob_end_clean();
 				if ( false !== $api_keys_content ) {
 					?>
-						<p class="info"><?php esc_html_e( 'Enter the license keys for your add-ons in the boxes below.', 'lsx-banners' ); ?></p>
+						<p class="info"><?php esc_html_e( 'Enter the license keys for your add-ons in the boxes below.', 'lsx-login' ); ?></p>
 					<?php
 					do_action( 'lsx_framework_api_tab_content', 'api' );
 				} else {
 					?>
-					<p class="info"><?php esc_html_e( 'You have not installed any add-ons yet. View our list of add-ons', 'lsx-banners' ); ?> <a href="<?php echo esc_url( admin_url( 'themes.php' ) ); ?>?page=lsx-welcome"><?php esc_html_e( 'here', 'lsx-banners' ); ?></a>.</p>
+					<p class="info"><?php esc_html_e( 'You have not installed any add-ons yet. View our list of add-ons', 'lsx-login' ); ?> <a href="<?php echo esc_url( admin_url( 'themes.php' ) ); ?>?page=lsx-welcome"><?php esc_html_e( 'here', 'lsx-login' ); ?></a>.</p>
 				<?php }	?>
 			</tbody>
 		</table>

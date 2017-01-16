@@ -540,7 +540,7 @@ if ( ! class_exists( 'LSX_Login' ) ) {
 				$default = false;
 			}
 
-			if ( ! array_key_exists( 'display', $tabs ) ) {
+			if ( ! array_key_exists( 'login', $tabs ) ) {
 				$tabs['login'] = array(
 					'page_title'        => '',
 					'page_description'  => '',
