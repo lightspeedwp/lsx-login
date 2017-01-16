@@ -13,7 +13,14 @@ get_header(); ?>
 
 			<?php //lsx_content_top(); ?>
 
-			<?php lsx_my_account_tabs(); ?>
+			<?php
+				if ( class_exists( 'woocommerce' ) ) {
+					echo do_shortcode( '[woocommerce_my_account]' );
+				}
+				else {
+					lsx_my_account_tabs();
+				}
+			?>
 
 			<?php //lsx_content_bottom(); ?>
 

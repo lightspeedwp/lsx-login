@@ -13,17 +13,23 @@ get_header(); ?>
 
 			<?php //lsx_content_top(); ?>
 
-			<div class="row">
-			
-				<div class="col-sm-6">
-					<?php lsx_login_form();	?>
-				</div>
-				
-				<div class="col-sm-6">
-					<?php lsx_password_reset_form();	?>
-				</div>				
-			
-			</div>
+			<?php
+				if ( class_exists( 'woocommerce' ) ) {
+					echo do_shortcode( '[woocommerce_my_account]' );
+				}
+				else {
+					?>
+					<div class="row">
+						<div class="col-sm-6">
+							<?php lsx_login_form(); ?>
+						</div>
+						<div class="col-sm-6">
+							<?php lsx_password_reset_form(); ?>
+						</div>
+					</div>
+					<?php
+				}
+			?>
 
 			<?php //lsx_content_bottom(); ?>
 
