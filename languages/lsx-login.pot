@@ -48,79 +48,79 @@ msgstr ""
 msgid "Title"
 msgstr ""
 
-#: classes/class-lsx-login-widget.php:124, classes/class-lsx-login.php:536, templates/content-login.php:11
+#: classes/class-lsx-login-widget.php:124, classes/class-lsx-login.php:547, templates/content-login.php:11
 msgid "Login"
 msgstr ""
 
-#: classes/class-lsx-login.php:132
+#: classes/class-lsx-login.php:135
 msgid "The username field is empty."
 msgstr ""
 
-#: classes/class-lsx-login.php:133
+#: classes/class-lsx-login.php:136
 msgid "The password field is empty."
 msgstr ""
 
-#: classes/class-lsx-login.php:134
+#: classes/class-lsx-login.php:137
 msgid "Enter a username or e-mail address."
 msgstr ""
 
-#: classes/class-lsx-login.php:135
+#: classes/class-lsx-login.php:138
 msgid "Passwords do not match"
 msgstr ""
 
-#: classes/class-lsx-login.php:149
+#: classes/class-lsx-login.php:152
 msgid "Primary Menu (logged out)"
 msgstr ""
 
-#: classes/class-lsx-login.php:193
+#: classes/class-lsx-login.php:196
 msgid "Please login to view this page!"
 msgstr ""
 
-#: classes/class-lsx-login.php:277
+#: classes/class-lsx-login.php:280
 msgid "The password you entered for the username .$_POST[log]. is incorrect."
 msgstr ""
 
-#: classes/class-lsx-login.php:281
+#: classes/class-lsx-login.php:284
 msgid "Invalid Username"
 msgstr ""
 
-#: classes/class-lsx-login.php:366
+#: classes/class-lsx-login.php:377
 msgid "Password reset is not allowed for this user"
 msgstr ""
 
-#: classes/class-lsx-login.php:405
+#: classes/class-lsx-login.php:416
 msgid "The e-mail could not be sent."
 msgstr ""
 
-#: classes/class-lsx-login.php:405
+#: classes/class-lsx-login.php:416
 msgid "Possible reason: your host may have disabled the mail() function."
 msgstr ""
 
-#: classes/class-lsx-login.php:408
+#: classes/class-lsx-login.php:419
 msgid "Check your e-mail for the confirmation link."
 msgstr ""
 
-#: classes/class-lsx-login.php:417
+#: classes/class-lsx-login.php:428
 msgid "Invalid username or e-mail."
 msgstr ""
 
-#: classes/class-lsx-login.php:459
+#: classes/class-lsx-login.php:470
 msgid "Password has been reset!"
 msgstr ""
 
-#: classes/class-lsx-login.php:463
+#: classes/class-lsx-login.php:474
 msgid "An error has occured please contact the site administrator!"
 msgstr ""
 
-#: classes/class-lsx-login.php:511, classes/class-lsx-login.php:512
+#: classes/class-lsx-login.php:522, classes/class-lsx-login.php:523
 msgid "Theme Options"
 msgstr ""
 
-#: classes/class-lsx-login.php:516
+#: classes/class-lsx-login.php:527
 msgid "Save Changes"
 msgstr ""
 
-#: classes/class-lsx-login.php:547
+#: classes/class-lsx-login.php:558
 msgid "API"
 msgstr ""
 
@@ -144,8 +144,8 @@ msgstr ""
 msgid "You have no form available"
 msgstr ""
 
-#: templates/content-login.php:14
-msgid "Username"
+#: templates/content-login.php:14, templates/content-password-reset.php:53
+msgid "Username or email address"
 msgstr ""
 
 #: templates/content-login.php:19
@@ -182,10 +182,6 @@ msgstr ""
 
 #: templates/content-password-reset.php:48
 msgid "This key has expired, please try reset your password again."
-msgstr ""
-
-#: templates/content-password-reset.php:53
-msgid "Username or E-mail:"
 msgstr ""
 
 #: templates/content-password-reset.php:60

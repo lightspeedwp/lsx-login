@@ -50,7 +50,7 @@ if(isset($_GET['action']) && 'rp' === $_GET['action'] && !is_wp_error($is_key_co
 		?>
 	
 		<p class="login-username input-group input-group-lg">
-			<label for="user_login"><?php _e('Username or E-mail:','lsx-login'); ?></label>
+			<label for="user_login"><?php _e('Username or email address','lsx-login'); ?></label>
 			<input type="text" size="20" value="" class="input form-control user_login" name="user_login">
 		</p>
 		

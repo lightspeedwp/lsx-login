@@ -89,6 +89,9 @@ if ( ! class_exists( 'LSX_Login' ) ) {
 			add_filter( 'query_vars', array( $this, 'woocommerce_add_query_vars' ), 0 );
 			add_filter( 'woocommerce_account_menu_items', array( $this, 'woocommerce_account_menu_items' ) );
 			add_filter( 'woocommerce_get_myaccount_page_permalink', array( $this, 'woocommerce_get_myaccount_page_permalink' ) );
+			
+			//Allow email login
+			add_filter( 'authenticate', array( $this, 'allow_email_login' ), 20, 3 );
 		}
 	
 		/**
@@ -266,7 +269,7 @@ if ( ! class_exists( 'LSX_Login' ) ) {
 			if(isset($_POST['method']) && 'login' == $_POST['method']){
 				$result = array();
 				
-				if(isset($_POST['log']) && username_exists($_POST['log'])){
+				if(isset($_POST['log']) && (username_exists($_POST['log']) || is_email( $_POST['log'] ))){
 					$user = $this->lsx_signon();
 					
 					if ( ! is_wp_error( $user ) ) {
@@ -300,6 +303,14 @@ if ( ! class_exists( 'LSX_Login' ) ) {
 					$credentials['user_password'] = $_POST['pwd'];
 				if ( ! empty($_POST['rememberme']) )
 					$credentials['remember'] = $_POST['rememberme'];
+			}
+
+			if ( is_email( $credentials['user_login'] ) ) {
+				$user_ = get_user_by_email( $credentials['user_login'] );
+
+				if ( $user_ ) {
+					$credentials['user_login'] = $user_->user_login;
+				}
 			}
 
 			if ( !empty($credentials['remember']) )
@@ -673,6 +684,21 @@ if ( ! class_exists( 'LSX_Login' ) ) {
 
 			$permalink = site_url( '/' . $account_slug . '/' );
 			return $permalink;
+		}
+
+		/**
+		* Allow email login
+		*/
+		public function allow_email_login( $user, $username, $password ) {
+			if ( is_email( $username ) ) {
+				$user = get_user_by_email( $username );
+
+				if ( $user ) {
+					$username = $user->user_login;
+				}
+			}
+
+			return wp_authenticate_username_password( null, $username, $password );
 		}
 
 	}
