@@ -21,21 +21,19 @@ class LSX_Login_Widget extends WP_Widget {
 		parent::__construct( 'lsx_login_widget', __( 'LSX Login', 'lsx-login' ), $widget_ops );
     }
     
-    
     /**
      * Replace the Username in the title
-     *
      */
     public function get_title( ) {
     	global $current_user;
     	$title = __('Welcome','lsx-login');
     	
-    		if('' !== $current_user->data->display_name){
-    			$name = $current_user->data->display_name;
-    		}else{
-    			$name = $current_user->data->user_login;
-    		}
-    		$title .= ' '.$name;
+		if('' !== $current_user->data->display_name){
+			$name = $current_user->data->display_name;
+		}else{
+			$name = $current_user->data->user_login;
+		}
+		$title .= ' '.$name;
     	
     	return $title;
     } 
@@ -45,8 +43,6 @@ class LSX_Login_Widget extends WP_Widget {
      *
      */
     public function get_links( ) {
-    	 
-
     	echo '<ul class="lsx-login-links">';
     	$links = array();
     	if(class_exists('BuddyPress')){
@@ -119,7 +115,6 @@ class LSX_Login_Widget extends WP_Widget {
 	 * @param array $instance
 	 */
 	function form( $instance ) {
-
 		if ( ! isset( $instance[ 'title' ] ) ) {
 			$instance[ 'title' ] = 'Login';
 		}
@@ -128,9 +123,9 @@ class LSX_Login_Widget extends WP_Widget {
 			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php _e('Title','lsx-login'); ?>:</label>
 			<input type="text" class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>" placeholder="<?php _e('Login','lsx-login'); ?>" value="<?php echo esc_attr( $instance[ 'title' ] ); ?>" />
 		</p>
-		
 		<?php
 	}
+	
 }
 
 function lsx_login_widget_init(){

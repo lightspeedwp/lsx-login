@@ -4,6 +4,12 @@ The LSX Login extension allows users to log into a dashboard and then see config
  
 ## Changelog
 
+### 1.0.3
+* Dev - Moved main PHP class to a separate file
+* Dev - Renamed 'inc' folder to 'includes'
+* Dev - Added GulpJS to generate CSS and JS files
+* Dev - Removed global variable $lst_login (started to use get_instance method instead)
+
 ### 1.0.2
 * Added in a My Account template with filters to extend.
 * Added in a "Theme Options" page under the "Appearance" menu.

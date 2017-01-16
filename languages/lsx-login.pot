@@ -1,0 +1,193 @@
+# Copyright (C) 2017 lsx-login
+# This file is distributed under the same license as the lsx-login package.
+msgid ""
+msgstr ""
+"Project-Id-Version: lsx-login\n"
+"Report-Msgid-Bugs-To: https://bitbucket.org/feedmycode/lsx-login/issues\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2017-MO-DA HO:MI+ZONE\n"
+"Language-Team: LightSpeed <webmaster@lsdev.biz>\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: classes/class-lsx-login-widget.php:18
+msgid "Displays the lsx login page."
+msgstr ""
+
+#: classes/class-lsx-login-widget.php:21
+msgid "LSX Login"
+msgstr ""
+
+#: classes/class-lsx-login-widget.php:29
+msgid "Welcome"
+msgstr ""
+
+#: classes/class-lsx-login-widget.php:49, classes/class-lsx-login-widget.php:53
+msgid "Profile"
+msgstr ""
+
+#: classes/class-lsx-login-widget.php:50
+msgid "Change Password"
+msgstr ""
+
+#: classes/class-lsx-login-widget.php:52, includes/template-tags.php:71
+msgid "Dashboard"
+msgstr ""
+
+#: classes/class-lsx-login-widget.php:55
+msgid "Logout"
+msgstr ""
+
+#: classes/class-lsx-login-widget.php:123
+msgid "Title"
+msgstr ""
+
+#: classes/class-lsx-login-widget.php:124, classes/class-lsx-login.php:530, templates/content-login.php:11
+msgid "Login"
+msgstr ""
+
+#: classes/class-lsx-login.php:126
+msgid "The username field is empty."
+msgstr ""
+
+#: classes/class-lsx-login.php:127
+msgid "The password field is empty."
+msgstr ""
+
+#: classes/class-lsx-login.php:128
+msgid "Enter a username or e-mail address."
+msgstr ""
+
+#: classes/class-lsx-login.php:129
+msgid "Passwords do not match"
+msgstr ""
+
+#: classes/class-lsx-login.php:143
+msgid "Primary Menu (logged out)"
+msgstr ""
+
+#: classes/class-lsx-login.php:187
+msgid "Please login to view this page!"
+msgstr ""
+
+#: classes/class-lsx-login.php:271
+msgid "The password you entered for the username .$_POST[log]. is incorrect."
+msgstr ""
+
+#: classes/class-lsx-login.php:275
+msgid "Invalid Username"
+msgstr ""
+
+#: classes/class-lsx-login.php:360
+msgid "Password reset is not allowed for this user"
+msgstr ""
+
+#: classes/class-lsx-login.php:399
+msgid "The e-mail could not be sent."
+msgstr ""
+
+#: classes/class-lsx-login.php:399
+msgid "Possible reason: your host may have disabled the mail() function."
+msgstr ""
+
+#: classes/class-lsx-login.php:402
+msgid "Check your e-mail for the confirmation link."
+msgstr ""
+
+#: classes/class-lsx-login.php:411
+msgid "Invalid username or e-mail."
+msgstr ""
+
+#: classes/class-lsx-login.php:453
+msgid "Password has been reset!"
+msgstr ""
+
+#: classes/class-lsx-login.php:457
+msgid "An error has occured please contact the site administrator!"
+msgstr ""
+
+#: classes/class-lsx-login.php:505, classes/class-lsx-login.php:506
+msgid "Theme Options"
+msgstr ""
+
+#: classes/class-lsx-login.php:510
+msgid "Save Changes"
+msgstr ""
+
+#: classes/class-lsx-login.php:541
+msgid "API"
+msgstr ""
+
+#: includes/settings/login.php:12
+msgid "Disable site lockout"
+msgstr ""
+
+#: includes/settings/login.php:16
+msgid "This will make your site more \"Public\". You will need to choose which pages you want to hide via the "
+msgstr ""
+
+#: includes/settings/login.php:22
+msgid "My Account Page"
+msgstr ""
+
+#: includes/settings/login.php:46
+msgid "Select a form"
+msgstr ""
+
+#: includes/settings/login.php:53
+msgid "You have no form available"
+msgstr ""
+
+#: templates/content-login.php:14
+msgid "Username"
+msgstr ""
+
+#: templates/content-login.php:19
+msgid "Password"
+msgstr ""
+
+#: templates/content-login.php:25
+msgid "Remember Me"
+msgstr ""
+
+#: templates/content-login.php:29
+msgid "Log In"
+msgstr ""
+
+#: templates/content-password-reset.php:17
+msgid "New Password"
+msgstr ""
+
+#: templates/content-password-reset.php:20
+msgid "New password"
+msgstr ""
+
+#: templates/content-password-reset.php:24
+msgid "Confirm new password"
+msgstr ""
+
+#: templates/content-password-reset.php:29
+msgid "Hint: The password should be at least seven characters long. To make it stronger, use upper and lower case letters, numbers, and symbols like ! \" ? $ % ^ &amp; )."
+msgstr ""
+
+#: templates/content-password-reset.php:35, templates/content-password-reset.php:44
+msgid "Reset Password"
+msgstr ""
+
+#: templates/content-password-reset.php:48
+msgid "This key has expired, please try reset your password again."
+msgstr ""
+
+#: templates/content-password-reset.php:53
+msgid "Username or E-mail:"
+msgstr ""
+
+#: templates/content-password-reset.php:60
+msgid "Get New Password"
+msgstr ""

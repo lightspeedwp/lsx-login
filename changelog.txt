@@ -1,5 +1,11 @@
 ## Changelog
 
+### 1.0.3
+* Dev - Moved main PHP class to a separate file
+* Dev - Renamed 'inc' folder to 'includes'
+* Dev - Added GulpJS to generate CSS and JS files
+* Dev - Removed global variable $lst_login (started to use get_instance method instead)
+
 ### 1.0.2
 * Fix - Fixed all prefixes replaces (to_ > lsx_to_, TO_ > LSX_TO_)
 

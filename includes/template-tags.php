@@ -19,8 +19,8 @@
  * @category 	login
  */
 function lsx_login_form(){
-	global $lst_login;
-	$lst_login->login_form();
+	$lsx_login = LSX_Login::get_instance();
+	$lsx_login->login_form();
 }
 
 
@@ -34,8 +34,8 @@ function lsx_login_form(){
  * @category 	reset-password
  * */
 function lsx_password_reset_form(){
-	global $lst_login;
-	$lst_login->password_reset_form();
+	$lsx_login = LSX_Login::get_instance();
+	$lsx_login->password_reset_form();
 }
 
 
@@ -49,8 +49,8 @@ function lsx_password_reset_form(){
  * @category 	conditional
  */
 function lsx_is_password_confirmed(){
-	global $lst_login;
-	return $lst_login->is_password_confirmed();
+	$lsx_login = LSX_Login::get_instance();
+	return $lsx_login->is_password_confirmed();
 }
 
 /**
@@ -66,7 +66,6 @@ function lsx_is_password_confirmed(){
  * @category 	my-account
  */
 function lsx_my_account_tabs($before="",$after="",$echo=true){
-
 	$tabs = array(
 		'dashboard' => array(
 			'label' => esc_html__('Dashboard','lsx-login'),
@@ -116,7 +115,9 @@ function lsx_my_account_tabs($before="",$after="",$echo=true){
  * @category 	conditional
  */
 function lsx_my_account_dashboard_tab(){
-	global $lsx_login,$post;
+	global $post;
+
+	$lsx_login = LSX_Login::get_instance();
 
 	echo '<div class="my-account-welcome">';
 	echo wp_kses_post(apply_filters('the_content',$post->post_content));

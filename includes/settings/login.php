@@ -1,4 +1,7 @@
-<?php global $lst_login; ?>
+<?php
+	$lsx_login = LSX_Login::get_instance();
+?>
+
 <div class="uix-field-wrapper">
 
 	<table class="form-table">
@@ -31,8 +34,8 @@
 				);
 				$pages = get_pages($args);
 				$current_page = '';
-				if(isset($lst_login->options) && isset($lst_login->options['login']['my_account_id'])){
-					$current_page = $lst_login->options['login']['my_account_id'];
+				if(isset($lsx_login->options) && isset($lsx_login->options['login']['my_account_id'])){
+					$current_page = $lsx_login->options['login']['my_account_id'];
 				}
 				?>
 
