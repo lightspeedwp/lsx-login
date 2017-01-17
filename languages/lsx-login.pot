@@ -149,18 +149,22 @@ msgid "Enable site lockout"
 msgstr ""
 
 #: includes/settings/login.php:15
-msgid "This will make your entire website private."
+msgid "This will make your entire website private"
 msgstr ""
 
-#: includes/settings/login.php:21
-msgid "My Account Page"
+#: includes/settings/login.php:30
+msgid "Enable post type lockout"
 msgstr ""
 
 #: includes/settings/login.php:46
+msgid "My Account Page"
+msgstr ""
+
+#: includes/settings/login.php:71
 msgid "Select a page"
 msgstr ""
 
-#: includes/settings/login.php:52
+#: includes/settings/login.php:77
 msgid "You have no page available"
 msgstr ""
 

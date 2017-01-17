@@ -19,6 +19,14 @@ if ( ! class_exists( 'LSX_Login' ) ) {
 		 * @since 1.0.0
 		 */
 		public $plugin_slug = 'lsx-login';
+
+		/**
+		 * Plugin options.
+		 *
+		 * @var string
+		 * @since 1.0.3
+		 */
+		public $options = null;
 	
 		/**
 		 * Holds class instance.
@@ -37,14 +45,13 @@ if ( ! class_exists( 'LSX_Login' ) ) {
 			require_once( LSX_LOGIN_PATH . 'classes/class-lsx-login-widget.php' );
 
 			if(class_exists('Tour_Operator')) {
-				$options = get_option('_lsx-to_settings', false);
+				$this->options = get_option('_lsx-to_settings', false);
 			}else{
-				$options = get_option('_lsx_settings', false);
+				$this->options = get_option('_lsx_settings', false);
 				if (false === $options) {
-					$options = get_option('_lsx_lsx-settings', false);
+					$this->options = get_option('_lsx_lsx-settings', false);
 				}
 			}
-			$this->options = $options;
 
 			//Include the Settings Class
 			add_action( 'init', array( $this, 'create_settings_page' ), 200 );
@@ -92,6 +99,9 @@ if ( ! class_exists( 'LSX_Login' ) ) {
 			
 			//Allow email login
 			add_filter( 'authenticate', array( $this, 'allow_email_login' ), 20, 3 );
+
+			//User access
+			add_filter( 'cmb_meta_boxes', array( $this, 'metaboxes' ) );
 		}
 	
 		/**
@@ -162,7 +172,32 @@ if ( ! class_exists( 'LSX_Login' ) ) {
 		 * Redirect the template
 		 */	
 		public function template_include($template) {
-			if ( !is_user_logged_in() && !apply_filters('lsx_login_disable_template',false) ) {
+			$require_logged_user = apply_filters( 'lsx_login_require_logged_user', false );
+
+			if ( false === $require_logged_user && isset( $this->options['login'] ) ) {
+				if ( isset( $this->options['login']['lock_site'] ) && 1 === $this->options['login']['lock_site'] ) {
+					$require_logged_user = true;
+				}
+
+				if ( false === $require_logged_user ) {
+					$post_type = get_post_type();
+					$key = 'lock_post_type_' . $post_type;
+
+					if ( isset( $this->options['login'][$key] ) && 1 === $this->options['login'][$key] ) {
+						$require_logged_user = true;
+					}
+				}
+			}
+
+			if ( false === $require_logged_user && is_singular() ) {
+				$post_meta = get_post_meta( get_the_ID(), 'lock_single', true );
+
+				if ( '1' === $post_meta ) {
+					$require_logged_user = true;
+				}
+			}
+
+			if ( true === $require_logged_user && !is_user_logged_in() && !apply_filters('lsx_login_disable_template',false) ) {
 				
 				//Check if there is a tempalte in the theme
 				$template = locate_template( array( 'template-login.php' ));
@@ -691,7 +726,7 @@ if ( ! class_exists( 'LSX_Login' ) ) {
 		*/
 		public function allow_email_login( $user, $username, $password ) {
 			if ( is_email( $username ) ) {
-				$user = get_user_by_email( $username );
+				$user = get_user_by( 'email', $username );
 
 				if ( $user ) {
 					$username = $user->user_login;
@@ -699,6 +734,37 @@ if ( ! class_exists( 'LSX_Login' ) ) {
 			}
 
 			return wp_authenticate_username_password( null, $username, $password );
+		}
+
+		/**
+		 * Define the metabox and field configurations.
+		 *
+		 * @param  array $meta_boxes
+		 * @return array
+		 */
+		public function metaboxes( array $meta_boxes ) {
+			$args = array(
+				'public'   => true,
+				//'_builtin' => false,
+			);
+
+			$post_types = get_post_types( $args, 'names' );
+
+			if ( false !== ( $key = array_search( 'attachment', $post_types ) ) ) {
+				unset( $post_types[$key] );
+			}
+
+			$fields = array(
+				array( 'id' => 'lock_single',  'name' => esc_html__( 'Restrict access to this content', 'lsx-banners' ), 'type' => 'checkbox' ),
+			);
+
+			$meta_boxes[] = array(
+				'title'  => esc_html__( 'Login', 'lsx-login' ),
+				'pages'  => $post_types,
+				'fields' => $fields
+			);
+
+			return $meta_boxes;
 		}
 
 	}

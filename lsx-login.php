@@ -22,6 +22,12 @@ define('LSX_LOGIN_CORE', __FILE__ );
 define('LSX_LOGIN_URL',  plugin_dir_url( __FILE__ ) );
 define('LSX_LOGIN_VER',  '1.0.3' );
 
+if(!function_exists('cmb_init')){
+	if (is_file(LSX_LOGIN_PATH.'vendor/Custom-Meta-Boxes/custom-meta-boxes.php')) {
+		require LSX_LOGIN_PATH.'vendor/Custom-Meta-Boxes/custom-meta-boxes.php';
+	}
+}
+
 /* ======================= The API Classes ========================= */
 
 if(!class_exists('LSX_API_Manager')){

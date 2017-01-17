@@ -7,6 +7,9 @@
 * Dev - Removed global variable $lst_login (started to use get_instance method instead)
 * Dev - Allow email address login
 * Dev - Allow user choose which pages are blocked or not
+* Dev - Display a list of post types to "restrict"
+* Dev - Add in a checkbox that enables you to "lock off" the entire site
+* Dev - Add a custom field so user can decide to "restrict" a page or not
 
 ### 1.0.2
 * Fix - Fixed all prefixes replaces (to_ > lsx_to_, TO_ > LSX_TO_)
