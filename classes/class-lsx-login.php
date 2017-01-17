@@ -341,7 +341,7 @@ if ( ! class_exists( 'LSX_Login' ) ) {
 			}
 
 			if ( is_email( $credentials['user_login'] ) ) {
-				$user_ = get_user_by_email( $credentials['user_login'] );
+				$user_ = get_user_by( 'email', $credentials['user_login'] );
 
 				if ( $user_ ) {
 					$credentials['user_login'] = $user_->user_login;
