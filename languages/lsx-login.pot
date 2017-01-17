@@ -48,79 +48,79 @@ msgstr ""
 msgid "Title"
 msgstr ""
 
-#: classes/class-lsx-login-widget.php:124, classes/class-lsx-login.php:547, templates/content-login.php:11
+#: classes/class-lsx-login-widget.php:124, classes/class-lsx-login.php:588, classes/class-lsx-login.php:768, templates/content-login.php:11
 msgid "Login"
 msgstr ""
 
-#: classes/class-lsx-login.php:135
+#: classes/class-lsx-login.php:145
 msgid "The username field is empty."
 msgstr ""
 
-#: classes/class-lsx-login.php:136
+#: classes/class-lsx-login.php:146
 msgid "The password field is empty."
 msgstr ""
 
-#: classes/class-lsx-login.php:137
+#: classes/class-lsx-login.php:147
 msgid "Enter a username or e-mail address."
 msgstr ""
 
-#: classes/class-lsx-login.php:138
+#: classes/class-lsx-login.php:148
 msgid "Passwords do not match"
 msgstr ""
 
-#: classes/class-lsx-login.php:152
+#: classes/class-lsx-login.php:162
 msgid "Primary Menu (logged out)"
 msgstr ""
 
-#: classes/class-lsx-login.php:196
+#: classes/class-lsx-login.php:237
 msgid "Please login to view this page!"
 msgstr ""
 
-#: classes/class-lsx-login.php:280
+#: classes/class-lsx-login.php:321
 msgid "The password you entered for the username .$_POST[log]. is incorrect."
 msgstr ""
 
-#: classes/class-lsx-login.php:284
+#: classes/class-lsx-login.php:325
 msgid "Invalid Username"
 msgstr ""
 
-#: classes/class-lsx-login.php:377
+#: classes/class-lsx-login.php:418
 msgid "Password reset is not allowed for this user"
 msgstr ""
 
-#: classes/class-lsx-login.php:416
+#: classes/class-lsx-login.php:457
 msgid "The e-mail could not be sent."
 msgstr ""
 
-#: classes/class-lsx-login.php:416
+#: classes/class-lsx-login.php:457
 msgid "Possible reason: your host may have disabled the mail() function."
 msgstr ""
 
-#: classes/class-lsx-login.php:419
+#: classes/class-lsx-login.php:460
 msgid "Check your e-mail for the confirmation link."
 msgstr ""
 
-#: classes/class-lsx-login.php:428
+#: classes/class-lsx-login.php:469
 msgid "Invalid username or e-mail."
 msgstr ""
 
-#: classes/class-lsx-login.php:470
+#: classes/class-lsx-login.php:511
 msgid "Password has been reset!"
 msgstr ""
 
-#: classes/class-lsx-login.php:474
+#: classes/class-lsx-login.php:515
 msgid "An error has occured please contact the site administrator!"
 msgstr ""
 
-#: classes/class-lsx-login.php:522, classes/class-lsx-login.php:523
+#: classes/class-lsx-login.php:563, classes/class-lsx-login.php:564
 msgid "Theme Options"
 msgstr ""
 
-#: classes/class-lsx-login.php:527
+#: classes/class-lsx-login.php:568
 msgid "Save Changes"
 msgstr ""
 
-#: classes/class-lsx-login.php:558
+#: classes/class-lsx-login.php:599
 msgid "API"
 msgstr ""
 
@@ -149,11 +149,11 @@ msgid "Enable site lockout"
 msgstr ""
 
 #: includes/settings/login.php:15
-msgid "This will make your entire website private"
+msgid "Restrict access to your entire website"
 msgstr ""
 
 #: includes/settings/login.php:30
-msgid "Enable post type lockout"
+msgid "Restrict access to post types"
 msgstr ""
 
 #: includes/settings/login.php:46

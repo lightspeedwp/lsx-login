@@ -11,9 +11,10 @@ The LSX Login extension allows users to log into a dashboard and then see config
 * Dev - Removed global variable $lst_login (started to use get_instance method instead)
 * Dev - Allow email address login
 * Dev - Allow user choose which pages are blocked or not
-* Dev - Display a list of post types to "restrict"
-* Dev - Add in a checkbox that enables you to "lock off" the entire site
-* Dev - Add a custom field so user can decide to "restrict" a page or not
+* Dev - Displayed a list of post types to "restrict"
+* Dev - Added in a checkbox that enables you to "lock off" the entire site
+* Dev - Added a custom field so user can decide to "restrict" a page or not
+* Dev - Added no-index tag for logged in pages
 
 ### 1.0.2
 * Added in a My Account template with filters to extend.

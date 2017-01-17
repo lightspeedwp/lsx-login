@@ -197,6 +197,12 @@ if ( ! class_exists( 'LSX_Login' ) ) {
 				}
 			}
 
+			if ( true === $require_logged_user ) {
+				add_action( 'wp_head', function() {
+					echo "<meta name='robots' content='noindex,follow' />\n";
+				} );
+			}
+
 			if ( true === $require_logged_user && !is_user_logged_in() && !apply_filters('lsx_login_disable_template',false) ) {
 				
 				//Check if there is a tempalte in the theme
