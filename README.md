@@ -15,6 +15,8 @@ The LSX Login extension allows users to log into a dashboard and then see config
 * Dev - Added in a checkbox that enables you to "lock off" the entire site
 * Dev - Added a custom field so user can decide to "restrict" a page or not
 * Dev - Added no-index tag for logged in pages
+* Dev - Made the primary menu display different automatically for logged users
+* Dev - Shortcode to display useful links as dropdown menu related with the logged status
 
 ### 1.0.2
 * Added in a My Account template with filters to extend.

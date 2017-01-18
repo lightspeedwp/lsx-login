@@ -102,6 +102,12 @@ if ( ! class_exists( 'LSX_Login' ) ) {
 
 			//User access
 			add_filter( 'cmb_meta_boxes', array( $this, 'metaboxes' ) );
+
+			//Primary menu display different automatically for logged users
+			add_filter( 'wp_nav_menu_args', array( $this, 'modify_nav_menu_args' ) );
+
+			//Shortcode to display useful links as dropdown menu related with the logged status
+			add_shortcode( 'lsx_login_useful_items', array( $this, 'useful_links' ) );
 		}
 	
 		/**
@@ -615,18 +621,7 @@ if ( ! class_exists( 'LSX_Login' ) ) {
 				return;
 			}
 
-			$my_account_id = false;
-			if(isset($this->options['login']['my_account_id'])) {
-				$my_account_id = $this->options['login']['my_account_id'];
-			}
-
-			if(false !== $my_account_id){
-				$my_account_page = get_post($my_account_id);
-				$account_slug = $my_account_page->post_name;
-			}else{
-				$account_slug = 'my-account';
-			}
-
+			$account_slug = $this->get_my_account_page_slug();
 			$endpoints = false;
 			$endpoints = apply_filters('lsx_my_account_endpoints',$endpoints);
 			add_rewrite_tag('%tab%', '([^&]+)');
@@ -710,19 +705,7 @@ if ( ! class_exists( 'LSX_Login' ) ) {
 		 * Without this function, WC can't find the correct Dashboard permalink.
 		 */
 		public function woocommerce_get_myaccount_page_permalink( $permalink ) {
-			$my_account_id = false;
-
-			if ( isset( $this->options['login']['my_account_id'] ) ) {
-				$my_account_id = $this->options['login']['my_account_id'];
-			}
-
-			if ( false !== $my_account_id ) {
-				$my_account_page = get_post( $my_account_id );
-				$account_slug = $my_account_page->post_name;
-			} else {
-				$account_slug = 'my-account';
-			}
-
+			$account_slug = $this->get_my_account_page_slug();
 			$permalink = site_url( '/' . $account_slug . '/' );
 			return $permalink;
 		}
@@ -771,6 +754,111 @@ if ( ! class_exists( 'LSX_Login' ) ) {
 			);
 
 			return $meta_boxes;
+		}
+
+		/**
+		 * Primary menu display different automatically for logged users
+		 */
+		public function modify_nav_menu_args( $args ) {
+			if ( ! is_user_logged_in() ) {
+				if ( 'primary' == $args['theme_location'] ) {
+					$args['theme_location'] = 'primary_logged_out';
+				}
+			}
+
+			return $args;
+		}
+
+		/**
+		 * Shortcode to display useful links as dropdown menu related with the logged status
+		 */
+		public function useful_links( $atts ) {
+			/*$atts = shortcode_atts( array(
+				'foo' => 'no foo',
+				'baz' => 'default baz',
+			), $atts, 'useful_links' );*/
+
+			$account_slug = $this->get_my_account_page_slug();
+
+			if ( is_user_logged_in() ) {
+				$current_user = wp_get_current_user();
+
+				if ( ! empty( $current_user->user_firstname ) ) {
+					$user_name = $current_user->user_firstname;
+				} else {
+					$user_name = $current_user->user_login;
+				}
+
+				$items = apply_filters( 'lsx_login_useful_items_logged_in', array(
+					array(
+						'label' => 'Welcome, ' . $user_name,
+						'link' => '#',
+					),
+
+					array(
+						'label' => 'My Account',
+						'link' => site_url( '/' . $account_slug . '/' ),
+					),
+
+					array(
+						'label' => 'Logout',
+						'link' => wp_logout_url( home_url( '/' ) ),
+					)
+				) );
+			} else {
+				$items = apply_filters( 'lsx_login_useful_items_logged_out', array(
+					array(
+						'label' => 'Login',
+						'link' => site_url( '/' . $account_slug . '/' ),
+					)
+				) );
+			}
+
+			$html = '';
+
+			if ( count( $items ) > 0 ) {
+				$dropdown = ( count( $items ) > 1 ) ? true : false;
+				$html .= '<div class="lsx-login-useful-container ' . ( $dropdown ? 'dropdown' : '' ) . '">' . PHP_EOL;
+
+				foreach ( $items as $key => $item ) {
+					if ( true === $dropdown && 0 === $key ) {
+						$html .= '<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">' . $item['label'] . ' <span class="caret"></span></button>' . PHP_EOL;
+						$html .= '<ul class="dropdown-menu">' . PHP_EOL;
+					} elseif( false === $dropdown ) {
+						$html .= '<li class="item-' . sanitize_title( $item['label'] ) . '"><a href="' . $item['link'] . '" class="btn btn-primary">' . $item['label'] . '</a></li>' . PHP_EOL;
+					} else {
+						$html .= '<li class="item-' . sanitize_title( $item['label'] ) . '"><a href="' . $item['link'] . '">' . $item['label'] . '</a></li>' . PHP_EOL;
+					}
+				}
+
+				if ( true === $dropdown ) {
+					$html .= '</ul>' . PHP_EOL;
+				}
+
+				$html .= '</div>' . PHP_EOL;
+			}
+
+			return $html;
+		}
+
+		/**
+		 * Return My Account page slug
+		 */
+		public function get_my_account_page_slug() {
+			$my_account_id = false;
+
+			if ( isset( $this->options['login']['my_account_id'] ) ) {
+				$my_account_id = $this->options['login']['my_account_id'];
+			}
+
+			if ( false !== $my_account_id ) {
+				$my_account_page = get_post( $my_account_id );
+				$account_slug = $my_account_page->post_name;
+			} else {
+				$account_slug = 'my-account';
+			}
+
+			return $account_slug;
 		}
 
 	}

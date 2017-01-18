@@ -48,79 +48,79 @@ msgstr ""
 msgid "Title"
 msgstr ""
 
-#: classes/class-lsx-login-widget.php:124, classes/class-lsx-login.php:588, classes/class-lsx-login.php:768, templates/content-login.php:11
+#: classes/class-lsx-login-widget.php:124, classes/class-lsx-login.php:594, classes/class-lsx-login.php:751, templates/content-login.php:11
 msgid "Login"
 msgstr ""
 
-#: classes/class-lsx-login.php:145
+#: classes/class-lsx-login.php:151
 msgid "The username field is empty."
 msgstr ""
 
-#: classes/class-lsx-login.php:146
+#: classes/class-lsx-login.php:152
 msgid "The password field is empty."
 msgstr ""
 
-#: classes/class-lsx-login.php:147
+#: classes/class-lsx-login.php:153
 msgid "Enter a username or e-mail address."
 msgstr ""
 
-#: classes/class-lsx-login.php:148
+#: classes/class-lsx-login.php:154
 msgid "Passwords do not match"
 msgstr ""
 
-#: classes/class-lsx-login.php:162
+#: classes/class-lsx-login.php:168
 msgid "Primary Menu (logged out)"
 msgstr ""
 
-#: classes/class-lsx-login.php:237
+#: classes/class-lsx-login.php:243
 msgid "Please login to view this page!"
 msgstr ""
 
-#: classes/class-lsx-login.php:321
+#: classes/class-lsx-login.php:327
 msgid "The password you entered for the username .$_POST[log]. is incorrect."
 msgstr ""
 
-#: classes/class-lsx-login.php:325
+#: classes/class-lsx-login.php:331
 msgid "Invalid Username"
 msgstr ""
 
-#: classes/class-lsx-login.php:418
+#: classes/class-lsx-login.php:424
 msgid "Password reset is not allowed for this user"
 msgstr ""
 
-#: classes/class-lsx-login.php:457
+#: classes/class-lsx-login.php:463
 msgid "The e-mail could not be sent."
 msgstr ""
 
-#: classes/class-lsx-login.php:457
+#: classes/class-lsx-login.php:463
 msgid "Possible reason: your host may have disabled the mail() function."
 msgstr ""
 
-#: classes/class-lsx-login.php:460
+#: classes/class-lsx-login.php:466
 msgid "Check your e-mail for the confirmation link."
 msgstr ""
 
-#: classes/class-lsx-login.php:469
+#: classes/class-lsx-login.php:475
 msgid "Invalid username or e-mail."
 msgstr ""
 
-#: classes/class-lsx-login.php:511
+#: classes/class-lsx-login.php:517
 msgid "Password has been reset!"
 msgstr ""
 
-#: classes/class-lsx-login.php:515
+#: classes/class-lsx-login.php:521
 msgid "An error has occured please contact the site administrator!"
 msgstr ""
 
-#: classes/class-lsx-login.php:563, classes/class-lsx-login.php:564
+#: classes/class-lsx-login.php:569, classes/class-lsx-login.php:570
 msgid "Theme Options"
 msgstr ""
 
-#: classes/class-lsx-login.php:568
+#: classes/class-lsx-login.php:574
 msgid "Save Changes"
 msgstr ""
 
-#: classes/class-lsx-login.php:599
+#: classes/class-lsx-login.php:605
 msgid "API"
 msgstr ""
 

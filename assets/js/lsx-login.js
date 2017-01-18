@@ -228,4 +228,14 @@ jQuery(document).ready(function($) {
 	}else{
 		jQuery('.loginform').attr('action','/wp-login.php');
 	}
+
+	if (('undefined' === typeof jQuery().dropdown)) {
+		jQuery('.lsx-login-useful-container .dropdown-toggle').on('click', function(e) {
+			jQuery(this).next('ul').toggle();
+			e.stopPropagation();
+			e.preventDefault();
+		});
+	}
+
+
 });
