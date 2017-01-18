@@ -10,8 +10,9 @@ echo "* LSX.MAMP:8888 *";
 rm -Rf ~/Sites-LightSpeed/@mamp/lsx.mamp/wp-content/plugins/lsx-login;
 rsync -a \
 	--exclude='.git' \
+	--exclude='.idea' \
+	--exclude='.sass-cache' \
 	--exclude='node_modules' \
-	--exclude='assets/css/lsx-login.scss' \
 	--exclude='.DS_Store' \
 	--exclude='.gitignore' \
 	--exclude='gulpfile.js' \
@@ -22,8 +23,9 @@ echo "* TSA-V2.MAMP:8888 *";
 rm -Rf ~/Sites-LightSpeed/@mamp/tsa-v2.mamp/wp-content/plugins/lsx-login;
 rsync -a \
 	--exclude='.git' \
+	--exclude='.idea' \
+	--exclude='.sass-cache' \
 	--exclude='node_modules' \
-	--exclude='assets/css/lsx-login.scss' \
 	--exclude='.DS_Store' \
 	--exclude='.gitignore' \
 	--exclude='gulpfile.js' \
