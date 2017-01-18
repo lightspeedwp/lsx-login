@@ -8,7 +8,8 @@
 
 <form method="post" action="<?php echo esc_url( site_url( 'wp-login.php', 'login_post' ) ); ?>" class="loginform" name="loginform">
 
-	<h3><span class="genericon genericon-home"></span><?php _e('Login','lsx-login'); ?></h3>
+	<h3><span class="genericon genericon-home"></span> <?php _e('Login','lsx-login'); ?></h3>
+	<p><?php _e('Have an account? Log in.','lsx-login'); ?></p>
 
 	<p class="login-username input-group input-group-lg">
 		<label for="user_login"><?php _e('Username or email address','lsx-login'); ?></label>

@@ -48,80 +48,96 @@ msgstr ""
 msgid "Title"
 msgstr ""
 
-#: classes/class-lsx-login-widget.php:124, classes/class-lsx-login.php:594, classes/class-lsx-login.php:751, templates/content-login.php:11
+#: classes/class-lsx-login-widget.php:124, classes/class-lsx-login.php:598, classes/class-lsx-login.php:755, classes/class-lsx-login.php:815, classes/class-lsx-login.php:876, templates/content-login.php:11
 msgid "Login"
 msgstr ""
 
-#: classes/class-lsx-login.php:151
+#: classes/class-lsx-login.php:154
 msgid "The username field is empty."
 msgstr ""
 
-#: classes/class-lsx-login.php:152
+#: classes/class-lsx-login.php:155
 msgid "The password field is empty."
 msgstr ""
 
-#: classes/class-lsx-login.php:153
+#: classes/class-lsx-login.php:156
 msgid "Enter a username or e-mail address."
 msgstr ""
 
-#: classes/class-lsx-login.php:154
+#: classes/class-lsx-login.php:157
 msgid "Passwords do not match"
 msgstr ""
 
-#: classes/class-lsx-login.php:168
+#: classes/class-lsx-login.php:172
 msgid "Primary Menu (logged out)"
 msgstr ""
 
-#: classes/class-lsx-login.php:243
+#: classes/class-lsx-login.php:247
 msgid "Please login to view this page!"
 msgstr ""
 
-#: classes/class-lsx-login.php:327
+#: classes/class-lsx-login.php:331
 msgid "The password you entered for the username .$_POST[log]. is incorrect."
 msgstr ""
 
-#: classes/class-lsx-login.php:331
+#: classes/class-lsx-login.php:335
 msgid "Invalid Username"
 msgstr ""
 
-#: classes/class-lsx-login.php:424
+#: classes/class-lsx-login.php:428
 msgid "Password reset is not allowed for this user"
 msgstr ""
 
-#: classes/class-lsx-login.php:463
+#: classes/class-lsx-login.php:467
 msgid "The e-mail could not be sent."
 msgstr ""
 
-#: classes/class-lsx-login.php:463
+#: classes/class-lsx-login.php:467
 msgid "Possible reason: your host may have disabled the mail() function."
 msgstr ""
 
-#: classes/class-lsx-login.php:466
+#: classes/class-lsx-login.php:470
 msgid "Check your e-mail for the confirmation link."
 msgstr ""
 
-#: classes/class-lsx-login.php:475
+#: classes/class-lsx-login.php:479
 msgid "Invalid username or e-mail."
 msgstr ""
 
-#: classes/class-lsx-login.php:517
+#: classes/class-lsx-login.php:521
 msgid "Password has been reset!"
 msgstr ""
 
-#: classes/class-lsx-login.php:521
+#: classes/class-lsx-login.php:525
 msgid "An error has occured please contact the site administrator!"
 msgstr ""
 
-#: classes/class-lsx-login.php:569, classes/class-lsx-login.php:570
+#: classes/class-lsx-login.php:573, classes/class-lsx-login.php:574
 msgid "Theme Options"
 msgstr ""
 
-#: classes/class-lsx-login.php:574
+#: classes/class-lsx-login.php:578
 msgid "Save Changes"
 msgstr ""
 
-#: classes/class-lsx-login.php:605
+#: classes/class-lsx-login.php:609
 msgid "API"
+msgstr ""
+
+#: classes/class-lsx-login.php:751
+msgid "Restrict access to this content"
+msgstr ""
+
+#: classes/class-lsx-login.php:798
+msgid "Welcome, %s"
+msgstr ""
+
+#: classes/class-lsx-login.php:803
+msgid "My Account"
+msgstr ""
+
+#: classes/class-lsx-login.php:881
+msgid "Lost password"
 msgstr ""
 
 #: includes/settings/api.php:3
@@ -168,19 +184,23 @@ msgstr ""
 msgid "You have no page available"
 msgstr ""
 
-#: templates/content-login.php:14, templates/content-password-reset.php:53
+#: templates/content-login.php:12
+msgid "Have an account? Log in."
+msgstr ""
+
+#: templates/content-login.php:15, templates/content-password-reset.php:54
 msgid "Username or email address"
 msgstr ""
 
-#: templates/content-login.php:19
+#: templates/content-login.php:20
 msgid "Password"
 msgstr ""
 
-#: templates/content-login.php:25
+#: templates/content-login.php:26
 msgid "Remember Me"
 msgstr ""
 
-#: templates/content-login.php:29
+#: templates/content-login.php:30
 msgid "Log In"
 msgstr ""
 
@@ -204,10 +224,14 @@ msgstr ""
 msgid "Reset Password"
 msgstr ""
 
-#: templates/content-password-reset.php:48
+#: templates/content-password-reset.php:45
+msgid "Enter your username or email to reset your password."
+msgstr ""
+
+#: templates/content-password-reset.php:49
 msgid "This key has expired, please try reset your password again."
 msgstr ""
 
-#: templates/content-password-reset.php:60
+#: templates/content-password-reset.php:61
 msgid "Get New Password"
 msgstr ""

@@ -14,7 +14,7 @@ if(isset($_GET['action']) && 'rp' === $_GET['action'] && !is_wp_error($is_key_co
 		<input type="hidden" autocomplete="off" value="<?php echo $_GET['login'];?>" class="user_login" name="user_login">
 		<input type="hidden" value="<?php echo $_GET['key'];?>" name="rp_key">
 		
-		<h3><span class="genericon genericon-refresh"></span><?php _e('New Password','lsx-login'); ?></h3>
+		<h3><span class="genericon genericon-refresh"></span> <?php _e('New Password','lsx-login'); ?></h3>
 	
 		<p class="input-group input-group-lg">
 			<label for="pass1"><?php _e('New password','lsx-login'); ?></label>
@@ -41,7 +41,8 @@ if(isset($_GET['action']) && 'rp' === $_GET['action'] && !is_wp_error($is_key_co
 
 	<form method="post" action="<?php home_url('/'); ?>" class="lostpasswordform" name="lostpasswordform">
 	
-		<h3><span class="genericon genericon-refresh"></span><?php _e('Reset Password','lsx-login'); ?></h3>
+		<h3><span class="genericon genericon-refresh"></span> <?php _e('Reset Password','lsx-login'); ?></h3>
+		<p><?php _e('Enter your username or email to reset your password.','lsx-login'); ?></p>
 		
 		<?php
 		if(is_wp_error($is_key_confirmed)){

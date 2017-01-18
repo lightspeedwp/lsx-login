@@ -108,6 +108,9 @@ if ( ! class_exists( 'LSX_Login' ) ) {
 
 			//Shortcode to display useful links as dropdown menu related with the logged status
 			add_shortcode( 'lsx_login_useful_items', array( $this, 'useful_links' ) );
+
+			//Display the main modal (with forms to login and reset password)
+			add_action( 'wp_footer', array( $this, 'main_modal' ) );
 		}
 	
 		/**
@@ -152,7 +155,8 @@ if ( ! class_exists( 'LSX_Login' ) ) {
 							'empty_password'	=> __('The password field is empty.','lsx-login'),
 							'empty_reset'		=> __('Enter a username or e-mail address.','lsx-login'),
 							'no_match'		    => __('Passwords do not match','lsx-login'),
-							'ajax_spinner'		=> LSX_LOGIN_URL . "assets/images/ajax-spinner.gif"
+							'ajax_spinner'		=> LSX_LOGIN_URL . "assets/images/ajax-spinner.gif",
+							'theme_url' 		=> LSX_LOGIN_URL,
 					);
 					wp_localize_script( 'lsx_login', 'lsx_login_params', $param_array );
 				}
@@ -744,7 +748,7 @@ if ( ! class_exists( 'LSX_Login' ) ) {
 			}
 
 			$fields = array(
-				array( 'id' => 'lock_single',  'name' => esc_html__( 'Restrict access to this content', 'lsx-banners' ), 'type' => 'checkbox' ),
+				array( 'id' => 'lock_single',  'name' => esc_html__( 'Restrict access to this content', 'lsx-login' ), 'type' => 'checkbox' ),
 			);
 
 			$meta_boxes[] = array(
@@ -791,26 +795,28 @@ if ( ! class_exists( 'LSX_Login' ) ) {
 
 				$items = apply_filters( 'lsx_login_useful_items_logged_in', array(
 					array(
-						'label' => 'Welcome, ' . $user_name,
-						'link' => '#',
+						'label' => sprintf( esc_html__( 'Welcome, %s', 'lsx-login' ), $user_name ),
+						'link'  => '#',
 					),
 
 					array(
-						'label' => 'My Account',
-						'link' => site_url( '/' . $account_slug . '/' ),
+						'label' => esc_html__( 'My Account', 'lsx-login' ),
+						'link'  => site_url( '/' . $account_slug . '/' ),
 					),
 
 					array(
 						'label' => 'Logout',
-						'link' => wp_logout_url( home_url( '/' ) ),
-					)
+						'link'  => wp_logout_url( home_url( '/' ) ),
+					),
 				) );
 			} else {
 				$items = apply_filters( 'lsx_login_useful_items_logged_out', array(
 					array(
-						'label' => 'Login',
-						'link' => site_url( '/' . $account_slug . '/' ),
-					)
+						'label'                 => esc_html__( 'Login', 'lsx-login' ),
+						//'link'                  => site_url( '/' . $account_slug . '/' ),
+						'link'                  => '#',
+						'extra_link_attributes' => 'href="#" data-toggle="modal" data-target="#login-modal"',
+					),
 				) );
 			}
 
@@ -825,9 +831,9 @@ if ( ! class_exists( 'LSX_Login' ) ) {
 						$html .= '<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">' . $item['label'] . ' <span class="caret"></span></button>' . PHP_EOL;
 						$html .= '<ul class="dropdown-menu">' . PHP_EOL;
 					} elseif( false === $dropdown ) {
-						$html .= '<li class="item-' . sanitize_title( $item['label'] ) . '"><a href="' . $item['link'] . '" class="btn btn-primary">' . $item['label'] . '</a></li>' . PHP_EOL;
+						$html .= '<li class="item-' . sanitize_title( $item['label'] ) . '"><a href="' . $item['link'] . '"' . ( isset( $item['extra_link_attributes'] ) ? $item['extra_link_attributes'] : '' ) . ' class="btn btn-primary">' . $item['label'] . '</a></li>' . PHP_EOL;
 					} else {
-						$html .= '<li class="item-' . sanitize_title( $item['label'] ) . '"><a href="' . $item['link'] . '">' . $item['label'] . '</a></li>' . PHP_EOL;
+						$html .= '<li class="item-' . sanitize_title( $item['label'] ) . '"><a href="' . $item['link'] . '"' . ( isset( $item['extra_link_attributes'] ) ? $item['extra_link_attributes'] : '' ) . '>' . $item['label'] . '</a></li>' . PHP_EOL;
 					}
 				}
 
@@ -859,6 +865,60 @@ if ( ! class_exists( 'LSX_Login' ) ) {
 			}
 
 			return $account_slug;
+		}
+
+		/**
+		 * Display the main modal (with forms to login and reset password)
+		 */
+		public function main_modal() {
+			$tabs = apply_filters( 'lsx_login_modal_tabs', array(
+				array(
+					'label'    => esc_html__( 'Login', 'lsx-login' ),
+					'callback' => 'lsx_login_form',
+				),
+
+				array(
+					'label'    => esc_html__( 'Lost password', 'lsx-login' ),
+					'callback' => 'lsx_password_reset_form',
+				),
+			) );
+			?>
+			<div id="login-modal" class="modal fade" role="dialog">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-body">
+							<button class="close" type="button" data-dismiss="modal">×</button>
+
+							<ul class="nav nav-tabs">
+								<?php
+									foreach ( $tabs as $key => $tab ) {
+										echo '<li class="' . ( 0 === $key ? 'active' : '' ) . '"><a data-toggle="tab" href="#tab-' . sanitize_title( $tab['label'] ) . '">' . $tab['label'] . '</a></li>' . PHP_EOL;
+									}
+								?>
+							</ul>
+
+							<div class="tab-content">
+								<?php
+									foreach ( $tabs as $key => $tab ) {
+										echo '<div id="tab-' . sanitize_title( $tab['label'] ) . '" class="tab-pane fade in ' . ( 0 === $key ? 'active' : '' ) . '">' . PHP_EOL;
+
+										if ( isset( $tab['callback'] ) ) {
+											$callback = $tab['callback'];
+
+											if ( is_callable( $callback ) ) {
+												call_user_func( $callback );
+											}
+										}
+
+										echo '</div>' . PHP_EOL;
+									}
+								?>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<?php
 		}
 
 	}

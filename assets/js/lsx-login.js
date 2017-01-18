@@ -230,12 +230,27 @@ jQuery(document).ready(function($) {
 	}
 
 	if (('undefined' === typeof jQuery().dropdown)) {
-		jQuery('.lsx-login-useful-container .dropdown-toggle').on('click', function(e) {
-			jQuery(this).next('ul').toggle();
-			e.stopPropagation();
-			e.preventDefault();
+		jQuery.ajax({
+			url: lsx_login_params.theme_url + 'assets/js/bootstrap.dropdown.js',
+			dataType: "script",
+			cache: true
 		});
 	}
 
+	if (('undefined' === typeof jQuery().modal)) {
+		jQuery.ajax({
+			url: lsx_login_params.theme_url + 'assets/js/bootstrap.modal.js',
+			dataType: "script",
+			cache: true
+		});
+	}
+
+	if (('undefined' === typeof jQuery().tab)) {
+		jQuery.ajax({
+			url: lsx_login_params.theme_url + 'assets/js/bootstrap.tab.js',
+			dataType: "script",
+			cache: true
+		});
+	}
 
 });
