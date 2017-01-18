@@ -4,7 +4,7 @@
   "description": "The LSX Login extension allows users to log into a dashboard and then see configurable content based on which users can access which content.",
   "main": "gulpfile.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "deploy-localhost-nandotess": "./bin/deploy-localhost-nandotess.sh"
   },
   "repository": {
     "type": "git",
