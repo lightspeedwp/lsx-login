@@ -111,6 +111,9 @@ if ( ! class_exists( 'LSX_Login' ) ) {
 
 			//Display the main modal (with forms to login and reset password)
 			add_action( 'wp_footer', array( $this, 'main_modal' ) );
+
+			//Redirect to My Account page after login
+			add_action( 'lsx_login_redirect', array( $this, 'login_redirect' ) );
 		}
 	
 		/**
@@ -919,6 +922,15 @@ if ( ! class_exists( 'LSX_Login' ) ) {
 				</div>
 			</div>
 			<?php
+		}
+
+		/**
+		 * Redirect to My Account page after login
+		 */
+		public function login_redirect( $url ) {
+			$account_slug = $this->get_my_account_page_slug();
+			$url = site_url( '/' . $account_slug . '/' );
+			return $url;
 		}
 
 	}
