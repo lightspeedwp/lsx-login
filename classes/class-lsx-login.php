@@ -45,9 +45,9 @@ if ( ! class_exists( 'LSX_Login' ) ) {
 			require_once( LSX_LOGIN_PATH . 'classes/class-lsx-login-widget.php' );
 
 			if(class_exists('Tour_Operator')) {
-				$options = get_option('_lsx-to_settings', false);
+				$this->options = get_option('_lsx-to_settings', false);
 			}else{
-				$options = get_option('_lsx_settings', false);
+				$this->options = get_option('_lsx_settings', false);
 				if (false === $options) {
 					$this->options = get_option('_lsx_lsx-settings', false);
 				}
