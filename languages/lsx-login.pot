@@ -48,7 +48,7 @@ msgstr ""
 msgid "Title"
 msgstr ""
 
-#: classes/class-lsx-login-widget.php:124, classes/class-lsx-login.php:601, classes/class-lsx-login.php:758, classes/class-lsx-login.php:818, classes/class-lsx-login.php:879, templates/content-login.php:11
+#: classes/class-lsx-login-widget.php:124, classes/class-lsx-login.php:601, classes/class-lsx-login.php:766, classes/class-lsx-login.php:826, classes/class-lsx-login.php:887, templates/content-login.php:11
 msgid "Login"
 msgstr ""
 
@@ -124,19 +124,19 @@ msgstr ""
 msgid "API"
 msgstr ""
 
-#: classes/class-lsx-login.php:754
+#: classes/class-lsx-login.php:762
 msgid "Restrict access to this content"
 msgstr ""
 
-#: classes/class-lsx-login.php:801
+#: classes/class-lsx-login.php:809
 msgid "Welcome, %s"
 msgstr ""
 
-#: classes/class-lsx-login.php:806
+#: classes/class-lsx-login.php:814
 msgid "My Account"
 msgstr ""
 
-#: classes/class-lsx-login.php:884
+#: classes/class-lsx-login.php:892
 msgid "Lost password"
 msgstr ""
 

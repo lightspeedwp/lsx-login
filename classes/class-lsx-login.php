@@ -683,28 +683,36 @@ if ( ! class_exists( 'LSX_Login' ) ) {
 			$items['customer-logout'] = $logout;
 
 			foreach ( $tabs_from_lsx as $key => $value ) {
-				add_filter( 'woocommerce_account_' . $key . '_endpoint', function() {
-					global $wp;
-
-					foreach ( $wp->query_vars as $key2 => $value2 ) {
-						if ( 'pagename' === $key2 ) {
-							continue;
-						}
-
-						$tabs_from_lsx = apply_filters( 'lsx_my_account_tabs', array() );
-
-						if ( isset( $tabs_from_lsx[$key2] ) && isset( $tabs_from_lsx[$key2]['callback'] ) ) {
-							$callback = $tabs_from_lsx[$key2]['callback'];
-
-							if ( is_callable( $callback ) ) {
-								call_user_func( $callback );
-							}
-						}
-					}
-				} );
+				if ( has_filter( 'woocommerce_account_' . $key . '_endpoint' ) ) {
+					continue;
+				}
+				add_filter( 'woocommerce_account_' . $key . '_endpoint', array( $this, 'woocommerce_account_X_endpoint' ) );
 			}
 
 			return $items;
+		}
+
+		/**
+		 * Callback to display the tab content
+		 */
+		public function woocommerce_account_X_endpoint() {
+			global $wp;
+
+			foreach ( $wp->query_vars as $key2 => $value2 ) {
+				if ( 'pagename' === $key2 ) {
+					continue;
+				}
+
+				$tabs_from_lsx = apply_filters( 'lsx_my_account_tabs', array() );
+
+				if ( isset( $tabs_from_lsx[$key2] ) && isset( $tabs_from_lsx[$key2]['callback'] ) ) {
+					$callback = $tabs_from_lsx[$key2]['callback'];
+
+					if ( is_callable( $callback ) ) {
+						call_user_func( $callback );
+					}
+				}
+			}
 		}
 
 		/**
