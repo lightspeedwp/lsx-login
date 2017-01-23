@@ -48,7 +48,7 @@ if ( ! class_exists( 'LSX_Login' ) ) {
 				$this->options = get_option('_lsx-to_settings', false);
 			}else{
 				$this->options = get_option('_lsx_settings', false);
-				if (false === $options) {
+				if (false === $this->options) {
 					$this->options = get_option('_lsx_lsx-settings', false);
 				}
 			}
@@ -63,7 +63,7 @@ if ( ! class_exists( 'LSX_Login' ) ) {
 			add_action( 'after_setup_theme', array($this,'register_menus') , 100);
 			
 			//Call the logged out template
-			add_action( 'template_include', array($this,'template_include'), -1 );
+			add_action( 'template_include', array($this,'template_include'), 100 );
 			
 			//Overwrite the title of the pages
 			//add_filter( 'the_title', array($this,'the_title_filter') , 2 , 20 );
