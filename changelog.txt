@@ -15,6 +15,7 @@
 * Dev - Added shortcode to display useful links as dropdown menu related with the logged status
 * Dev - Added login + lost password modal
 * Dev - Redirect to My Account dashboard after login
+* Dev - Replaced custom signon by wp_signon()
 
 ### 1.0.2
 * Fix - Fixed all prefixes replaces (to_ > lsx_to_, TO_ > LSX_TO_)
