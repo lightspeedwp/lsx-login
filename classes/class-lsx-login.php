@@ -324,7 +324,7 @@ if ( ! class_exists( 'LSX_Login' ) ) {
 				$result = array();
 				
 				if(isset($_POST['log']) && (username_exists($_POST['log']) || is_email( $_POST['log'] ))){
-					$user = $this->lsx_signon();
+					$user = wp_signon();
 					
 					if ( ! is_wp_error( $user ) ) {
 						$result['success']  = 1;
@@ -343,65 +343,6 @@ if ( ! class_exists( 'LSX_Login' ) ) {
 				echo false;
 			}
 			die();
-		}
-
-		/**
-		 * Signs the user in
-		 *
-		 */
-		public function lsx_signon($credentials = array(), $secure_cookie = '') {
-			if ( empty($credentials) ) {
-				if ( ! empty($_POST['log']) )
-					$credentials['user_login'] = $_POST['log'];
-				if ( ! empty($_POST['pwd']) )
-					$credentials['user_password'] = $_POST['pwd'];
-				if ( ! empty($_POST['rememberme']) )
-					$credentials['remember'] = $_POST['rememberme'];
-			}
-
-			if ( is_email( $credentials['user_login'] ) ) {
-				$user_ = get_user_by( 'email', $credentials['user_login'] );
-
-				if ( $user_ ) {
-					$credentials['user_login'] = $user_->user_login;
-				}
-			}
-
-			if ( !empty($credentials['remember']) )
-				$credentials['remember'] = true;
-			else
-				$credentials['remember'] = false;
-
-			/**
-			 * Fires before the user is authenticated.
-			 */
-			do_action_ref_array( 'wp_authenticate', array( &$credentials['user_login'], &$credentials['user_password'] ) );
-
-			if ( '' === $secure_cookie )
-				$secure_cookie = is_ssl();
-
-			/**
-			 * Filter whether to use a secure sign-on cookie.
-			 */
-			$secure_cookie = apply_filters( 'secure_signon_cookie', $secure_cookie, $credentials );
-
-			global $auth_secure_cookie; // XXX ugly hack to pass this to wp_authenticate_cookie
-			$auth_secure_cookie = $secure_cookie;
-
-			add_filter('authenticate', 'wp_authenticate_cookie', 30, 3);
-
-			$user = wp_authenticate($credentials['user_login'], $credentials['user_password']);
-
-			if ( is_wp_error($user) ) {
-				if ( $user->get_error_codes() == array('empty_username', 'empty_password') ) {
-					$user = new WP_Error('', '');
-				}
-
-				return $user;
-			}
-
-			wp_set_auth_cookie($user->ID, $credentials['remember'], $secure_cookie);
-			return $user;		
 		}
 		
 		/**

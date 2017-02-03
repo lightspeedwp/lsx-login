@@ -31,3 +31,16 @@ rsync -a \
 	--exclude='gulpfile.js' \
 	--exclude='package.json' \
 	~/Sites-LightSpeed/@git/lsx-login ~/Sites-LightSpeed/@mamp/tsa-v2.mamp/wp-content/plugins;
+
+echo "* LIT.MAMP:8888 *";
+rm -Rf ~/Sites-LightSpeed/@mamp/lit.mamp/wp-content/plugins/lsx-login;
+rsync -a \
+	--exclude='.git' \
+	--exclude='.idea' \
+	--exclude='.sass-cache' \
+	--exclude='node_modules' \
+	--exclude='.DS_Store' \
+	--exclude='.gitignore' \
+	--exclude='gulpfile.js' \
+	--exclude='package.json' \
+	~/Sites-LightSpeed/@git/lsx-login ~/Sites-LightSpeed/@mamp/lit.mamp/wp-content/plugins;
