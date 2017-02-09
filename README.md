@@ -19,6 +19,7 @@ The LSX Login extension allows users to log into a dashboard and then see config
 * Dev - Added shortcode to display useful links as dropdown menu related with the logged status
 * Dev - Added login + lost password modal
 * Dev - Redirect to My Account dashboard after login
+* Fix - Adjusted the plugin settings link inside the LSX API Class
 
 ### 1.0.2
 * Added in a My Account template with filters to extend.
