@@ -13,7 +13,7 @@ jQuery(document).ready(function($) {
 			var formObj = $(this);
 			
 			//remove all error and validation fields
-			$(this).find('.error').each(function(event){
+			$(this).find('div.error').each(function(event){
 				$(this).remove();
 			});
 			
@@ -21,12 +21,14 @@ jQuery(document).ready(function($) {
 			var username = $(this).find('input.user_login').val();
 			if('' == username){
 				$(this).find('input.user_login').parent('p').append('<div class="error">'+lsx_login_params.empty_username+'</div>');
-				return false;
+                $(this).find('input.user_login').addClass('error');
+                return false;
 			}
 			
 			var password = $(this).find('input.user_pass').val();
 			if('' == password){
 				$(this).find('input.user_pass').parent('p').append('<div class="error">'+lsx_login_params.empty_password+'</div>');
+                $(this).find('input.user_pass').addClass('error');
 				return false;
 			}		
 				
@@ -55,6 +57,8 @@ jQuery(document).ready(function($) {
 			$(this).find('.spinner').css('margin-top',adjustHeight+'px');
 			$(this).find('.spinner').css('margin-left',adjustWidth+'px');
 			$(this).find('.spinner').show();
+
+			var form_obj = $(this);
 			
 			$.ajax({
 				url: lsx_login_params.ajax_url,
@@ -69,9 +73,14 @@ jQuery(document).ready(function($) {
 						
 						if(result.success == '3'){
 							formObj.find('.login-password').append('<div class="error">'+result.message+'</div>');
+                            formObj.find('.login-password input').addClass('error');
 						}else if(result.success == '2'){
 							formObj.find('.login-username').append('<div class="error">'+result.message+'</div>');
+                            formObj.find('.login-username input').addClass('error');
 						}
+
+                        form_obj.find('.spinner').hide();
+                        form_obj.removeClass('loading');
 					}
 				}
 
@@ -223,6 +232,7 @@ jQuery(document).ready(function($) {
 		});
 		
 		$('input.user_login , input.user_pass, input.pass1, input.pass2').click(function(event){
+            $(this).removeClass('error');
 			$(this).parent('p').find('.error').remove();
 		});
 	}else{

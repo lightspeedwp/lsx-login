@@ -1,55 +1,56 @@
 /*
  *  Login Form + Reset Password Form Basic Styling
  */
- 
-.loginform, .lostpasswordform {
+.loginform , .lostpasswordform {
+
 	padding:15px;
-} 
 
-.loginform h3 .genericon,
-.lostpasswordform h3 .genericon{
-	font-size: larger;
-    padding-bottom: 1px;
-    vertical-align: text-bottom;
-}
+	h3 .genericon {
+		font-size: larger;
+		padding-bottom: 1px;
+		vertical-align: text-bottom;
+	}
 
-.loginform p,
-.lostpasswordform p  {
-	width:80%;
-}
+	.spinner {
+		position:absolute;
+	}
 
-.loginform p label, .loginform p span, .loginform p input[type="text"], .loginform p input[type="password"],
-.lostpasswordform p label, .lostpasswordform p span, .lostpasswordform p input[type="text"] {
-	width:100% !important;
-}
+	.error{
+		border-color:red;
+	}
 
-.loginform p input[type="text"],
-.lostpasswordform p input[type="text"] {
-	width:auto;
-}
+	p{
+		width:80%;
 
-.loginform p.login-remember input{
-    display: inline;
-    float: none;
-    height: auto;
-    margin-right: 5px;
-    margin-top: 0;
-    width: auto;
-}
-.loginform p.login-remember label{
-	display: inline;
-}
- 
-/*
- * Form Loading
- */ 
-.loginform.loading p,
-.lostpasswordform.loading p {
-	background-color: #ccc;
-	opacity: 0.3;
-}
+		label, span, input[type="text"],input[type="password"] {
+			width:100% !important;
+		}
 
-.loginform .spinner,
-.lostpasswordform .spinner {
-	position:absolute;
+		input[type="text"]{
+			width:auto;
+
+			&.error {
+				background-color:#f3cdcd;
+			}
+		}
+
+		&.login-remember {
+			input {
+				float: none;
+				height: auto;
+				margin-right: 5px;
+				margin-top: 0;
+				width: auto;
+			}
+
+			label,input{
+				display: inline;
+			}
+		}
+	}
+
+	&.loading p {
+		background-color: #ccc;
+		opacity: 0.3;
+	}
 }
