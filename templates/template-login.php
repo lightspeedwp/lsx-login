@@ -2,10 +2,11 @@
 /* Template Name: Login */
 
 get_header(); ?>
+
 	<header class="page-header col-sm-12">
-		<h1 class="page-title"><?php the_title(); ?></h1>
+		<h1 class="page-title"><?php echo apply_filters('lsx_login_title', get_the_title()); ?></h1>
 	</header><!-- .entry-header -->
-	<div id="primary" class="content-area <?php //echo lsx_main_class(); ?>">
+	<div id="primary" class="content-area content-login <?php //echo lsx_main_class(); ?>">
 
 		<?php //lsx_content_before(); ?>
 
