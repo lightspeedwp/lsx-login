@@ -17,6 +17,10 @@
 * Dev - Redirect to My Account dashboard after login
 * Dev - Replaced custom signon by wp_signon()
 * Fix - Adjusted the plugin settings link inside the LSX API Class
+* Fix - Fixed "remember" checkbox alignment
+* Fix - Fixed the hiding of the ajax spinner
+* Fix - Fixed the layout of the logged out maintenance dashboard
+* Dev - Added in a content-login class
 
 ### 1.0.2
 * Fix - Fixed all prefixes replaces (to_ > lsx_to_, TO_ > LSX_TO_)
