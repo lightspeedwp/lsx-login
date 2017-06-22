@@ -525,6 +525,8 @@ if ( ! class_exists( 'LSX_Login' ) ) {
 			);
 		}
 
+
+
 		/**
 		 * Register tabs
 		 */
