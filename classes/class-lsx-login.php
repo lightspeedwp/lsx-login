@@ -462,7 +462,7 @@ if ( ! class_exists( 'LSX_Login' ) ) {
 
 				if(!is_wp_error($user)){
 					$result['success']  = 1;
-					$result['message']  = __('Your password has been reset!','lsx-login');
+					$result['message']  = __('Your password has been reset! Please click the login tab to login with your new password.','lsx-login');
 					$this->reset_password($user,$_POST['pass1']);
 				}else{
 					$result['success']  = 2;
