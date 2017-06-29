@@ -138,8 +138,10 @@ jQuery(document).ready(function($) {
 						
 						if(result.success == '3'){
 							formObj.append('<p class="error">'+result.message+'</p>');
+                            formObj.find('input.user_login').addClass('error');
 						}else if(result.success == '2'){
 							formObj.find('.login-username').append('<div class="error">'+result.message+'</div>');
+                            formObj.find('input.user_login').addClass('error');
 						}else if(result.success == '1'){
 							formObj.find('p').each(function(event){
 								$(this).remove();
@@ -168,17 +170,20 @@ jQuery(document).ready(function($) {
 			var pass1 = $(this).find('input.pass1').val();
 			if('' == pass1){
 				$(this).find('input.pass1').parent('p').append('<div class="error">'+lsx_login_params.empty_password+'</div>');
+                $(this).find('input.pass1').addClass('error');
 				return false;
 			}	
 			
 			var pass2 = $(this).find('input.pass2').val();
 			if('' == pass2){
 				$(this).find('input.pass2').parent('p').append('<div class="error">'+lsx_login_params.empty_password+'</div>');
+                $(this).find('input.pass2').addClass('error');
 				return false;
 			}
 			
 			if(pass1 !== pass2 ){
 				$(this).find('input.pass2').parent('p').append('<div class="error">'+lsx_login_params.no_match+'</div>');
+                $(this).find('input.pass2').addClass('error');
 				return false;
 			}
 			
@@ -218,6 +223,7 @@ jQuery(document).ready(function($) {
 						
 						if(result.success == '2'){
 							formObj.append('<p class="error">'+result.message+'</p>');
+                            formObj.find('input.pass2').addClass('error');
 						}else if(result.success == '1'){
 							formObj.find('p').each(function(event){
 								$(this).remove();
