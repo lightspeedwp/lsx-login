@@ -243,7 +243,7 @@ jQuery(document).ready(function($) {
             var key = url.searchParams.get("key");
             var login = url.searchParams.get("login");
 
-            if(!$('body').hasClass('page-my-account') && null !== reset_link && 'rp' === reset_link && null !== key && null !== login){
+            if(!$('body').hasClass('page-my-account') && null !== action && 'rp' === action && null !== key && null !== login){
                 $('#login-modal').modal('show');
                 $('a[href="#tab-lost-password"]').trigger('click');
             }
