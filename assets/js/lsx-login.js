@@ -235,6 +235,20 @@ jQuery(document).ready(function($) {
             $(this).removeClass('error');
 			$(this).parent('p').find('.error').remove();
 		});
+
+
+        $(window).bind("load", function() {
+            var url = new URL(location.href);
+            var action = url.searchParams.get("action");
+            var key = url.searchParams.get("key");
+            var login = url.searchParams.get("login");
+
+            if(!$('body').hasClass('page-my-account') && null !== reset_link && 'rp' === reset_link && null !== key && null !== login){
+                $('#login-modal').modal('show');
+                $('a[href="#tab-lost-password"]').trigger('click');
+            }
+        });
+
 	}else{
 		jQuery('.loginform').attr('action','/wp-login.php');
 	}
