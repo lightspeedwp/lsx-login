@@ -8,12 +8,13 @@
 	?>
 
 	<ul class="ui-tab-nav">
-		<?php if ( false !== $display_settings_page ) { ?><li><a href="#ui-settings" class="active"><?php esc_html_e( 'Settings', 'lsx-login' ); ?></a></li><?php } ?>
-		<li><a href="#ui-keys" <?php if ( false === $display_settings_page ) { ?>class="active"<?php } ?>><?php esc_html_e( 'License Keys', 'lsx-login' ); ?></a></li>
+		<?php if ( false !== $display_settings_page ) { ?><li><a href="#ui-settings" class="active"><?php esc_html_e( 'Settings', 'lsx-banners' ); ?></a></li><?php } ?>
+		<li><a href="#ui-keys" <?php if ( false === $display_settings_page ) { ?>class="active"<?php } ?>><?php esc_html_e( 'License Keys', 'lsx-banners' ); ?></a></li>
 	</ul>
 
 	<?php if ( false !== $display_settings_page ) { ?>
 		<div id="ui-settings" class="ui-tab active">
+			<p><?php esc_html_e('Please enter your user details (email address, API key, username, etc) below as required for the extensions that you have installed.','tour-operator' ); ?></p>
 			<table class="form-table" style="margin-top:-13px !important;">
 				<tbody>
 				<?php do_action( 'lsx_framework_api_tab_content', 'settings' ); ?>
@@ -26,19 +27,17 @@
 		<table class="form-table" style="margin-top:-13px !important;">
 			<tbody>
 			<?php
+			$lsx = admin_url('themes.php?page=lsx-welcome');
+			$message = sprintf( "Please enter the license and API key's for your add-ons below." );
+			$message .= sprintf( " Follow this <a href='%s' title='LSX add-ons'>link</a> to see what extensions are available for LSX.", $lsx );
+			?>
+			<p class="info"><?php echo wp_kses_post($message); ?></p>
+			<?php
 			$api_keys_content = false;
 			ob_start();
 			do_action( 'lsx_framework_api_tab_content', 'api' );
 			$api_keys_content = ob_end_clean();
-			if ( false !== $api_keys_content ) {
-				?>
-				<p class="info"><?php esc_html_e( 'Enter the license keys for your add-ons in the boxes below.', 'lsx-login' ); ?></p>
-				<?php
-				do_action( 'lsx_framework_api_tab_content', 'api' );
-			} else {
-				?>
-				<p class="info"><?php esc_html_e( 'You have not installed any add-ons yet. View our list of add-ons', 'lsx-login' ); ?> <a href="<?php echo esc_url( admin_url( 'themes.php' ) ); ?>?page=lsx-welcome"><?php esc_html_e( 'here', 'lsx-login' ); ?></a>.</p>
-			<?php }	?>
+			?>
 			</tbody>
 		</table>
 	</div>
