@@ -9,11 +9,6 @@
 	border-bottom: 0; 
 }
 
-/* Neaten up the margins when metaboxes are within the standard postbox. */
-.postbox > .inside > .cmb_metabox {
-	margin: -10px 0; 
-}
-
 .cmb_metabox .cmb-row { 
 	overflow: hidden; 
 	margin: 0 -5px; 
