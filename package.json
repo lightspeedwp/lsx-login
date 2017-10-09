@@ -1,6 +1,6 @@
 {
   "name": "lsx-login",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "The LSX Login extension allows users to log into a dashboard and then see configurable content based on which users can access which content.",
   "main": "gulpfile.js",
   "scripts": {

@@ -1,5 +1,19 @@
 ## Changelog
 
+### 1.0.4
+* Dev - Changing the woocommerce class to upper case
+* Dev - Fixing the password reset items
+* Dev - Fixed the higlighting of the password reset form fields
+* Dev - Updated the messages for the password reset form
+* Dev - Updated the License Class js to trigger the new button
+* Dev - Updated the License class so the status is updated on activation
+* Dev - Updated the JS so it works with the new Button JS
+* Dev - Updated the API setting tab hide the "settings" tab if certain plugins are not active
+* Dev - Fixed the selecting of the API class if the license manager is not active
+* Dev - Fixed the output of the 2 messages
+* Dev - Updated the API messages
+* Dev - Travis-CI review
+
 ### 1.0.3
 * Dev - Moved main PHP class to a separate file
 * Dev - Renamed 'inc' folder to 'includes'
