@@ -213,6 +213,7 @@ if ( ! class_exists( 'LSX_Login' ) ) {
 			$message = str_replace( '{first_name}', $first_name, $message );
 			$message = str_replace( '{last_name}', $last_name, $message );
 			$message = str_replace( '{my_account}', $my_account, $message );
+			$message = preg_replace( '/\n/', '<br>', $message );
 
 			$mail = wp_mail( 'fernando@lsdev.biz', $subject, $message );
 

@@ -132,7 +132,7 @@
 					<label for="welcome_email_message"><?php esc_html_e( 'Message', 'lsx-login' ); ?></label>
 				</th>
 				<td>
-					<?php wp_editor( $content, 'welcome_email_message', $settings ); ?>
+					<textarea rows="8" name="welcome_email_message">{{welcome_email_message}}</textarea>
 				</td>
 			</tr>
 
