@@ -1,5 +1,10 @@
 ## Changelog
 
+### 1.0.5
+* Skipping the enqueue of the select2 when woocommerce is active to avoid conflicts
+* NPM and Gulp files updated
+* Add LSX Welcome email
+
 ### 1.0.4
 * Dev - Changing the woocommerce class to upper case
 * Dev - Fixing the password reset items

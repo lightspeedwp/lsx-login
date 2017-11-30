@@ -39,7 +39,8 @@
 							<?php endforeach; ?>
 						</td>
 					</tr>
-				<?php endif; ?>
+				<?php endif;
+			?>
 
 			<tr class="form-field-wrap">
 				<th scope="row">
@@ -47,36 +48,124 @@
 				</th>
 
 				<?php
-				$args = array(
-					'sort_order'   => 'asc',
-					'sort_column'  => 'post_title',
-					'hierarchical' => 1,
-					'child_of'     => 0,
-					'parent'       => -1,
-					'post_type'    => 'page',
-					'post_status'  => 'publish'
-				);
+					$args = array(
+						'sort_order'   => 'asc',
+						'sort_column'  => 'post_title',
+						'hierarchical' => 1,
+						'child_of'     => 0,
+						'parent'       => -1,
+						'post_type'    => 'page',
+						'post_status'  => 'publish',
+					);
 
-				$pages = get_pages( $args );
-				$current_page = '';
+					$pages = get_pages( $args );
+					$current_page = '';
 
-				if ( isset( $lsx_login->options ) && isset( $lsx_login->options['login']['my_account_id'] ) ) {
-					$current_page = $lsx_login->options['login']['my_account_id'];
-				}
+					if ( isset( $lsx_login->options ) && isset( $lsx_login->options['login']['my_account_id'] ) ) {
+						$current_page = $lsx_login->options['login']['my_account_id'];
+					}
 				?>
 
 				<td>
 					<select value="{{my_account_id}}" name="my_account_id">
 						<?php if ( false !== $pages && '' !== $pages ) : ?>
-							<option value="" <?php if(  '' === $current_page ) { echo 'selected="selected"'; } ?>><?php esc_html_e( 'Select a page', 'lsx-login' ); ?></option>
+							<option value="" <?php if ( '' === $current_page ) { echo 'selected="selected"'; } ?>><?php esc_html_e( 'Select a page', 'lsx-login' ); ?></option>
 
-							<?php foreach( $pages as $page ) : ?>
+							<?php foreach ( $pages as $page ) : ?>
 								<option value="<?php echo esc_attr( $page->ID ); ?>" <?php if ( $current_page === $page->ID ) { echo 'selected="selected"'; } ?>><?php echo esc_html( $page->post_title ); ?></option>
 							<?php endforeach; ?>
 						<?php else : ?>
 							<option value="" {{#if my_account_id value=""}}selected="selected"{{/if}}><?php esc_html_e( 'You have no page available', 'lsx-login' ); ?></option>
 						<?php endif; ?>
 					</select>
+				</td>
+			</tr>
+
+			<tr class="form-field">
+				<th scope="row" colspan="2">
+					<h3><?php esc_html_e( 'Welcome Email', 'lsx-login' ); ?></h3>
+				</th>
+			</tr>
+
+			<tr class="form-field">
+				<th scope="row">
+					<label for="welcome_email_from_name"><?php esc_html_e( 'From Name', 'lsx-login' ); ?></label>
+				</th>
+				<td>
+					<input type="text" name="welcome_email_from_name" {{#if welcome_email_from_name}} value="{{welcome_email_from_name}}" {{/if}}>
+				</td>
+			</tr>
+
+			<tr class="form-field">
+				<th scope="row">
+					<label for="welcome_email_from_email"><?php esc_html_e( 'From Email', 'lsx-login' ); ?></label>
+				</th>
+				<td>
+					<input type="text" name="welcome_email_from_email" {{#if welcome_email_from_email}} value="{{welcome_email_from_email}}" {{/if}}>
+				</td>
+			</tr>
+
+			<tr class="form-field">
+				<th scope="row">
+					<label for="welcome_email_subject"><?php esc_html_e( 'Subject', 'lsx-login' ); ?></label>
+				</th>
+				<td>
+					<input type="text" name="welcome_email_subject" {{#if welcome_email_subject}} value="{{welcome_email_subject}}" {{/if}}>
+				</td>
+			</tr>
+
+			<?php
+				$content = '';
+
+				if ( isset( $lsx_login->options ) && ! empty( $lsx_login->options['login']['welcome_email_message'] ) ) {
+					$content = $lsx_login->options['login']['welcome_email_message'];
+				}
+
+				$settings = array(
+					'media_buttons' => false,
+					'textarea_rows' => 5,
+				);
+			?>
+
+			<tr class="form-field">
+				<th scope="row">
+					<label for="welcome_email_message"><?php esc_html_e( 'Message', 'lsx-login' ); ?></label>
+				</th>
+				<td>
+					<textarea rows="8" name="welcome_email_message">{{welcome_email_message}}</textarea>
+				</td>
+			</tr>
+
+			<tr class="form-field">
+				<th scope="row" colspan="2">
+					<h3><?php esc_html_e( 'Send Message', 'lsx-login' ); ?></h3>
+				</th>
+			</tr>
+
+			<?php
+				$roles = get_editable_roles();
+
+				if ( count( $roles ) > 0 ) : ?>
+					<tr class="form-field">
+						<th scope="row">
+							<label for="welcome_email_user_roles"><?php esc_html_e( 'User Roles', 'lsx-login' ); ?></label>
+						</th>
+
+						<td>
+							<?php foreach ( $roles as $role => $data ) : ?>
+								<input type="checkbox" name="welcome_email_user_roles[]" value="<?php echo esc_attr( $role ); ?>" />
+								<small><?php echo esc_html( $data['name'] ); ?></small>
+								<br>
+							<?php endforeach; ?>
+						</td>
+					</tr>
+				<?php endif;
+			?>
+
+			<tr class="form-field">
+				<th scope="row"></th>
+				<td>
+					<button type="button" class="button button-primary" name="welcome_email_invite"><?php esc_html_e( 'Send Message', 'lsx-login' ); ?></button>
 				</td>
 			</tr>
 		</tbody>
