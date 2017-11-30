@@ -187,43 +187,43 @@ if ( ! class_exists( 'LSX_Login' ) ) {
 		 * Welcome users.
 		 */
 		public function do_ajax_welcome_users() {
-			# var_dump( $_GET['welcome_email_user_roles'] );
+			// var_dump( $_GET['welcome_email_user_roles'] );
 
-			add_filter( 'wp_mail_content_type', array( $this, 'welcome_users_email_content_type' ) );
-			add_filter( 'wp_mail_from', array( $this, 'welcome_users_email_from' ) );
-			add_filter( 'wp_mail_from_name', array( $this, 'welcome_users_email_from_name' ) );
+			// add_filter( 'wp_mail_content_type', array( $this, 'welcome_users_email_content_type' ) );
+			// add_filter( 'wp_mail_from', array( $this, 'welcome_users_email_from' ) );
+			// add_filter( 'wp_mail_from_name', array( $this, 'welcome_users_email_from_name' ) );
 
-			$subject = __( 'Welcome to LSX', 'lsx' );
+			// $subject = __( 'Welcome to LSX', 'lsx' );
 
-			if ( isset( $this->options ) && ! empty( $this->options['login']['welcome_email_subject'] ) ) {
-				$subject = $this->options['login']['welcome_email_subject'];
-			}
+			// if ( isset( $this->options ) && ! empty( $this->options['login']['welcome_email_subject'] ) ) {
+			// 	$subject = $this->options['login']['welcome_email_subject'];
+			// }
 
-			$message = '';
+			// $message = '';
 
-			if ( isset( $this->options ) && ! empty( $this->options['login']['welcome_email_message'] ) ) {
-				$message = $this->options['login']['welcome_email_message'];
-			}
+			// if ( isset( $this->options ) && ! empty( $this->options['login']['welcome_email_message'] ) ) {
+			// 	$message = $this->options['login']['welcome_email_message'];
+			// }
 
-			$first_name = 'Fernando_';
-			$last_name = 'Tessmann_';
-			$my_account = $this->get_my_account_page_slug();
-			$my_account = site_url( '/' . $my_account . '/' );
+			// $first_name = 'Fernando_';
+			// $last_name = 'Tessmann_';
+			// $my_account = $this->get_my_account_page_slug();
+			// $my_account = site_url( '/' . $my_account . '/' );
 
-			$message = str_replace( '{first_name}', $first_name, $message );
-			$message = str_replace( '{last_name}', $last_name, $message );
-			$message = str_replace( '{my_account}', $my_account, $message );
-			$message = preg_replace( '/\n/', '<br>', $message );
+			// $message = str_replace( '{first_name}', $first_name, $message );
+			// $message = str_replace( '{last_name}', $last_name, $message );
+			// $message = str_replace( '{my_account}', $my_account, $message );
+			// $message = preg_replace( '/\n/', '<br>', $message );
 
-			$mail = wp_mail( 'fernando@lsdev.biz', $subject, $message );
+			// $mail = wp_mail( 'fernando@lsdev.biz', $subject, $message );
 
-			if ( $mail ) {
-				wp_send_json_success();
-			} else {
-				wp_send_json_error();
-			}
+			// if ( $mail ) {
+			// 	wp_send_json_success();
+			// } else {
+			// 	wp_send_json_error();
+			// }
 
-			die();
+			// die();
 		}
 
 		public function welcome_users_email_content_type( $content_type ) {
