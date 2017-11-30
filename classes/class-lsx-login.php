@@ -7,7 +7,7 @@ if ( ! class_exists( 'LSX_Login' ) ) {
 	 * @package   LSX Login
 	 * @author    LightSpeed
 	 * @license   GPL3
-	 * @link      
+	 * @link
 	 * @copyright 2016 LightSpeed
 	 */
 	class LSX_Login {
@@ -27,7 +27,7 @@ if ( ! class_exists( 'LSX_Login' ) ) {
 		 * @since 1.0.3
 		 */
 		public $options = null;
-	
+
 		/**
 		 * Holds class instance.
 		 *
@@ -44,12 +44,13 @@ if ( ! class_exists( 'LSX_Login' ) ) {
 			require_once( LSX_LOGIN_PATH . 'includes/template-tags.php' );
 			require_once( LSX_LOGIN_PATH . 'classes/class-lsx-login-widget.php' );
 
-			if(class_exists('Tour_Operator')) {
-				$this->options = get_option('_lsx-to_settings', false);
-			}else{
-				$this->options = get_option('_lsx_settings', false);
-				if (false === $this->options) {
-					$this->options = get_option('_lsx_lsx-settings', false);
+			if ( class_exists( 'Tour_Operator' ) ) {
+				$this->options = get_option( '_lsx-to_settings', false );
+			} else {
+				$this->options = get_option( '_lsx_settings', false );
+
+				if ( false === $this->options ) {
+					$this->options = get_option( '_lsx_lsx-settings', false );
 				}
 			}
 
@@ -59,44 +60,48 @@ if ( ! class_exists( 'LSX_Login' ) ) {
 
 			add_filter( 'lsx_framework_settings_tabs', array( $this, 'register_tabs' ), 200, 1 );
 
-			//Register our logged out menu location, make sure this is done at the very end so it doesnt mess with any currently set up menus. 
-			add_action( 'after_setup_theme', array($this,'register_menus') , 100);
-			
+			//Register our logged out menu location, make sure this is done at the very end so it doesnt mess with any currently set up menus.
+			add_action( 'after_setup_theme', array( $this, 'register_menus' ) , 100 );
+
 			//Call the logged out template
-			add_action( 'template_include', array($this,'template_include'), 100 );
-			
+			add_action( 'template_include', array( $this, 'template_include' ), 100 );
+
 			//Overwrite the title of the pages
 			//add_filter( 'the_title', array($this,'the_title_filter') , 2 , 20 );
-			
-			//Redirect the user on succeful logout	
-			add_filter( 'logout_url', array($this,'logout_redirect'), 10, 2 );
-			
+
+			//Redirect the user on succeful logout
+			add_filter( 'logout_url', array( $this, 'logout_redirect' ), 10, 2 );
+
 			//Force a 1 column layout
-			add_filter( 'lsx_layout', array($this,'logout_layout_filter') , 1 , 100 );
-			
+			add_filter( 'lsx_layout', array( $this, 'logout_layout_filter' ) , 1 , 100 );
+
 			//Enqueue the scrips
-			add_action( 'wp_enqueue_scripts', array($this,'scripts') ,100 );
-			
+			add_action( 'wp_enqueue_scripts', array( $this, 'scripts' ) ,100 );
+			add_action( 'admin_enqueue_scripts', array( $this, 'admin_scripts' ) ,100 );
+
 			//ajax handlers
 			add_action( 'wp_ajax_lsx_login', array( $this, 'do_ajax_login' ) );
-			add_action( 'wp_ajax_nopriv_lsx_login', array( $this, 'do_ajax_login' ) );	
+			add_action( 'wp_ajax_nopriv_lsx_login', array( $this, 'do_ajax_login' ) );
 
 			add_action( 'wp_ajax_lsx_reset', array( $this, 'do_ajax_reset' ) );
-			add_action( 'wp_ajax_nopriv_lsx_reset', array( $this, 'do_ajax_reset' ) );		
-			
+			add_action( 'wp_ajax_nopriv_lsx_reset', array( $this, 'do_ajax_reset' ) );
+
 			add_action( 'wp_ajax_lsx_reset_confirmed', array( $this, 'do_ajax_reset_confirmed' ) );
 			add_action( 'wp_ajax_nopriv_lsx_reset_confirmed', array( $this, 'do_ajax_reset_confirmed' ) );
-			
+
+			add_action( 'wp_ajax_lsx_welcome_users', array( $this, 'do_ajax_welcome_users' ) );
+			# add_action( 'wp_ajax_nopriv_lsx_login', array( $this, 'do_ajax_welcome_users' ) );
+
 			add_filter( 'password_reset_expiration', array( $this, 'force_expiration_time' ) ,1 ,100 );
-			
-			add_action( 'rss_tag_pre', array($this,'remove_title_from_rss'),100);
+
+			add_action( 'rss_tag_pre', array( $this, 'remove_title_from_rss' ), 100 );
 
 			//WooCommerce
 			add_action( 'init', array( $this, 'woocommerce_add_rewrite_rule' ) );
 			add_filter( 'query_vars', array( $this, 'woocommerce_add_query_vars' ), 0 );
 			add_filter( 'woocommerce_account_menu_items', array( $this, 'woocommerce_account_menu_items' ) );
 			add_filter( 'woocommerce_get_myaccount_page_permalink', array( $this, 'woocommerce_get_myaccount_page_permalink' ) );
-			
+
 			//Allow email login
 			add_filter( 'authenticate', array( $this, 'allow_email_login' ), 20, 3 );
 
@@ -115,10 +120,10 @@ if ( ! class_exists( 'LSX_Login' ) ) {
 			//Redirect to My Account page after login
 			add_action( 'lsx_login_redirect', array( $this, 'login_redirect' ) );
 		}
-	
+
 		/**
 		 * Return an instance of this class.
-		 * 
+		 *
 		 * @return    object|Lsx_Restrict_Access    A single instance of this class.
 		 */
 		public static function get_instance() {
@@ -130,42 +135,117 @@ if ( ! class_exists( 'LSX_Login' ) ) {
 			return self::$instance;
 		}
 
-		public function force_expiration_time($date){
-			return strtotime(date('+7 days'));
+		public function force_expiration_time( $date ) {
+			return strtotime( date( '+7 days' ) );
 		}
-		
+
 		/**
 		 * Enqueue scripts and styles.
-		 *
 		 */
 		public function scripts() {
-			//if(!is_user_logged_in()){
-				if ( defined( 'WP_DEBUG' ) && true === WP_DEBUG ) {
-					$min = '';
-				} else {
-					$min = '.min';
-				}
+			wp_enqueue_style( 'lsx-login', LSX_LOGIN_URL . 'assets/css/lsx-login.css', array(), LSX_LOGIN_VER );
+			wp_style_add_data( 'lsx-login', 'rtl', 'replace' );
 
-				wp_enqueue_style( 'lsx_login', LSX_LOGIN_URL . 'assets/css/lsx-login.css', array(), LSX_LOGIN_VER );
+			$enqueue_scripts = apply_filters( 'lsx_login_js_enqueue', true );
 
-				$enqueue_scripts = apply_filters('lsx_login_js_enqueue',true);
+			if ( true === $enqueue_scripts ) {
+				wp_enqueue_script( 'lsx-login', LSX_LOGIN_URL . 'assets/js/lsx-login.min.js', array( 'jquery' ), LSX_LOGIN_VER, true );
 
-				if(true === $enqueue_scripts){
-					wp_enqueue_script('lsx_login', LSX_LOGIN_URL . 'assets/js/lsx-login' . $min . '.js', array( 'jquery' ), LSX_LOGIN_VER, true );
-					$param_array = array(
-							'ajax_url' 			=> admin_url('admin-ajax.php'),
-							'empty_username'	=> __('The username field is empty.','lsx-login'),
-							'empty_password'	=> __('The password field is empty.','lsx-login'),
-							'empty_reset'		=> __('Enter a username or e-mail address.','lsx-login'),
-							'no_match'		    => __('Passwords do not match','lsx-login'),
-							'ajax_spinner'		=> LSX_LOGIN_URL . "assets/images/ajax-spinner.gif",
-							'theme_url' 		=> LSX_LOGIN_URL,
-					);
-					wp_localize_script( 'lsx_login', 'lsx_login_params', $param_array );
-				}
-			//}		
+				$params = array(
+					'ajax_url'       => admin_url( 'admin-ajax.php' ),
+					'empty_username' => __( 'The username field is empty.', 'lsx-login' ),
+					'empty_password' => __( 'The password field is empty.', 'lsx-login' ),
+					'empty_reset'    => __( 'Enter a username or e-mail address.', 'lsx-login' ),
+					'no_match'       => __( 'Passwords do not match', 'lsx-login' ),
+					'ajax_spinner'   => LSX_LOGIN_URL . 'assets/images/ajax-spinner.gif',
+					'theme_url'      => LSX_LOGIN_URL,
+				);
+
+				wp_localize_script( 'lsx-login', 'lsx_login_params', $params );
+			}
 		}
-		
+
+		/**
+		 * Enqueue admin scripts and styles.
+		 */
+		public function admin_scripts() {
+			# wp_enqueue_style( 'lsx-login-admin', LSX_LOGIN_URL . 'assets/css/lsx-login-admin.css', array(), LSX_LOGIN_VER );
+
+			wp_enqueue_script( 'lsx-login-admin', LSX_LOGIN_URL . 'assets/js/lsx-login-admin.min.js', array( 'jquery' ), LSX_LOGIN_VER, true );
+
+			$params = array(
+				'text_send'          => __( 'Send Message', 'lsx-login' ),
+				'text_sending'       => __( 'Sending...', 'lsx-login' ),
+				'text_sent'          => __( 'Done! The emails are being sent', 'lsx-login' ),
+				'ajax_welcome_users' => admin_url( 'admin-ajax.php?action=lsx_welcome_users' ),
+			);
+
+			wp_localize_script( 'lsx-login-admin', 'lsx_login_admin_params', $params );
+		}
+
+		/**
+		 * Welcome users.
+		 */
+		public function do_ajax_welcome_users() {
+			# var_dump( $_GET['welcome_email_user_roles'] );
+
+			add_filter( 'wp_mail_content_type', array( $this, 'welcome_users_email_content_type' ) );
+			add_filter( 'wp_mail_from', array( $this, 'welcome_users_email_from' ) );
+			add_filter( 'wp_mail_from_name', array( $this, 'welcome_users_email_from_name' ) );
+
+			$subject = __( 'Welcome to LSX', 'lsx' );
+
+			if ( isset( $this->options ) && ! empty( $this->options['login']['welcome_email_subject'] ) ) {
+				$subject = $this->options['login']['welcome_email_subject'];
+			}
+
+			$message = '';
+
+			if ( isset( $this->options ) && ! empty( $this->options['login']['welcome_email_message'] ) ) {
+				$message = $this->options['login']['welcome_email_message'];
+			}
+
+			$first_name = 'Fernando_';
+			$last_name = 'Tessmann_';
+			$my_account = $this->get_my_account_page_slug();
+			$my_account = site_url( '/' . $my_account . '/' );
+
+			$message = str_replace( '{first_name}', $first_name, $message );
+			$message = str_replace( '{last_name}', $last_name, $message );
+			$message = str_replace( '{my_account}', $my_account, $message );
+
+			$mail = wp_mail( 'fernando@lsdev.biz', $subject, $message );
+
+			if ( $mail ) {
+				wp_send_json_success();
+			} else {
+				wp_send_json_error();
+			}
+
+			die();
+		}
+
+		public function welcome_users_email_content_type( $content_type ) {
+			$content_type = 'text/html';
+			return $content_type;
+		}
+
+		public function welcome_users_email_from( $from ) {
+			if ( isset( $this->options ) && ! empty( $this->options['login']['welcome_email_from_email'] ) ) {
+				$from = $this->options['login']['welcome_email_from_email'];
+			}
+
+			return $from;
+		}
+
+		public function welcome_users_email_from_name( $from_name ) {
+			if ( isset( $this->options ) && ! empty( $this->options['login']['welcome_email_from_name'] ) ) {
+				$from_name = $this->options['login']['welcome_email_from_name'];
+			}
+
+			return $from_name;
+		}
+
 		/**
 		 * Register a new primary menu for the logged out view
 		 */
@@ -175,16 +255,16 @@ if ( ! class_exists( 'LSX_Login' ) ) {
 				'primary_logged_out' => __( 'Primary Menu (logged out)', 'lsx-login' )
 				)
 			);
-			
+
 			if(!is_user_logged_in()){
 				remove_action( 'lsx_footer_before', 'lsx_add_footer_sidebar_area' );
 			}
 		}
-		
+
 		/**
 		 * Redirect the template
-		 */	
-		public function template_include($template) {
+		 */
+		public function template_include( $template ) {
 			$require_logged_user = apply_filters( 'lsx_login_require_logged_user', false );
 
 			if ( false === $require_logged_user && isset( $this->options['login'] ) ) {
@@ -217,10 +297,10 @@ if ( ! class_exists( 'LSX_Login' ) ) {
 			}
 
 			if ( true === $require_logged_user && !is_user_logged_in() && !apply_filters('lsx_login_disable_template',false) ) {
-				
+
 				//Check if there is a tempalte in the theme
 				$template = locate_template( array( 'template-login.php' ));
-				
+
 				//if there isnt, then display our template.
 				if('' == locate_template( array( 'template-login.php' )) && file_exists( LSX_LOGIN_PATH . "templates/template-login.php" )) {
 					$template = LSX_LOGIN_PATH ."templates/template-login.php";
@@ -239,11 +319,11 @@ if ( ! class_exists( 'LSX_Login' ) ) {
 			}
 			return $template;
 		}
-		
+
 		/**
 		 * Add in a filter so the title is forced to a prompt.
 		 */
-		public function the_title_filter($title, $id) {
+		public function the_title_filter( $title, $id ) {
 			global $wp_query;
 
 			if(!is_user_logged_in() && is_main_query() && get_the_ID() == $id){
@@ -253,35 +333,35 @@ if ( ! class_exists( 'LSX_Login' ) ) {
 
 			return $title;
 		}
-		
+
 		/**
-		 * 
+		 *
 		 */
 		public function remove_title_from_rss() {
-			remove_filter( 'the_title', array($this,'the_title_filter' ));
+			remove_filter( 'the_title', array( $this, 'the_title_filter' ) );
 		}
-		
+
 		//Redirect the user on login to the same page
 		//Redirect the user to the page they were on / home.
 		//Need to make sure the validation redirects back to the form when it fails
-		
-		/**	
+
+		/**
 		 * Redirect a user to the homepage on logout.
-		 * 
+		 *
 		 * @param string $logout_url URL to redirect to.
-		 * @param string $redirect URL the user is going.	
+		 * @param string $redirect URL the user is going.
 		 */
 		public function logout_redirect( $logout_url, $redirect ) {
-		    return $logout_url . '&redirect_to=' . esc_url( home_url() );
+			return $logout_url . '&redirect_to=' . esc_url( home_url() );
 		}
-		
+
 		/**
 		 * generate the login form
 		 *
 		 */
 		public function login_form() {
 			//if there isnt, then display our template.
-			
+
 			if('' == locate_template( array( 'content-login.php' )) && file_exists( LSX_LOGIN_PATH . "templates/content-login.php" )) {
 				include LSX_LOGIN_PATH ."templates/content-login.php";
 			}else{
@@ -295,26 +375,26 @@ if ( ! class_exists( 'LSX_Login' ) ) {
 		 */
 		public function password_reset_form() {
 			//if there isnt, then display our template.
-			
+
 			if('' == locate_template( array( 'content-password-reset.php' )) && file_exists( LSX_LOGIN_PATH . "templates/content-password-reset.php" )) {
 				include LSX_LOGIN_PATH ."templates/content-password-reset.php";
 			}else{
 				get_template_part( 'content', 'password-reset' );
-			}	
+			}
 		}
-		
+
 		/**
 		 * Forces the Logged out page to be 1 Column
 		 *
 		 */
-		public function logout_layout_filter($layout) {
+		public function logout_layout_filter( $layout ) {
 			if(!is_user_logged_in()){
 				$layout = '1c';
 			}
 
 			return $layout;
 		}
-		
+
 		/**
 		 * Either logs the user in, or prompts an error.
 		 *
@@ -322,50 +402,50 @@ if ( ! class_exists( 'LSX_Login' ) ) {
 		public function do_ajax_login() {
 			if(isset($_POST['method']) && 'login' == $_POST['method']){
 				$result = array();
-				
+
 				if(isset($_POST['log']) && (username_exists($_POST['log']) || is_email( $_POST['log'] ))){
 					$user = wp_signon();
-					
+
 					if ( ! is_wp_error( $user ) ) {
 						$result['success']  = 1;
 					}else{
 						$result['success']  = 3;
 						//TODO Fix this encapsulation
-						$result['message']  = __('The password you entered for the username '.$_POST['log'].' is incorrect.','lsx-login');					
+						$result['message']  = __('The password you entered for the username '.$_POST['log'].' is incorrect.','lsx-login');
 					}
 				}else{
 					$result['success']  = 2;
 					$result['message']  = __('Invalid Username','lsx-login');
 				}
-				
+
 				echo json_encode( $result );
 			}else{
 				echo false;
 			}
 			die();
 		}
-		
+
 		/**
 		 * Resets the Users Password
 		 */
 		public function do_ajax_reset() {
 			global $wpdb;
-		
+
 			if(isset($_POST['method']) && 'reset' == $_POST['method']){
-					
+
 				$result = array();
 				if(isset($_POST['log']) && (username_exists($_POST['log']) || email_exists($_POST['log']))){
 					//Reset the password
-					
+
 					if ( strpos( $_POST['log'], '@' ) ) {
 						$user_data = get_user_by( 'email', trim( $_POST['log'] ) );
 					}else{
 						$user_data = get_user_by( 'login', trim( $_POST['log'] ) );
 					}
-					
+
 					if(false != $user_data){
 						$allow = apply_filters( 'allow_password_reset', true, $user_data->ID );
-						
+
 						//If the user is nto allowed to reset their password because they are spam users
 						if ( ! $allow || is_wp_error( $allow ) ) {
 							$result['success']  = 2;
@@ -373,56 +453,56 @@ if ( ! class_exists( 'LSX_Login' ) ) {
 						}else{
 							$user_login = $user_data->user_login;
 							$user_email = $user_data->user_email;
-													
+
 							// Generate something random for a password reset key.
 							$key = wp_generate_password( 20, false );
-							
+
 							// Now insert the key, hashed, into the DB.
 							if ( empty( $wp_hasher ) ) {
 								require_once ABSPATH . WPINC . '/class-phpass.php';
 								$wp_hasher = new PasswordHash( 8, true );
 							}
-							
+
 							$hashed = $wp_hasher->HashPassword( $key );
 							$expire = apply_filters( 'post_password_expires', time() + 10 * DAY_IN_SECONDS );
-							
+
 							$wpdb->update( $wpdb->users, array( 'user_activation_key' => $expire.':'.$hashed ), array( 'ID' => $user_data->ID ) );
-							
+
 							$message = __('Someone requested that the password be reset for the following account:') . "\r\n\r\n";
 							$message .= network_home_url( '/' ) . "\r\n\r\n";
 							$message .= sprintf(__('Username: %s'), $user_login) . "\r\n\r\n";
 							$message .= __('If this was a mistake, just ignore this email and nothing will happen.') . "\r\n\r\n";
 							$message .= __('To reset your password, visit the following address:') . "\r\n\r\n";
 							$message .= '<' . network_site_url("wp-login.php?action=rp&key=$key&login=" . rawurlencode($user_login), 'login') . ">\r\n";
-							
+
 							if ( is_multisite() ) {
 								$blogname = $GLOBALS['current_site']->site_name;
 							}else{
 								$blogname = wp_specialchars_decode(get_option('blogname'), ENT_QUOTES);
 							}
-							
+
 							$title = sprintf( __('[%s] Password Reset'), $blogname );
 							$title = apply_filters( 'retrieve_password_title', $title );
 							$message = apply_filters( 'retrieve_password_message', $message, $key, $user_login, $user_data );
 							$message = str_replace('wp-login.php','',$message);
-							
+
 							if ( $message && !mail( $user_email, wp_specialchars_decode( $title ), $message ) ){
 								$result['success']  = 3;
-								$result['message']  = __('The e-mail could not be sent.','lsx-login') . "<br />\n" . __('Possible reason: your host may have disabled the mail() function.','lsx-login');							
-							}else{	
+								$result['message']  = __('The e-mail could not be sent.','lsx-login') . "<br />\n" . __('Possible reason: your host may have disabled the mail() function.','lsx-login');
+							}else{
 								$result['success']  = 1;
 								$result['message']  = __('Check your e-mail for the confirmation link.','lsx-login');
 								$result['email'] = $message;
 							}
-							
+
 						}
 					}
-					
+
 				}else{
 					$result['success']  = 2;
 					$result['message']  = __('Invalid username or e-mail.','lsx-login');
 				}
-					
+
 				echo json_encode( $result );
 			}else{
 				echo false;
@@ -431,7 +511,7 @@ if ( ! class_exists( 'LSX_Login' ) ) {
 		}
 
 		/**
-		 * 
+		 *
 		 */
 		public function is_password_confirmed() {
 			$show_confirmation = false;
@@ -439,11 +519,11 @@ if ( ! class_exists( 'LSX_Login' ) ) {
 			if(isset($_GET['action']) && 'rp' == $_GET['action'] && isset($_GET['key']) && isset($_GET['login'])){
 				//Check the details
 				$user = check_password_reset_key( $_GET['key'], $_GET['login'] );
-				
+
 				/*print_r($_GET['key']);print_r('<br />');
 				print_r($_GET['login']);print_r('<br />');
 				print_r($user);print_r('<br />');*/
-				
+
 				if(!is_wp_error($user)){
 					return $user;
 				}else{
@@ -451,12 +531,12 @@ if ( ! class_exists( 'LSX_Login' ) ) {
 				}
 			}
 		}
-		
+
 		/**
-		 * 
+		 *
 		 */
 		public function do_ajax_reset_confirmed() {
-			if(isset($_POST['key']) && isset($_POST['login']) && isset($_POST['pass1']) && isset($_POST['pass2']) ){	 	
+			if(isset($_POST['key']) && isset($_POST['login']) && isset($_POST['pass1']) && isset($_POST['pass2']) ){
 				$result = array();
 				$user = check_password_reset_key( $_POST['key'], $_POST['login'] );
 
@@ -466,17 +546,17 @@ if ( ! class_exists( 'LSX_Login' ) ) {
 					$this->reset_password($user,$_POST['pass1']);
 				}else{
 					$result['success']  = 2;
-					$result['message']  = __('An error has occured please contact the site administrator!','lsx-login');				
+					$result['message']  = __('An error has occured please contact the site administrator!','lsx-login');
 				}
 
 				echo json_encode( $result );
 			}else{
 				echo false;
-			}	
-			
-			die();		
+			}
+
+			die();
 		}
-		
+
 		/**
 		 * Handles resetting the user's password.
 		 *
@@ -485,10 +565,10 @@ if ( ! class_exists( 'LSX_Login' ) ) {
 		 */
 		public function reset_password( $user, $new_pass ) {
 			do_action( 'password_reset', $user, $new_pass );
-		
+
 			wp_set_password( $new_pass, $user->ID );
 			update_user_option( $user->ID, 'default_password_nag', false, true );
-		
+
 			wp_password_change_notification( $user );
 		}
 
@@ -524,8 +604,6 @@ if ( ! class_exists( 'LSX_Login' ) ) {
 				),
 			);
 		}
-
-
 
 		/**
 		 * Register tabs
@@ -629,7 +707,7 @@ if ( ! class_exists( 'LSX_Login' ) ) {
 				if ( has_filter( 'woocommerce_account_' . $key . '_endpoint' ) ) {
 					continue;
 				}
-				add_filter( 'woocommerce_account_' . $key . '_endpoint', array( $this, 'woocommerce_account_X_endpoint' ) );
+				add_filter( 'woocommerce_account_' . $key . '_endpoint', array( $this, 'woocommerce_account_x_endpoint' ) );
 			}
 
 			return $items;
@@ -638,7 +716,7 @@ if ( ! class_exists( 'LSX_Login' ) ) {
 		/**
 		 * Callback to display the tab content
 		 */
-		public function woocommerce_account_X_endpoint() {
+		public function woocommerce_account_x_endpoint() {
 			global $wp;
 
 			foreach ( $wp->query_vars as $key2 => $value2 ) {

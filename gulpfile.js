@@ -105,7 +105,22 @@ gulp.task('js', function() {
 		.pipe(gulp.dest('assets/js'))
 });
 
-gulp.task('compile-js', ['js']);
+gulp.task('admin-js', function() {
+	return gulp.src('assets/js/src/lsx-login-admin.js')
+		.pipe(plumber({
+			errorHandler: function(err) {
+				console.log(err);
+				this.emit('end');
+			}
+		}))
+		.pipe(jshint())
+		//.pipe(errorreporter)
+		.pipe(concat('lsx-login-admin.min.js'))
+		.pipe(uglify())
+		.pipe(gulp.dest('assets/js'))
+});
+
+gulp.task('compile-js', ['js', 'admin-js']);
 
 gulp.task('watch-css', function () {
 	return gulp.watch('assets/css/**/*.scss', ['compile-css']);
