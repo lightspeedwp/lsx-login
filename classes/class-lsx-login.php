@@ -43,6 +43,10 @@ if ( ! class_exists( 'LSX_Login' ) ) {
 		public function __construct() {
 			require_once( LSX_LOGIN_PATH . 'includes/template-tags.php' );
 			require_once( LSX_LOGIN_PATH . 'classes/class-lsx-login-widget.php' );
+			require_once( LSX_LOGIN_PATH . 'classes/class-lsx-emails.php' );
+			require_once( LSX_LOGIN_PATH . 'classes/class-lsx-emails-process.php' );
+
+			LSX_Login_Emails::instance();
 
 			if ( class_exists( 'Tour_Operator' ) ) {
 				$this->options = get_option( '_lsx-to_settings', false );
@@ -88,9 +92,6 @@ if ( ! class_exists( 'LSX_Login' ) ) {
 
 			add_action( 'wp_ajax_lsx_reset_confirmed', array( $this, 'do_ajax_reset_confirmed' ) );
 			add_action( 'wp_ajax_nopriv_lsx_reset_confirmed', array( $this, 'do_ajax_reset_confirmed' ) );
-
-			add_action( 'wp_ajax_lsx_welcome_users', array( $this, 'do_ajax_welcome_users' ) );
-			# add_action( 'wp_ajax_nopriv_lsx_login', array( $this, 'do_ajax_welcome_users' ) );
 
 			add_filter( 'password_reset_expiration', array( $this, 'force_expiration_time' ) ,1 ,100 );
 
@@ -181,70 +182,6 @@ if ( ! class_exists( 'LSX_Login' ) ) {
 			);
 
 			wp_localize_script( 'lsx-login-admin', 'lsx_login_admin_params', $params );
-		}
-
-		/**
-		 * Welcome users.
-		 */
-		public function do_ajax_welcome_users() {
-			// var_dump( $_GET['welcome_email_user_roles'] );
-
-			// add_filter( 'wp_mail_content_type', array( $this, 'welcome_users_email_content_type' ) );
-			// add_filter( 'wp_mail_from', array( $this, 'welcome_users_email_from' ) );
-			// add_filter( 'wp_mail_from_name', array( $this, 'welcome_users_email_from_name' ) );
-
-			// $subject = __( 'Welcome to LSX', 'lsx' );
-
-			// if ( isset( $this->options ) && ! empty( $this->options['login']['welcome_email_subject'] ) ) {
-			// 	$subject = $this->options['login']['welcome_email_subject'];
-			// }
-
-			// $message = '';
-
-			// if ( isset( $this->options ) && ! empty( $this->options['login']['welcome_email_message'] ) ) {
-			// 	$message = $this->options['login']['welcome_email_message'];
-			// }
-
-			// $first_name = 'Fernando_';
-			// $last_name = 'Tessmann_';
-			// $my_account = $this->get_my_account_page_slug();
-			// $my_account = site_url( '/' . $my_account . '/' );
-
-			// $message = str_replace( '{first_name}', $first_name, $message );
-			// $message = str_replace( '{last_name}', $last_name, $message );
-			// $message = str_replace( '{my_account}', $my_account, $message );
-			// $message = preg_replace( '/\n/', '<br>', $message );
-
-			// $mail = wp_mail( 'fernando@lsdev.biz', $subject, $message );
-
-			// if ( $mail ) {
-			// 	wp_send_json_success();
-			// } else {
-			// 	wp_send_json_error();
-			// }
-
-			// die();
-		}
-
-		public function welcome_users_email_content_type( $content_type ) {
-			$content_type = 'text/html';
-			return $content_type;
-		}
-
-		public function welcome_users_email_from( $from ) {
-			if ( isset( $this->options ) && ! empty( $this->options['login']['welcome_email_from_email'] ) ) {
-				$from = $this->options['login']['welcome_email_from_email'];
-			}
-
-			return $from;
-		}
-
-		public function welcome_users_email_from_name( $from_name ) {
-			if ( isset( $this->options ) && ! empty( $this->options['login']['welcome_email_from_name'] ) ) {
-				$from_name = $this->options['login']['welcome_email_from_name'];
-			}
-
-			return $from_name;
 		}
 
 		/**
