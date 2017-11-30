@@ -15,10 +15,8 @@
 
 .loginform p input[type="text"].error, .lostpasswordform p input[type="text"].error { background-color: #f3cdcd; }
 
-.loginform p.login-remember input, .lostpasswordform p.login-remember input { float: none; height: auto; margin-right: 5px; margin-top: 0; width: auto; }
+.loginform p.login-remember input, .lostpasswordform p.login-remember input { float: none; height: auto; margin-left: 5px; margin-top: 0; width: auto; }
 
 .loginform p.login-remember label, .loginform p.login-remember input, .lostpasswordform p.login-remember label, .lostpasswordform p.login-remember input { display: inline; }
 
 .loginform.loading p, .lostpasswordform.loading p { background-color: #ccc; opacity: 0.3; }
-
-/*# sourceMappingURL=maps/lsx-login.css.map */
