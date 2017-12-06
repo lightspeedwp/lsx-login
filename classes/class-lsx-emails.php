@@ -9,6 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }*/
 
 if ( ! class_exists( 'WP_Background_Process', false ) ) {
+	include_once( LSX_LOGIN_PATH . '/vendor/wp-background-processing/wp-async-request.php' );
 	include_once( LSX_LOGIN_PATH . '/vendor/wp-background-processing/wp-background-process.php' );
 }
 
