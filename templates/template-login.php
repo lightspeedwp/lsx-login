@@ -15,8 +15,6 @@ get_header(); ?>
 
 		<main id="main" class="site-main" role="main">
 
-			<?php print_r( lsx_restricted_page_content() ); ?>
-
 			<?php if ( ! is_user_logged_in() && false !== ( $public_content = lsx_restricted_page_content() ) ) { ?>
 				<article class="entry-content">
 					<?php echo apply_filters( 'the_content', $public_content ); ?>
