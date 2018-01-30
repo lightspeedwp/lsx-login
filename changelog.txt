@@ -1,9 +1,14 @@
 ## Changelog
 
+### 1.0.6
+* Dev - Refactored the WooCommerce functionality
+* Dev - Public Content field for displaying a custom warning.
+* Dev - Added in support for the LSX Banners extension
+
 ### 1.0.5
-* Skipping the enqueue of the select2 when woocommerce is active to avoid conflicts
-* NPM and Gulp files updated
-* Add LSX Welcome email
+* Dev - Skipping the enqueue of the select2 when woocommerce is active to avoid conflicts
+* Dev - NPM and Gulp files updated
+* Dev - Add LSX Welcome email
 
 ### 1.0.4
 * Dev - Changing the woocommerce class to upper case

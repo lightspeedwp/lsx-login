@@ -108,11 +108,11 @@ function lsx_my_account_tabs($before="",$after="",$echo=true){
 /**
  * Outputs the content for the My Account tab
  *
- * @return		string
- *
  * @package 	lsx-login
  * @subpackage	template-tags
  * @category 	conditional
+ *
+ * @return void
  */
 function lsx_my_account_dashboard_tab(){
 	global $post;
@@ -124,4 +124,16 @@ function lsx_my_account_dashboard_tab(){
 	echo '</div>';
 
 	do_action('lsx_my_account_dashboard_widgets');
+}
+
+/**
+ * Returns the Public Content shown on the restricted template.
+ * @return bool|mixed
+ */
+function lsx_restricted_page_content(){
+	$restricted_content = get_post_meta( get_the_ID(), 'public_content', true );
+	if ( '' === $restricted_content ) {
+		$restricted_content = false;
+	}
+	return $restricted_content;
 }
