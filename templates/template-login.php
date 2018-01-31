@@ -3,21 +3,23 @@
 
 get_header(); ?>
 
-	<?php if ( ! function_exists( 'lsx_is_banner_disabled' ) || lsx_is_banner_disabled() ) { ?>
+	<?php lsx_content_wrap_before(); ?>
+
+	<?php if ( ! function_exists( 'lsx_is_banner_disabled' ) || ( function_exists( 'lsx_is_banner_disabled' ) && lsx_is_banner_disabled() ) ) { ?>
 		<header class="page-header col-sm-12">
 			<h1 class="page-title"><?php echo apply_filters('lsx_login_title', get_the_title()); ?></h1>
 		</header><!-- .entry-header -->
 	<?php } ?>
 
-	<div id="primary" class="content-area content-login <?php //echo lsx_main_class(); ?>">
+	<div id="primary" class="content-area content-login col-sm-12 <?php //echo lsx_main_class(); ?>">
 
-		<?php //lsx_content_before(); ?>
+		<?php lsx_content_before(); ?>
 
 		<main id="main" class="site-main" role="main">
 
-			<?php if ( ! is_user_logged_in() && false !== ( $public_content = lsx_restricted_page_content() ) ) { ?>
+			<?php if ( ! is_user_logged_in() && false !== ( $public_content = lsx_restricted_page_content() ) && '' !== ( $public_content = lsx_restricted_page_content() ) ) { ?>
 				<article class="entry-content">
-					<?php echo apply_filters( 'the_content', $public_content ); ?>
+					<?php echo wp_kses_post( $public_content ); ?>
 				</article>
 			<?php } ?>
 
