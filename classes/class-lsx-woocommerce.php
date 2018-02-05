@@ -21,6 +21,7 @@ class LSX_Login_WooCommerce {
 		add_filter( 'query_vars', array( $this, 'woocommerce_add_query_vars' ), 0 );
 		add_filter( 'woocommerce_account_menu_items', array( $this, 'woocommerce_account_menu_items' ) );
 		add_filter( 'woocommerce_get_myaccount_page_permalink', array( $this, 'woocommerce_get_myaccount_page_permalink' ) );
+		add_action( 'woocommerce_login_form_end', array( $this, 'social_login_buttons' ) );
 
 		//Redirect to My Account page after login
 		add_action( 'lsx_login_redirect', array( $this, 'login_redirect' ) );
@@ -161,4 +162,12 @@ class LSX_Login_WooCommerce {
 		return $url;
 	}
 
+	/**
+	 * Redirect to My Account page after login
+	 */
+	public function social_login_buttons( ) {
+		if ( function_exists( 'woocommerce_social_login_buttons') && ! is_user_logged_in() && ! is_checkout() && ! is_cart() && ! is_account_page() ) {
+			woocommerce_social_login_buttons( get_permalink() );
+		}
+	}
 }
