@@ -26,6 +26,9 @@ get_header(); ?>
 			<?php
 				if ( class_exists( 'woocommerce' ) ) {
 					echo do_shortcode( '[woocommerce_my_account]' );
+					if ( function_exists( 'woocommerce_social_login_buttons') ) {
+						woocommerce_social_login_buttons( get_permalink() );
+					}
 				}
 				else {
 					?>

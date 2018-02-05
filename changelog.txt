@@ -1,9 +1,10 @@
 ## Changelog
 
-### 1.0.6
+### 1.1.0
 * Dev - Refactored the WooCommerce functionality
 * Dev - Public Content field for displaying a custom warning.
 * Dev - Added in support for the LSX Banners extension
+* Dev - Added in compatibility for the WooCommerce Social Login plugin.
 
 ### 1.0.5
 * Dev - Skipping the enqueue of the select2 when woocommerce is active to avoid conflicts
