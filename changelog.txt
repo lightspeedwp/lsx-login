@@ -6,6 +6,7 @@
 * Dev - Added in support for the LSX Banners extension
 * Dev - Added in compatibility for the WooCommerce Social Login plugin.
 * Dev - Allowing the WC Cart menu item to show in the Logged out version of a menu as well.
+* Dev - Adding in a body class for the logged out view so header elements can be targeted as well.
 
 ### 1.0.5
 * Dev - Skipping the enqueue of the select2 when woocommerce is active to avoid conflicts

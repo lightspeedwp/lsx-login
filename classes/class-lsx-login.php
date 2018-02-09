@@ -123,7 +123,7 @@ if ( ! class_exists( 'LSX_Login' ) ) {
 			//Display the main modal (with forms to login and reset password)
 			add_action( 'wp_footer', array( $this, 'main_modal' ) );
 
-
+			add_filter( 'body_class', array( $this, 'body_class' ) );
 		}
 
 		/**
@@ -804,6 +804,19 @@ if ( ! class_exists( 'LSX_Login' ) ) {
 				</div>
 			</div>
 			<?php
+		}
+
+		/**
+		 *
+		 * @param $classes
+		 *
+		 * @return array
+		 */
+		public function body_class( $classes ) {
+			if ( ! is_user_logged_in() ) {
+				$classes[] = 'logged-out';
+			}
+			return $classes;
 		}
 
 	}
