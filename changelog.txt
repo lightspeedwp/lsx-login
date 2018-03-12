@@ -1,5 +1,8 @@
 ## Changelog
 
+### 1.1.1
+* Dev - Removed the Force Expiration time filter causing the invalid key error
+
 ### 1.1.0
 * Dev - Refactored the WooCommerce functionality
 * Dev - Public Content field for displaying a custom warning.

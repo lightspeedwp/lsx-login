@@ -104,7 +104,7 @@ if ( ! class_exists( 'LSX_Login' ) ) {
 			add_action( 'wp_ajax_lsx_reset_confirmed', array( $this, 'do_ajax_reset_confirmed' ) );
 			add_action( 'wp_ajax_nopriv_lsx_reset_confirmed', array( $this, 'do_ajax_reset_confirmed' ) );
 
-			add_filter( 'password_reset_expiration', array( $this, 'force_expiration_time' ) ,1 ,100 );
+			//add_filter( 'password_reset_expiration', array( $this, 'force_expiration_time' ) ,1 ,100 );
 
 			add_action( 'rss_tag_pre', array( $this, 'remove_title_from_rss' ), 100 );
 
@@ -408,7 +408,7 @@ if ( ! class_exists( 'LSX_Login' ) ) {
 							$hashed = $wp_hasher->HashPassword( $key );
 							$expire = apply_filters( 'post_password_expires', time() + 10 * DAY_IN_SECONDS );
 
-							$wpdb->update( $wpdb->users, array( 'user_activation_key' => $expire.':'.$hashed ), array( 'ID' => $user_data->ID ) );
+							$wpdb->update( $wpdb->users, array( 'user_activation_key' => $hashed ), array( 'ID' => $user_data->ID ) );
 
 							$message = __('Someone requested that the password be reset for the following account:') . "\r\n\r\n";
 							$message .= network_home_url( '/' ) . "\r\n\r\n";
@@ -584,7 +584,6 @@ if ( ! class_exists( 'LSX_Login' ) ) {
 			return $tabs;
 		}
 
-
 		/**
 		 * Callback to display the tab content
 		 */
@@ -749,8 +748,6 @@ if ( ! class_exists( 'LSX_Login' ) ) {
 
 			return $html;
 		}
-
-
 
 		/**
 		 * Display the main modal (with forms to login and reset password)
