@@ -1,5 +1,9 @@
 ## Changelog
 
+### 1.1.2
+* Fix - Fixed the saving of the password expire time to the DB,  allowing the plugin to work with WP expiration times.
+* Dev - Removed the API class.
+
 ### 1.1.1
 * Dev - Removed the Force Expiration time filter causing the invalid key error
 
