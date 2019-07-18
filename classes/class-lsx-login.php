@@ -91,7 +91,7 @@ if ( ! class_exists( 'LSX_Login' ) ) {
 			add_filter( 'lsx_layout', array( $this, 'logout_layout_filter' ) , 1 , 100 );
 
 			//Enqueue the scrips
-			add_action( 'wp_enqueue_scripts', array( $this, 'scripts' ) ,100 );
+			add_action( 'wp_enqueue_scripts', array( $this, 'scripts' ), 5 );
 			add_action( 'admin_enqueue_scripts', array( $this, 'admin_scripts' ) ,100 );
 
 			//ajax handlers
