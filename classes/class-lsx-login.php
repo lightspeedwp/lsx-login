@@ -198,9 +198,9 @@ if ( ! class_exists( 'LSX_Login' ) ) {
 				)
 			);
 
-			if(!is_user_logged_in()){
-				remove_action( 'lsx_footer_before', 'lsx_add_footer_sidebar_area' );
-			}
+			// if(!is_user_logged_in()){
+			// 	remove_action( 'lsx_footer_before', 'lsx_add_footer_sidebar_area' );
+			// }
 		}
 
 		/**
