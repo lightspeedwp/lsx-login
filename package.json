@@ -41,6 +41,17 @@
   },
   "dependencies": {
     "acorn": "^5.7.4",
-    "minimist": "^1.2.3"
+    "atob": "^2.1.0",
+    "braces": "^2.3.1",
+    "clean-css": "^4.1.11",
+    "cryptiles": "^4.1.2",
+    "hoek": "^4.2.1",
+    "lodash": "^4.17.12",
+    "lodash.template": "^4.5.0",
+    "minimatch": "^3.0.2",
+    "minimist": "^1.2.3",
+    "randomatic": "^3.0.0",
+    "tar": "^2.2.2",
+    "tunnel-agent": "^0.6.0"
   }
 }
