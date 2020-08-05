@@ -42,7 +42,7 @@
   "dependencies": {
     "acorn": "^5.7.4",
     "atob": "^2.1.0",
-    "braces": "^2.3.1",
+    "braces": "^3.0.2",
     "clean-css": "^4.1.11",
     "cryptiles": "^4.1.2",
     "hoek": "^4.2.1",
