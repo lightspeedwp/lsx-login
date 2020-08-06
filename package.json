@@ -45,7 +45,7 @@
     "braces": "^3.0.2",
     "clean-css": "^4.2.3",
     "cryptiles": "^4.1.3",
-    "hoek": "^4.2.1",
+    "hoek": "^6.1.3",
     "lodash": "^4.17.19",
     "lodash.template": "^4.5.0",
     "minimatch": "^3.0.4",
