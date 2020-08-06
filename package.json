@@ -51,7 +51,7 @@
     "minimatch": "^3.0.2",
     "minimist": "^1.2.3",
     "randomatic": "^3.0.0",
-    "tar": "^2.2.2",
+    "tar": "^4.4.2",
     "tunnel-agent": "^0.6.0"
   }
 }
