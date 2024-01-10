@@ -41,7 +41,6 @@ class Core {
 		);
 	}
 	
-	
 	/**
 	 * Renders the `lsx/loginout` block on server.
 	 *
@@ -54,6 +53,8 @@ class Core {
 		$current_url = ( is_ssl() ? 'https://' : 'http://' ) . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 	
 		$classes  = is_user_logged_in() ? 'logged-in' : 'logged-out';
+		$classes .= 'wp-block-loginout';
+
 		$contents = wp_loginout(
 			isset( $attributes['redirectToCurrent'] ) && $attributes['redirectToCurrent'] ? $current_url : '',
 			false
