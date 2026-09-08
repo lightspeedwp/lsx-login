@@ -5,14 +5,8 @@ const autoprefixer = require('autoprefixer');
 const rtlcss       = require('gulp-rtlcss');
 const rename       = require('gulp-rename');
 const terser       = require('gulp-terser');
-const plumber      = require('gulp-plumber');
 const sort         = require('gulp-sort');
 const wppot        = require('gulp-wp-pot');
-
-const onError = function (err) {
-	console.error(err.toString());
-	this.emit('end');
-};
 
 const sassOptions = {
 	style: 'compressed',
@@ -30,16 +24,14 @@ const potOptions = {
 // which is unmaintained and pulled in postcss 7.
 function styles() {
 	return gulp.src('assets/css/scss/*.scss', { sourcemaps: true })
-		.pipe(plumber({ errorHandler: onError }))
-		.pipe(sass.sync(sassOptions).on('error', sass.logError))
+		.pipe(sass.sync(sassOptions))
 		.pipe(postcss([autoprefixer()]))
 		.pipe(gulp.dest('assets/css', { sourcemaps: 'maps' }));
 }
 
 function stylesRtl() {
 	return gulp.src('assets/css/scss/*.scss')
-		.pipe(plumber({ errorHandler: onError }))
-		.pipe(sass.sync(sassOptions).on('error', sass.logError))
+		.pipe(sass.sync(sassOptions))
 		.pipe(postcss([autoprefixer()]))
 		.pipe(rtlcss())
 		.pipe(rename({ suffix: '-rtl' }))
@@ -48,7 +40,6 @@ function stylesRtl() {
 
 function js() {
 	return gulp.src('assets/js/src/lsx-login.js')
-		.pipe(plumber({ errorHandler: onError }))
 		.pipe(terser())
 		.pipe(rename('lsx-login.min.js'))
 		.pipe(gulp.dest('assets/js'));
@@ -56,7 +47,6 @@ function js() {
 
 function adminJs() {
 	return gulp.src('assets/js/src/lsx-login-admin.js')
-		.pipe(plumber({ errorHandler: onError }))
 		.pipe(terser())
 		.pipe(rename('lsx-login-admin.min.js'))
 		.pipe(gulp.dest('assets/js'));
