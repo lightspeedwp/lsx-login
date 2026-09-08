@@ -1,163 +1,111 @@
 const gulp         = require('gulp');
+const sass         = require('gulp-sass')(require('sass'));
+const postcss      = require('gulp-postcss');
+const autoprefixer = require('autoprefixer');
 const rtlcss       = require('gulp-rtlcss');
-const sass         = require('gulp-sass');
-const sourcemaps   = require('gulp-sourcemaps');
-const jshint       = require('gulp-jshint');
-const concat       = require('gulp-concat');
-const uglify       = require('gulp-uglify');
+const rename       = require('gulp-rename');
+const terser       = require('gulp-terser');
+const plumber      = require('gulp-plumber');
 const sort         = require('gulp-sort');
 const wppot        = require('gulp-wp-pot');
-const gettext      = require('gulp-gettext');
-const plumber      = require('gulp-plumber');
-const autoprefixer = require('gulp-autoprefixer');
-const gutil        = require('gulp-util');
-const rename       = require('gulp-rename');
-const minify       = require('gulp-minify-css');
-const map          = require('map-stream');
-const browserlist  = ['last 2 version', '> 1%'];
 
-const errorreporter = map(function(file, cb) {
-	if (file.jshint.success) {
-		return cb(null, file);
-	}
+const onError = function (err) {
+	console.error(err.toString());
+	this.emit('end');
+};
 
-	console.log('JSHINT fail in', file.path);
+const sassOptions = {
+	style: 'compressed',
+	loadPaths: ['assets/css/scss']
+};
 
-	file.jshint.results.forEach(function (result) {
-		if (!result.error) {
-			return;
-		}
+const potOptions = {
+	domain: 'lsx-login',
+	package: 'lsx-login',
+	bugReport: 'https://github.com/lightspeedwp/lsx-login/issues',
+	team: 'LightSpeed <webmaster@lsdev.biz>'
+};
 
-		const err = result.error
-		console.log(`  line ${err.line}, col ${err.character}, code ${err.code}, ${err.reason}`);
-	});
+// Sourcemaps come from gulp 5's built-in support rather than gulp-sourcemaps,
+// which is unmaintained and pulled in postcss 7.
+function styles() {
+	return gulp.src('assets/css/scss/*.scss', { sourcemaps: true })
+		.pipe(plumber({ errorHandler: onError }))
+		.pipe(sass.sync(sassOptions).on('error', sass.logError))
+		.pipe(postcss([autoprefixer()]))
+		.pipe(gulp.dest('assets/css', { sourcemaps: 'maps' }));
+}
 
-	cb(null, file);
-});
+function stylesRtl() {
+	return gulp.src('assets/css/scss/*.scss')
+		.pipe(plumber({ errorHandler: onError }))
+		.pipe(sass.sync(sassOptions).on('error', sass.logError))
+		.pipe(postcss([autoprefixer()]))
+		.pipe(rtlcss())
+		.pipe(rename({ suffix: '-rtl' }))
+		.pipe(gulp.dest('assets/css'));
+}
 
-gulp.task('default', function() {
+function js() {
+	return gulp.src('assets/js/src/lsx-login.js')
+		.pipe(plumber({ errorHandler: onError }))
+		.pipe(terser())
+		.pipe(rename('lsx-login.min.js'))
+		.pipe(gulp.dest('assets/js'));
+}
+
+function adminJs() {
+	return gulp.src('assets/js/src/lsx-login-admin.js')
+		.pipe(plumber({ errorHandler: onError }))
+		.pipe(terser())
+		.pipe(rename('lsx-login-admin.min.js'))
+		.pipe(gulp.dest('assets/js'));
+}
+
+function wordpressPot() {
+	return gulp.src('**/*.php')
+		.pipe(sort())
+		.pipe(wppot(potOptions))
+		.pipe(gulp.dest('languages/lsx-login.pot'));
+}
+
+function wordpressPo() {
+	return gulp.src('**/*.php')
+		.pipe(sort())
+		.pipe(wppot(potOptions))
+		.pipe(gulp.dest('languages/en_EN.po'));
+}
+
+const compileCss = gulp.parallel(styles, stylesRtl);
+const compileJs = gulp.parallel(js, adminJs);
+const build = gulp.parallel(compileCss, compileJs);
+
+function watchFiles() {
+	gulp.watch('assets/css/**/*.scss', compileCss);
+	gulp.watch('assets/js/src/**/*.js', compileJs);
+}
+
+function help(cb) {
 	console.log('Use the following commands');
 	console.log('--------------------------');
 	console.log('gulp compile-css    to compile the scss to css');
 	console.log('gulp compile-js     to compile the js to min.js');
-	console.log('gulp watch          to continue watching the files for changes');
-	console.log('gulp wordpress-lang to compile the lsx-login.pot, en_EN.po and en_EN.mo');
-});
+	console.log('gulp build          to compile both');
+	console.log('gulp watch          to keep watching the files for changes');
+	console.log('gulp wordpress-pot  to regenerate languages/lsx-login.pot');
+	console.log('');
+	console.log('The .po -> .mo step is `npm run build:mo` (WP-CLI), not gulp.');
+	cb();
+}
 
-gulp.task('styles', function () {
-	return gulp.src('assets/css/scss/*.scss')
-		.pipe(plumber({
-			errorHandler: function(err) {
-				console.log(err);
-				this.emit('end');
-			}
-		}))
-		.pipe(sourcemaps.init())
-		.pipe(sass({
-			outputStyle: 'compact',
-			includePaths: ['assets/css/scss']
-		}).on('error', gutil.log))
-		.pipe(autoprefixer({
-			browsers: browserlist,
-			casacade: true
-		}))
-		.pipe(sourcemaps.write('maps'))
-		.pipe(gulp.dest('assets/css'))
-});
-
-gulp.task('styles-rtl', function () {
-	return gulp.src('assets/css/scss/*.scss')
-		.pipe(plumber({
-			errorHandler: function(err) {
-				console.log(err);
-				this.emit('end');
-			}
-		}))
-		.pipe(sass({
-			outputStyle: 'compact',
-			includePaths: ['assets/css/scss']
-		}).on('error', gutil.log))
-		.pipe(autoprefixer({
-			browsers: browserlist,
-			casacade: true
-		}))
-		.pipe(rtlcss())
-		.pipe(rename({
-			suffix: '-rtl'
-		}))
-		.pipe(gulp.dest('assets/css'))
-});
-
-gulp.task('compile-css', ['styles', 'styles-rtl']);
-
-gulp.task('js', function() {
-	return gulp.src('assets/js/src/lsx-login.js')
-		.pipe(plumber({
-			errorHandler: function(err) {
-				console.log(err);
-				this.emit('end');
-			}
-		}))
-		.pipe(jshint())
-		//.pipe(errorreporter)
-		.pipe(concat('lsx-login.min.js'))
-		.pipe(uglify())
-		.pipe(gulp.dest('assets/js'))
-});
-
-gulp.task('admin-js', function() {
-	return gulp.src('assets/js/src/lsx-login-admin.js')
-		.pipe(plumber({
-			errorHandler: function(err) {
-				console.log(err);
-				this.emit('end');
-			}
-		}))
-		.pipe(jshint())
-		//.pipe(errorreporter)
-		.pipe(concat('lsx-login-admin.min.js'))
-		.pipe(uglify())
-		.pipe(gulp.dest('assets/js'))
-});
-
-gulp.task('compile-js', ['js', 'admin-js']);
-
-gulp.task('watch-css', function () {
-	return gulp.watch('assets/css/**/*.scss', ['compile-css']);
-});
-
-gulp.task('watch-js', function () {
-	return gulp.watch('assets/js/src/**/*.js', ['compile-js']);
-});
-
-gulp.task('watch', ['watch-css', 'watch-js']);
-
-gulp.task('wordpress-pot', function() {
-	return gulp.src('**/*.php')
-		.pipe(sort())
-		.pipe(wppot({
-			domain: 'lsx-login',
-			package: 'lsx-login',
-			team: 'LightSpeed <webmaster@lsdev.biz>'
-		}))
-		.pipe(gulp.dest('languages/lsx-login.pot'))
-});
-
-gulp.task('wordpress-po', function() {
-	return gulp.src('**/*.php')
-		.pipe(sort())
-		.pipe(wppot({
-			domain: 'lsx-login',
-			package: 'lsx-login',
-			team: 'LightSpeed <webmaster@lsdev.biz>'
-		}))
-		.pipe(gulp.dest('languages/en_EN.po'))
-});
-
-gulp.task('wordpress-po-mo', ['wordpress-po'], function() {
-	return gulp.src('languages/en_EN.po')
-		.pipe(gettext())
-		.pipe(gulp.dest('languages'))
-});
-
-gulp.task('wordpress-lang', (['wordpress-pot', 'wordpress-po-mo']));
+exports.styles = styles;
+exports['styles-rtl'] = stylesRtl;
+exports['compile-css'] = compileCss;
+exports.js = js;
+exports['admin-js'] = adminJs;
+exports['compile-js'] = compileJs;
+exports.build = build;
+exports.watch = watchFiles;
+exports['wordpress-pot'] = wordpressPot;
+exports['wordpress-po'] = wordpressPo;
+exports.default = help;
