@@ -21,6 +21,27 @@ if ( ! class_exists( 'LSX_Login' ) ) {
 		public $plugin_slug = 'lsx-login';
 
 		/**
+		 * Nonce action shared by the front-end AJAX handlers.
+		 *
+		 * @var string
+		 */
+		const NONCE_ACTION = 'lsx_login_ajax';
+
+		/**
+		 * Password reset requests allowed per IP per window.
+		 *
+		 * @var int
+		 */
+		const RESET_RATE_LIMIT = 5;
+
+		/**
+		 * Length of the password reset rate limit window, in seconds.
+		 *
+		 * @var int
+		 */
+		const RESET_RATE_WINDOW = 900;
+
+		/**
 		 * Plugin options.
 		 *
 		 * @var string
@@ -158,6 +179,7 @@ if ( ! class_exists( 'LSX_Login' ) ) {
 
 				$params = array(
 					'ajax_url'       => admin_url( 'admin-ajax.php' ),
+					'nonce'          => wp_create_nonce( self::NONCE_ACTION ),
 					'empty_username' => __( 'The username field is empty.', 'lsx-login' ),
 					'empty_password' => __( 'The password field is empty.', 'lsx-login' ),
 					'empty_reset'    => __( 'Enter a username or e-mail address.', 'lsx-login' ),
@@ -312,6 +334,53 @@ if ( ! class_exists( 'LSX_Login' ) ) {
 		}
 
 		/**
+		 * Verify the nonce on a front-end AJAX request.
+		 *
+		 * These handlers are registered on wp_ajax_nopriv_*, so they are
+		 * reachable unauthenticated and the nonce is the only request-origin
+		 * check available. On a failure the request is ended here.
+		 */
+		private function verify_ajax_nonce() {
+			if ( ! check_ajax_referer( self::NONCE_ACTION, 'nonce', false ) ) {
+				status_header( 403 );
+				echo wp_json_encode(
+					array(
+						'success' => 2,
+						'message' => __( 'Your session has expired. Please reload the page and try again.', 'lsx-login' ),
+					)
+				);
+				die();
+			}
+		}
+
+		/**
+		 * Throttle password reset requests by client IP.
+		 *
+		 * Without this an unauthenticated caller can invalidate any user's
+		 * stored activation key, and send them mail, as fast as it can post.
+		 *
+		 * @return bool True while the caller is under the limit.
+		 */
+		private function reset_rate_limit_ok() {
+			$ip = isset( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : '';
+
+			if ( '' === $ip ) {
+				return true;
+			}
+
+			$key   = 'lsx_login_reset_' . md5( $ip );
+			$count = (int) get_transient( $key );
+
+			if ( $count >= self::RESET_RATE_LIMIT ) {
+				return false;
+			}
+
+			set_transient( $key, $count + 1, self::RESET_RATE_WINDOW );
+
+			return true;
+		}
+
+		/**
 		 * generate the login form
 		 *
 		 */
@@ -342,6 +411,8 @@ if ( ! class_exists( 'LSX_Login' ) ) {
 		 *
 		 */
 		public function do_ajax_login() {
+			$this->verify_ajax_nonce();
+
 			if(isset($_POST['method']) && 'login' == $_POST['method']){
 				$result = array();
 
@@ -375,6 +446,19 @@ if ( ! class_exists( 'LSX_Login' ) ) {
 		 */
 		public function do_ajax_reset() {
 			global $wpdb;
+
+			$this->verify_ajax_nonce();
+
+			if ( ! $this->reset_rate_limit_ok() ) {
+				status_header( 429 );
+				echo wp_json_encode(
+					array(
+						'success' => 2,
+						'message' => __( 'Too many password reset requests. Please try again later.', 'lsx-login' ),
+					)
+				);
+				die();
+			}
 
 			if(isset($_POST['method']) && 'reset' == $_POST['method']){
 
@@ -481,8 +565,23 @@ if ( ! class_exists( 'LSX_Login' ) ) {
 		 *
 		 */
 		public function do_ajax_reset_confirmed() {
+			$this->verify_ajax_nonce();
+
 			if(isset($_POST['key']) && isset($_POST['login']) && isset($_POST['pass1']) && isset($_POST['pass2']) ){
 				$result = array();
+
+				// The two password fields were never compared server-side, so a
+				// mismatch the front-end failed to catch silently set pass1.
+				if ( $_POST['pass1'] !== $_POST['pass2'] ) {
+					echo wp_json_encode(
+						array(
+							'success' => 2,
+							'message' => __( 'Passwords do not match', 'lsx-login' ),
+						)
+					);
+					die();
+				}
+
 				$user = check_password_reset_key( $_POST['key'], $_POST['login'] );
 
 				if(!is_wp_error($user)){
