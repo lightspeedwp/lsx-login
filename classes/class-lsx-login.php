@@ -352,8 +352,11 @@ if ( ! class_exists( 'LSX_Login' ) ) {
 						$result['success']  = 1;
 					}else{
 						$result['success']  = 3;
-						//TODO Fix this encapsulation
-						$result['message']  = __('The password you entered for the username '.$_POST['log'].' is incorrect.','lsx-login');
+						$result['message']  = sprintf(
+							/* translators: %s: the username that was submitted. */
+							__( 'The password you entered for the username %s is incorrect.', 'lsx-login' ),
+							esc_html( sanitize_user( wp_unslash( $_POST['log'] ), true ) )
+						);
 					}
 				}else{
 					$result['success']  = 2;
@@ -434,7 +437,6 @@ if ( ! class_exists( 'LSX_Login' ) ) {
 							}else{
 								$result['success']  = 1;
 								$result['message']  = __('Check your e-mail for the confirmation link.','lsx-login');
-								$result['email'] = $message;
 							}
 
 						}
