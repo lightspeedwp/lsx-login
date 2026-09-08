@@ -11,8 +11,17 @@ $is_key_confirmed = lsx_is_password_confirmed();
 
 if(isset($_GET['action']) && 'rp' === $_GET['action'] && !is_wp_error($is_key_confirmed)){ ?>
 	<form autocomplete="off" method="post" action="<?php home_url('/'); ?>" class="lostpasswordform" name="resetpassform">
-		<input type="hidden" autocomplete="off" value="<?php echo $_GET['login'];?>" class="user_login" name="user_login">
-		<input type="hidden" value="<?php echo $_GET['key'];?>" name="rp_key">
+		<?php
+		// Escaped for the attribute context, but deliberately not rewritten.
+		// The reset URL is built from the raw user_login, and this value is
+		// posted back to check_password_reset_key(), so stripping characters
+		// here (sanitize_user in strict mode does) would stop the lookup
+		// finding accounts whose login contains them. esc_attr is the correct
+		// control for output; it is not an identifier validator, and the key
+		// itself is verified server side regardless.
+		?>
+		<input type="hidden" autocomplete="off" value="<?php echo esc_attr( isset( $_GET['login'] ) ? wp_unslash( $_GET['login'] ) : '' ); ?>" class="user_login" name="user_login">
+		<input type="hidden" value="<?php echo esc_attr( isset( $_GET['key'] ) ? wp_unslash( $_GET['key'] ) : '' ); ?>" name="rp_key">
 		
 		<h3><span class="genericon genericon-refresh"></span> <?php _e('New Password','lsx-login'); ?></h3>
 	

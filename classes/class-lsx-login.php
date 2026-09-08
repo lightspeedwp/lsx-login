@@ -21,6 +21,27 @@ if ( ! class_exists( 'LSX_Login' ) ) {
 		public $plugin_slug = 'lsx-login';
 
 		/**
+		 * Nonce action shared by the front-end AJAX handlers.
+		 *
+		 * @var string
+		 */
+		const NONCE_ACTION = 'lsx_login_ajax';
+
+		/**
+		 * Password reset requests allowed per IP per window.
+		 *
+		 * @var int
+		 */
+		const RESET_RATE_LIMIT = 5;
+
+		/**
+		 * Length of the password reset rate limit window, in seconds.
+		 *
+		 * @var int
+		 */
+		const RESET_RATE_WINDOW = 900;
+
+		/**
 		 * Plugin options.
 		 *
 		 * @var string
@@ -158,6 +179,7 @@ if ( ! class_exists( 'LSX_Login' ) ) {
 
 				$params = array(
 					'ajax_url'       => admin_url( 'admin-ajax.php' ),
+					'nonce'          => wp_create_nonce( self::NONCE_ACTION ),
 					'empty_username' => __( 'The username field is empty.', 'lsx-login' ),
 					'empty_password' => __( 'The password field is empty.', 'lsx-login' ),
 					'empty_reset'    => __( 'Enter a username or e-mail address.', 'lsx-login' ),
@@ -312,6 +334,94 @@ if ( ! class_exists( 'LSX_Login' ) ) {
 		}
 
 		/**
+		 * Verify the nonce on a front-end AJAX request.
+		 *
+		 * These handlers are registered on wp_ajax_nopriv_*, so they are
+		 * reachable unauthenticated. On a failure the request is ended here.
+		 *
+		 * Scope, so this is not mistaken for more than it is: WordPress gives
+		 * every logged-out visitor the same nonce context, so this does not
+		 * bind a request to a browser and is not a CSRF boundary for guests -
+		 * anyone can fetch a valid nonce by loading the public login form. It
+		 * rejects stale and malformed calls and raises the cost of blind
+		 * scripted abuse; the rate limit on the reset handler and not
+		 * returning anything sensitive in the response are what actually
+		 * protect these endpoints. Binding per browser needs server-side state
+		 * keyed on a cookie, which interacts badly with full page caching and
+		 * wants designing separately.
+		 */
+		private function verify_ajax_nonce() {
+			if ( ! check_ajax_referer( self::NONCE_ACTION, 'nonce', false ) ) {
+				status_header( 403 );
+				echo wp_json_encode(
+					array(
+						'success' => 2,
+						'message' => __( 'Your session has expired. Please reload the page and try again.', 'lsx-login' ),
+					)
+				);
+				die();
+			}
+		}
+
+		/**
+		 * Throttle password reset requests by client IP.
+		 *
+		 * Without this an unauthenticated caller can invalidate any user's
+		 * stored activation key, and send them mail, as fast as it can post.
+		 *
+		 * @return bool True while the caller is under the limit.
+		 */
+		private function reset_rate_limit_ok() {
+			$ip = isset( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : '';
+
+			if ( '' === $ip ) {
+				return true;
+			}
+
+			$key = 'lsx_login_reset_' . md5( $ip );
+
+			// With a persistent object cache, wp_cache_add() is atomic: only the
+			// first concurrent request creates the key, and wp_cache_incr() then
+			// increments it without a read-modify-write window. A plain
+			// get/set pair lets simultaneous requests all read the same count
+			// and each write count+1, letting the limit be exceeded.
+			if ( wp_using_ext_object_cache() ) {
+				$group = 'lsx_login';
+
+				if ( false === wp_cache_add( $key, 0, $group, self::RESET_RATE_WINDOW ) ) {
+					$count = wp_cache_incr( $key, 1, $group );
+
+					// A false return means the key expired between the add and
+					// the incr; treat that as the start of a fresh window.
+					if ( false === $count ) {
+						wp_cache_set( $key, 1, $group, self::RESET_RATE_WINDOW );
+						return true;
+					}
+
+					return $count <= self::RESET_RATE_LIMIT;
+				}
+
+				wp_cache_incr( $key, 1, $group );
+
+				return true;
+			}
+
+			// Fallback for sites with no persistent object cache. Transients are
+			// not atomic, so a burst of simultaneous requests can overshoot the
+			// limit slightly. It still bounds sustained abuse, which is the
+			// point, and the alternative is no limit at all.
+			$count = (int) get_transient( $key );
+
+			if ( $count >= self::RESET_RATE_LIMIT ) {
+				return false;
+			}
+
+			set_transient( $key, $count + 1, self::RESET_RATE_WINDOW );
+
+			return true;
+		}
+
+		/**
 		 * generate the login form
 		 *
 		 */
@@ -342,6 +452,8 @@ if ( ! class_exists( 'LSX_Login' ) ) {
 		 *
 		 */
 		public function do_ajax_login() {
+			$this->verify_ajax_nonce();
+
 			if(isset($_POST['method']) && 'login' == $_POST['method']){
 				$result = array();
 
@@ -352,8 +464,11 @@ if ( ! class_exists( 'LSX_Login' ) ) {
 						$result['success']  = 1;
 					}else{
 						$result['success']  = 3;
-						//TODO Fix this encapsulation
-						$result['message']  = __('The password you entered for the username '.$_POST['log'].' is incorrect.','lsx-login');
+						$result['message']  = sprintf(
+							/* translators: %s: the username that was submitted. */
+							__( 'The password you entered for the username %s is incorrect.', 'lsx-login' ),
+							esc_html( sanitize_user( wp_unslash( $_POST['log'] ), true ) )
+						);
 					}
 				}else{
 					$result['success']  = 2;
@@ -372,6 +487,19 @@ if ( ! class_exists( 'LSX_Login' ) ) {
 		 */
 		public function do_ajax_reset() {
 			global $wpdb;
+
+			$this->verify_ajax_nonce();
+
+			if ( ! $this->reset_rate_limit_ok() ) {
+				status_header( 429 );
+				echo wp_json_encode(
+					array(
+						'success' => 2,
+						'message' => __( 'Too many password reset requests. Please try again later.', 'lsx-login' ),
+					)
+				);
+				die();
+			}
 
 			if(isset($_POST['method']) && 'reset' == $_POST['method']){
 
@@ -434,7 +562,6 @@ if ( ! class_exists( 'LSX_Login' ) ) {
 							}else{
 								$result['success']  = 1;
 								$result['message']  = __('Check your e-mail for the confirmation link.','lsx-login');
-								$result['email'] = $message;
 							}
 
 						}
@@ -479,8 +606,23 @@ if ( ! class_exists( 'LSX_Login' ) ) {
 		 *
 		 */
 		public function do_ajax_reset_confirmed() {
+			$this->verify_ajax_nonce();
+
 			if(isset($_POST['key']) && isset($_POST['login']) && isset($_POST['pass1']) && isset($_POST['pass2']) ){
 				$result = array();
+
+				// The two password fields were never compared server-side, so a
+				// mismatch the front-end failed to catch silently set pass1.
+				if ( $_POST['pass1'] !== $_POST['pass2'] ) {
+					echo wp_json_encode(
+						array(
+							'success' => 2,
+							'message' => __( 'Passwords do not match', 'lsx-login' ),
+						)
+					);
+					die();
+				}
+
 				$user = check_password_reset_key( $_POST['key'], $_POST['login'] );
 
 				if(!is_wp_error($user)){

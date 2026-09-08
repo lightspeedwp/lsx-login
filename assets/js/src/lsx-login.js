@@ -61,6 +61,7 @@ jQuery(document).ready(function($) {
 		    var redirect = $(this).find('input[name="redirect_to"]' ).val();
 		    var params = {
 				action: 		'lsx_login',
+				nonce: 			lsx_login_params.nonce,
 				log:		 	username,
 				pwd:		 	password,
 				rememberme: 	remember,
@@ -130,6 +131,7 @@ jQuery(document).ready(function($) {
 
 		    var params = {
 				action: 		'lsx_reset',
+				nonce: 			lsx_login_params.nonce,
 				log:		 	username,
 				method:			'reset'
 			};
@@ -213,6 +215,7 @@ jQuery(document).ready(function($) {
 
 		    var params = {
 					action: 		'lsx_reset_confirmed',
+					nonce: 			lsx_login_params.nonce,
 					pass1:		 	pass1,
 					pass2:		 	pass2,
 					key:		 	key,
