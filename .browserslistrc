@@ -1,0 +1,5 @@
+# Carried over from the browserlist array in the previous gulpfile.
+# autoprefixer reads this; the `browsers` option it used to take was removed
+# in autoprefixer 4.
+last 2 versions
+> 1%
